@@ -8,56 +8,56 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <style>
-        /* Remove the navbar's default margin-bottom and rounded borders */
-        .navbar {
-            margin-bottom: 0;
-            border-radius: 0;
-            background-color: #321E0F;
-        }
+      /* Remove the navbar's default margin-bottom and rounded borders */
+      .navbar {
+          margin-bottom: 0;
+          border-radius: 0;
+          background-color: #321E0F;
+      }
 
-        /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-        .row.content {height: 450px}
+      /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+      .row.content {height: 450px}
 
-        /* Set gray background color and 100% height */
-        .sidenav {
-            padding-top: 20px;
-            background-color: #321E0F;
-            height: 100%;
-        }
+      /* Set gray background color and 100% height */
+      .sidenav {
+          padding-top: 20px;
+          background-color: #321E0F;
+          height: 100%;
+      }
 
-        /* Set black background color, white text and some padding */
-        footer {
-            position: fixed;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            background-color: #321E0F;
-            color: white;
-            text-align: center;
-        }
+      /* Set black background color, white text and some padding */
+      footer {
+          position: fixed;
+          left: 0;
+          bottom: 0;
+          width: 100%;
+          background-color: #321E0F;
+          color: white;
+          text-align: center;
+      }
 
-        /* On small screens, set height to 'auto' for sidenav and grid */
-        @media screen and (max-width: 767px) {
-            .sidenav {
-                height: auto;
-                padding: 15px;
-            }
-            .row.content {height:auto;}
-        }
-        body{
-            background-color: #8C8757;
-        }
-        #logo {
-            text-align:center;
-            color: #FEFAD7;
-        }
-        #sign_in {
+      /* On small screens, set height to 'auto' for sidenav and grid */
+      @media screen and (max-width: 767px) {
+          .sidenav {
+              height: auto;
+              padding: 15px;
+          }
+          .row.content {height:auto;}
+      }
+      body{
+          background-color: #8C8757;
+      }
+      #logo {
+          text-align:center;
+          color: #FEFAD7;
+      }
+      #sign_in {
 
-            text-align:center;
-            color: #FEFAD7;
-        }
+          text-align:center;
+          color: #FEFAD7;
+      }
 
-    </style>
+  </style>
 </head>
 <body>
 
@@ -73,23 +73,39 @@
         <div class="col-lg-12" id="sign_in">
             <h1>User Sign In </h1>
             <form action="http://localhost:8080/user" method="post" enctype="multipart/form-data">
-                <label for="fname">Username:</label>
-                <input style="color:#050505", type="text" id="fname" name="Name"><br><br>
-
-                <label for="input-password">Password:</label>
-                <input style="color:#050505", type="password" id="input-password">
-                <input type="hidden" id="md5-password" name="password">
-
-                <p><a href="http://localhost:63342/cse442-spring2022-team-unpaid-workers/templates/Signup.html?_ijt=bp30p5o0hic1mm8hn0j1ia4ipc&_ij_reload=RELOAD_ON_SAVE">Sign up</a></p>
-                <input type="submit" style="color:#8C8757" value="Submit">
+                <form action="?error=user Or password wrong" method="post">
+                    <label for="fname">Username:</label>
+                    <input style="color:#050505" type="text" id="fname" name="Name">
+                    <label id="fname-error" style="display: none">wrong name</label>
+                    <br><br>
+                    <label for="lname">Password:</label>
+                    <input style="color:#050505" type="text" id="lname" name="Password">
+                    <label id="password-error" style="display: none">wrong password</label>
+                    <br><br>
+                    <p><a href=" ">Sign up</a ></p >
+                    <input type="submit" style="color:#8C8757" value="Submit">
+                </form>
             </form>
+
         </div>
     </div>
 </div>
 
 <footer class="container-fluid text-center">
-    <p>About Us</p>
+    <p>About Us</p >
 </footer>
 
 </body>
+
+<script>
+  let query = new URLSearchParams(window.location.search)
+  if (query.has('error')) {
+    if (query.get('error') === "username") {
+      document.querySelector('#fname-error').style.display = 'block'
+    } else if (query.get('error') === "password") {
+      document.querySelector('#password-error').style.display = 'block'
+    }
+  }
+</script>
+
 </html>
