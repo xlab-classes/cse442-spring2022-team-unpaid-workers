@@ -1,18 +1,18 @@
 '''
 Coder: Zhou Zhou  && Shkaraot
 '''
+import tkinter
+
 import DataBase
 from flask import Flask, render_template, request
 from werkzeug.datastructures import ImmutableMultiDict
-
-from pymongo import MongoClient
+from tkinter import messagebox
 
 app = Flask(__name__)
 
 
 @app.route('/')
 def index():
-
     return render_template("HomePage.html")
 
 
@@ -43,9 +43,6 @@ def user():
     dict = imd.to_dict(flat=False)
     name = dict.get("Name")[0]
     password = dict.get("Password")[0]
-
-
-
 
     # if username+password is not match
     role = DataBase.user_authentication(name,password)
