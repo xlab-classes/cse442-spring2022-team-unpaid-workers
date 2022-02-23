@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Quiz Hub</title>
+    <title>Sign up</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -56,6 +56,9 @@
             text-align:center;
             color: #FEFAD7;
         }
+        #option{
+            background-color: #8C8757;
+        }
 
     </style>
 </head>
@@ -71,14 +74,18 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-12" id="sign_in">
-            <h1>User Sign In </h1>
-            <form action="/action_page.php">
+            <h1>User Sign Up </h1>
+            <form action="http://localhost:8080/signup" method="post" enctype="multipart/form-data">
                 <label for="fname">Username:</label>
-                <input type="text" id="fname" name="fname"><br><br>
+                <input type="text" id="fname" name="Name"><br><br>
                 <label for="lname">Password:</label>
-                <input type="text" id="lname" name="lname"><br><br>
-                <p><a href="location">Sign up</a></p>
+                <input type="text" id="lname" name="Password"><br><br>
+                <select name="who" id="option">
+                    <option value="Teacher">Teacher</option>
+                    <option value="Student">Student</option>
+                </select>
                 <input type="submit" style="color:#8C8757" value="Submit">
+                <p><a href="http://localhost:8080/">Sign In</a></p>
             </form>
         </div>
     </div>

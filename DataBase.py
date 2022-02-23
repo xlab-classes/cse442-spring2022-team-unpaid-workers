@@ -9,6 +9,11 @@ db = mysql.connector.connect(
 mycursor = db.cursor()
 
 
+def print_user_table():
+    mycursor.execute('SELECT * FROM user')
+    for row in mycursor:
+        print(row)
+    print("print successfully")
 
 def creat_user_table():
 
@@ -41,9 +46,13 @@ def user_authentication(name, pw):
 
     try:
         mycursor.execute('SELECT * FROM user')
+        print("user_authentication check")
         for row in mycursor:
+            print(row)
             if row[1] == name and row[2] == pw:
+                print(row[0])
                 return row[0]
+        print("printing none")
         return None
 
     except mysql.connector.Error:
