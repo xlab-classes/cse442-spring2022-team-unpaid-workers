@@ -19,7 +19,7 @@ def index():
 
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
-    print("signup")
+    print("in signup")
     imd = ImmutableMultiDict(request.form)
     dict = imd.to_dict(flat=False)
     name = dict.get("Name")[0]
