@@ -76,17 +76,20 @@
         <div class="col-lg-12" id="sign_in">
             <h1>User Sign Up </h1>
             <form action="http://localhost:8080/signup" method="post" enctype="multipart/form-data">
+                <form action="this username is exist" method="post">
                 <label for="fname">Username:</label>
-                <input style="color:#050505", type="text" id="fname" name="Name"><br><br>
+                <input style="color:#050505", type="text" id="fname" name="Name">
+                <label id="fname-error" style="display: none">username is existed, pick another one</label>
+                <br><br>
                 <label for="lname">Password:</label>
                 <input style="color:#050505", type="text" id="lname" name="Password"><br><br>
                 <select name="who" id="option">
-                    <option value="Teacher">Teacher</option>
-                    <option value="Student">Student</option>
+                <option value="Teacher">Teacher</option>
+                <option value="Student">Student</option>
                 </select>
                 <input type="submit" style="color:#8C8757" value="Submit">
                 <p><a href="http://localhost:8080/">Sign In</a></p>
-
+                </form>
             </form>
         </div>
     </div>
@@ -97,4 +100,13 @@
 </footer>
 
 </body>
+
+<script>
+  let query = new URLSearchParams(window.location.search)
+  if (query.has('error')) {
+    if (query.get('error') === "username") {
+      document.querySelector('#fname-error').style.display = 'block'
+    }
+  }
+</script>
 </html>
