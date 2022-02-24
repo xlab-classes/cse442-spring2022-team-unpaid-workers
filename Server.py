@@ -4,7 +4,7 @@ Coder: Zhou Zhou  && Shkaraot
 import tkinter
 
 import DataBase
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 from werkzeug.datastructures import ImmutableMultiDict
 from tkinter import messagebox
 
@@ -13,6 +13,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
+    DataBase.print_user_table()
     return render_template("HomePage.html")
 
 
@@ -29,7 +30,9 @@ def signup():
         DataBase.insert_user((role,name,password))
         return render_template("HomePage.html")
     else:
-        return "username is exist, pick another one."
+
+        print("redirect to error")
+        return redirect("http://localhost:63342/cse442-spring2022-team-unpaid-workers/templates/Signup.html?_ijt=s7rqo2hienhphcdu4968qssg9l&_ij_reload=RELOAD_ON_SAVE&error=username",code = 301)
 
 
 
@@ -37,8 +40,8 @@ def signup():
 @app.route('/user', methods=['POST', 'GET'])
 def user():
 
-
-
+    print("print form")
+    print(request.form)
     imd = ImmutableMultiDict(request.form)
     dict = imd.to_dict(flat=False)
     name = dict.get("Name")[0]
@@ -46,10 +49,13 @@ def user():
 
     # if username+password is not match
     role = DataBase.user_authentication(name,password)
-
+    print("print user table----")
+    DataBase.print_user_table()
     #"student" "teacher" "none"
-    if role is None:
-        return "Your username or password is incorrect"
+    if DataBase.username_is_not_exist(name):
+        return redirect("http://localhost:8080/?error=username",code = 301)
+    elif role is None:
+        return redirect("http://localhost:8080/?error=password",code = 301)
     elif role == "Student":
         #jump to student profile
         return "Student: "+name
@@ -60,5 +66,6 @@ def user():
 if __name__ == '__main__':
     app.run(host='0.0.0.0',port=8080,debug=True)
     DataBase.creat_user_table()
+
 
 
