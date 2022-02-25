@@ -55,7 +55,7 @@ def user():
 
     role = DataBase.user_authentication(name,password)
 
-    print("print user table----")
+
 
 
     if DataBase.username_is_not_exist(name):
