@@ -70,7 +70,7 @@ def user():
         return "Teacher: "+name
 
 if __name__ == '__main__':
-
+    print("hello")
     DataBase.creat_user_table()
     app.run(host='0.0.0.0',port=8080,debug=True)
 
