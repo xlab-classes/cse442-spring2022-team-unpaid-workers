@@ -13,11 +13,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    print("print table")
-    DataBase.print_user_table()
-    print("print again")
-    DataBase.print_user_table()
-    print("done")
+    print('homepage')
     return render_template("HomePage.html")
 
 
@@ -32,6 +28,7 @@ def signup():
 
     if DataBase.username_is_not_exist(name):
         DataBase.insert_user((role,name,password))
+        print("signuphere")
         return render_template("HomePage.html")
     else:
 
@@ -44,24 +41,24 @@ def signup():
 @app.route('/user', methods=['POST', 'GET'])
 def user():
 
-    print("user")
+
 
     imd = ImmutableMultiDict(request.form)
     dict = imd.to_dict(flat=False)
     name = dict.get("Name")[0]
     password = dict.get("Password")[0]
 
+
+
+
     # if username+password is not match
-
     role = DataBase.user_authentication(name,password)
-
-    print("print user table----")
-
-
+    print(DataBase.username_is_not_exist(name))
+    #"student" "teacher" "none"
     if DataBase.username_is_not_exist(name):
-        return redirect("http://localhost:8080/?error=username",code = 301)
+        return redirect("http://localhost:8000/?error=username",code = 301)
     elif role is None:
-        return redirect("http://localhost:8080/?error=password",code = 301)
+        return redirect("http://localhost:8000/?error=password",code = 301)
     elif role == "Student":
         #jump to student profile
         return "Student: "+name
@@ -70,12 +67,7 @@ def user():
         return "Teacher: "+name
 
 if __name__ == '__main__':
-    print("hello")
     DataBase.creat_user_table()
-    app.run(host='0.0.0.0',port=8080,debug=True)
-
-
-
-
+    app.run(host='0.0.0.0',port=8000,debug=True)
 
 
