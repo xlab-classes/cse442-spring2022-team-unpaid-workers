@@ -3,13 +3,12 @@ import mysql.connector
 db = mysql.connector.connect(
     host="localhost",
     user="root",
-    passwd="ubcse442",
-    database="QuizHub"
+    passwd="@Zhou1534260",
+    database = "QuizHub"
 )
-mycursor = db.cursor(buffered=True)
+mycursor = db.cursor()
 
 mycursor.execute("CREATE DATABASE IF NOT EXISTS QuizHub")
-
 
 def print_user_table():
     mycursor.execute('SELECT * FROM user')
@@ -17,15 +16,13 @@ def print_user_table():
         print(row)
     print("print successfully")
 
-
 def creat_user_table():
     print("usertable")
 
     mycursor.execute("CREATE TABLE IF NOT EXISTS user (role VARCHAR(10),"
-                     "username VARCHAR(20),"
-                     "password VARCHAR(20),"
-                     "_ID int PRIMARY key AUTO_INCREMENT)")
-
+                      "username VARCHAR(20),"
+                      "password VARCHAR(20),"
+                      "_ID int PRIMARY key AUTO_INCREMENT)")
 
 def insert_user(tuple):
     try:
@@ -39,21 +36,17 @@ def insert_user(tuple):
     except mysql.connector.Error:
         print("insert failed")
 
-
 def username_is_not_exist(name):
     print(name)
-
-    mycursor = db.cursor(buffered=True)
+    mycursor = db.cursor()
     mycursor.execute('SELECT * FROM user')
     for row in mycursor:
         if row[1] == name:
-            print("not exist")
             return False
-    print("exist")
     return True
 
-
 def user_authentication(name, pw):
+
     try:
         mycursor.execute('SELECT * FROM user')
         print("user_authentication check")
@@ -67,7 +60,6 @@ def user_authentication(name, pw):
 
     except mysql.connector.Error:
         print("check failed")
-
 
 def delete_table():
     mycursor.execute("DROP TABLE user")
