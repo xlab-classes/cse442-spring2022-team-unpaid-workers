@@ -15,9 +15,7 @@ app = Flask(__name__)
 def index():
     print("print table")
     DataBase.print_user_table()
-    print("print again")
-    DataBase.print_user_table()
-    print("done")
+
     return render_template("HomePage.html")
 
 
@@ -72,7 +70,7 @@ def user():
 if __name__ == '__main__':
 
     DataBase.creat_user_table()
-    app.run(host='0.0.0.0',port=8080,debug=True)
+    app.run(host='0.0.0.0',port=9377,debug=True)
 
 
 
