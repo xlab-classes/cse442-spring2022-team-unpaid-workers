@@ -45,8 +45,8 @@ def Signup():
         return render_template("signup.html")
     else:
         print("redirect to error")
-        return redirect("http://localhost:63342/cse442-spring2022-team-unpaid-workers/templates/Signup.html?_ijt=s7rqo2hienhphcdu4968qssg9l&_ij_reload=RELOAD_ON_SAVE&error=username",code = 301)
-
+        return redirect("http://localhost:63342/CSE442/templates/Signup.html?_ijt=hee60oe6p513778lttco344c3r&_ij_reload=RELOAD_ON_SAVE",code = 301)
+        # return redirect("http://localhost:", code=301)
 @app.route('/user', methods=['POST', 'GET'])
 def user():
 
