@@ -16,13 +16,18 @@ def index():
     print("print table")
     DataBase.print_user_table()
 
-    return render_template("HomePage.html")
+    return render_template("index.html")
 
 
-@app.route('/signup', methods=['POST', 'GET'])
-def signup():
+@app.route('/new', methods=['POST', 'GET'])
+def new():
+    return render_template("Signup.html")
+
+@app.route('/Signup', methods=['POST', 'GET'])
+def Signup():
     print("in signup")
     imd = ImmutableMultiDict(request.form)
+    print("imd:", imd)
     dict = imd.to_dict(flat=False)
     name = dict.get("Name")[0]
     password = dict.get("Password")[0]
@@ -30,14 +35,11 @@ def signup():
 
     if DataBase.username_is_not_exist(name):
         DataBase.insert_user((role,name,password))
-        return render_template("HomePage.html")
+        print("template")
+        return render_template("signup.html")
     else:
-
         print("redirect to error")
         return redirect("http://localhost:63342/cse442-spring2022-team-unpaid-workers/templates/Signup.html?_ijt=s7rqo2hienhphcdu4968qssg9l&_ij_reload=RELOAD_ON_SAVE&error=username",code = 301)
-
-
-
 
 @app.route('/user', methods=['POST', 'GET'])
 def user():
@@ -53,13 +55,10 @@ def user():
 
     role = DataBase.user_authentication(name,password)
 
-
-
-
     if DataBase.username_is_not_exist(name):
-        return redirect("http://localhost:8080/?error=username",code = 301)
+        return redirect("http://localhost:9377/?error=username",code = 301)
     elif role is None:
-        return redirect("http://localhost:8080/?error=password",code = 301)
+        return redirect("http://localhost:9377/?error=password",code = 301)
     elif role == "Student":
         #jump to student profile
         return "Student: "+name

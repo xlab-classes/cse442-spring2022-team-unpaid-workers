@@ -17,7 +17,7 @@ def print_user_table():
     print("print successfully")
 
 def creat_user_table():
-    print("usertable")
+
 
     mycursor.execute("CREATE TABLE IF NOT EXISTS user (role VARCHAR(10),"
                       "username VARCHAR(20),"
@@ -38,6 +38,12 @@ def insert_user(tuple):
 
 def username_is_not_exist(name):
     print(name)
+    db = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database = "QuizHub"
+    )
     mycursor = db.cursor()
     mycursor.execute('SELECT * FROM user')
     for row in mycursor:
