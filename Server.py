@@ -16,13 +16,25 @@ def index():
 
     return render_template("index.html")
 
+
+@app.route('/findquiz', methods = ['POST','GET'])
+def findquiz():
+    return "hello"
+
 @app.route('/makequiz', methods = ['POST','GET'])
 def quiz():
-    print('makeQuiz')
+
     if request.method == 'POST':
         result = request.form
-        render_template("result.html")
+        data = ImmutableMultiDict(request.form)
+        dict = data.to_dict(flat=False)
+        question = dict.get("Question")[0]
+        answer = dict.get("Answer")[0]
+        DataBase.insert_question((question,answer))
+        return render_template("result.html",s= question+"\n"+answer)
     else:
+
+        #return render_template("result.html",s = question+answer)
         return render_template("teacher_or_studentquiz.html",s='Teacher',question='Make Your Questions')
 
 @app.route('/new', methods=['POST', 'GET'])

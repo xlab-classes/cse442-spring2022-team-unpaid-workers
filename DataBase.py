@@ -73,6 +73,22 @@ def user_authentication(name, pw):
 
     except mysql.connector.Error:
         print("check failed")
+def create_quiz_table():
+    mycursor.execute("CREATE TABLE IF NOT EXISTS user (Question VARCHAR(100),"
+                     "Answer VARCHAR(100),"
+                     "_ID int PRIMARY key AUTO_INCREMENT)")
+
+def insert_question(input):
+    try:
+        create_quiz_table()
+        mycursor.execute("INSERT INTO user (Question,Answer) VALUES (%s,%s)", tuple)
+        db.commit()
+        print("insert question successfully")
+        mycursor.execute("SELECT * FROM user")
+        for x in mycursor:
+            print(x)
+    except mysql.connector.Error:
+        print("insert question failed")
 
 # this function will be deleting the database.
 def delete_table():

@@ -109,17 +109,18 @@
             <hr>
 
             <form action="http://localhost:9377/makequiz" method="POST">
-                <p>Question <input type = "text" name = "Question" size="500"/></p>
-                <p>Answer <input type = "text" name = "Answer" size="500"/></p>
+                <p>Question <input type = "text" name = "Question" size="120"/></p>
+                <p>Answer <input type = "text" name = "Answer" size="120"/></p>
                 <p><input type = "submit" value = "submit" /></p>
             </form>
 
-            <form action="http://localhost:8000/findmyQuiz" method="GET">
+            <form action="http://localhost:9377/findquiz" method="GET">
                 <p><input type="submit" value="Get Quiz" /></p>
             </form>
 
             <div class="clearfix">
                 <div class="box" style="background-color:#bbb">
+
                     <p>One Answer</p>
                 </div>
                 <div class="box" style="background-color:#bbb">
