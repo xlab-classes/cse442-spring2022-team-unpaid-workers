@@ -73,11 +73,15 @@ def user_authentication(name, pw):
 
     except mysql.connector.Error:
         print("check failed")
+
+# this function will create the database to store the quiz questions
 def create_quiz_table():
     mycursor.execute("CREATE TABLE IF NOT EXISTS user (Question VARCHAR(100),"
                      "Answer VARCHAR(100),"
                      "_ID int PRIMARY key AUTO_INCREMENT)")
 
+# this function will insert the questions that are created by the teacher into
+# the database that is created to store the quiz questions
 def insert_question(input):
     try:
         create_quiz_table()
