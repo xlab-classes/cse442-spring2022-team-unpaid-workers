@@ -1,12 +1,10 @@
 '''
 Coder: Zhou Zhou  && Shkaraot
 '''
-import tkinter
 
 import DataBase
 from flask import Flask, render_template, request, redirect
 from werkzeug.datastructures import ImmutableMultiDict
-from tkinter import messagebox
 
 app = Flask(__name__)
 
@@ -18,6 +16,14 @@ def index():
 
     return render_template("index.html")
 
+@app.route('/makequiz', methods = ['POST','GET'])
+def quiz():
+    print('makeQuiz')
+    if request.method == 'POST':
+        result = request.form
+        render_template("result.html")
+    else:
+        return render_template("teacher_or_studentquiz.html",s='Teacher',question='Make Your Questions')
 
 @app.route('/new', methods=['POST', 'GET'])
 def new():
@@ -61,10 +67,10 @@ def user():
         return redirect("http://localhost:9377/?error=password",code = 301)
     elif role == "Student":
         #jump to student profile
-        return "Student: "+name
+        return render_template('teacher_or_student_homepage.html',s='Student')
     elif role == "Teacher":
         #jump to teacher profile
-        return "Teacher: "+name
+        return render_template('teacher_or_student_homepage.html',s='Teacher')
 
 if __name__ == '__main__':
 
