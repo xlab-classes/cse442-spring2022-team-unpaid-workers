@@ -112,24 +112,17 @@
                 <div class="clearfix">
                     <div class="box" style="background-color:#bbb">
 
-                        <form action="http://localhost:9377/quiz_submit">
+                        <form action="http://localhost:9377/quiz_submit" method="POST">
                             <p>Question1:</p>
-                             <input type="radio" id="html" name="fav_language" value="HTML">
-                             <label for="html">HTML</label><br>
-                             <input type="radio" id="css" name="fav_language" value="CSS">
-                             <label for="css">CSS</label><br>
-                             <input type="radio" id="javascript" name="fav_language" value="JavaScript">
-                             <label for="javascript">JavaScript</label>
-
+                             <input type="radio" id="A" name="A" value="A">
+                             <label for="A">A</label><br>
+                             <input type="radio" id="B" name="B" value="B">
+                             <label for="B">B</label><br>
+                             <input type="radio" id="C" name="C" value="C">
+                             <label for="C">C</label>
                             <br>
-                            <p>Please select your age:</p>
-                            <input type="radio" id="age1" name="age" value="30">
-                            <label for="age1">0 - 30</label><br>
-                            <input type="radio" id="age2" name="age" value="60">
-                            <label for="age2">31 - 60</label><br>
-                            <input type="radio" id="age3" name="age" value="100">
-                            <label for="age3">61 - 100</label><br><br>
 
+                            <input value="passcode" name="passcode" hidden>
                             <input type="submit" value="Submit">
                         </form>
 
@@ -166,12 +159,4 @@
 
 </body>
 
-<script>
-    let query = new URLSearchParams(window.location.search)
-    if (query.has('error')) {
-        if (query.get('error') === "username") {
-            document.querySelector('#fname-error').style.display = 'block'
-        }
-    }
-</script>
 </html>

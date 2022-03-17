@@ -19,6 +19,39 @@ def index():
     return render_template("index.html")
 
 
+@app.route('/quiz_submit',methods=['POST','GET'])
+def quiz_submit():
+    if request.method == "POST":
+        data = ImmutableMultiDict(request.form)
+        passcode = data.get("passcode")
+        json_quiz = DataBase.find_quiz(passcode)
+        quiz = json.loads(json_quiz)
+        student_score = 0
+
+        for student_question_submission in data:
+            question_number = get_question_number(student_question_submission)
+            print(question_number)
+            student_choice = data.get(student_question_submission)
+            answer = quiz[question_number-1].get("answer")[0]
+            if student_choice == answer:
+                student_score += int(quiz[question_number-1].get("point")[0])-int('0')
+        f = open("templates/student_homepage.html","r")
+        t = ""
+        for line in f:
+            t += line
+        start_pos = t.find('<p>Passcode:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Score:</p>')+len('<p>Passcode:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Score:</p>')
+        score_template = '<p>'+passcode+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+str(student_score)+"<p>"
+        final_template = t[:start_pos]+score_template+t[start_pos+1:]
+        return  final_template
+
+    else:
+        return "quiz"
+def get_question_number(q):
+    n = 0
+    for i in range(8,len(q)):
+        n = n*10 + int(q[i])- int('0')
+    return n
+
 @app.route('/accessQuiz', methods=['POST', 'GET'])
 def accessQuiz():
     if request.method == "POST":
@@ -52,20 +85,20 @@ def accessQuiz():
 
 
             template1 = "<p> " + question + " (" + point + "pts) </p>\n"
-            template2 = "<input type=\"radio\" id=\""+str(quiz_number)+"a\" name=\"question"+str(quiz_number)+"\" value=\"" + str(quiz_number)+"a\">\n"
+            template2 = "<input type=\"radio\" id=\""+str(quiz_number)+"a\" name=\"question"+str(quiz_number)+"\" value=\"" + choice_A+"\">\n"
             template3 = '<label for="' + str(quiz_number)+'a">' + choice_A + '</label><br>\n'
 
-            template4 = "<input type=\"radio\" id=\""+str(quiz_number)+"b\" name=\"question"+str(quiz_number)+"\" value=\"" + str(quiz_number)+"b\">\n"
+            template4 = "<input type=\"radio\" id=\""+str(quiz_number)+"b\" name=\"question"+str(quiz_number)+"\" value=\"" + choice_B+"\">\n"
             template5 = '<label for="' + str(quiz_number)+'b">' + choice_B + '</label><br>\n'
 
-            template6 = "<input type=\"radio\" id=\""+str(quiz_number)+"c\" name=\"question"+str(quiz_number)+"\" value=\"" + str(quiz_number)+"c\">\n"
+            template6 = "<input type=\"radio\" id=\""+str(quiz_number)+"c\" name=\"question"+str(quiz_number)+"\" value=\"" + choice_C+"\">\n"
             template7 = '<label for="' + str(quiz_number)+'c">' + choice_C + '</label><br>\n'
 
-            template8 = "<input type=\"radio\" id=\""+str(quiz_number)+"d\" name=\"question"+str(quiz_number)+"\" value=\"" + str(quiz_number)+"d\">\n"
+            template8 = "<input type=\"radio\" id=\""+str(quiz_number)+"d\" name=\"question"+str(quiz_number)+"\" value=\"" + choice_D+"\">\n"
             template9 = '<label for="' + str(quiz_number)+'d">' + choice_D + '</label><br>\n'
             template10 = '<br><br>'
             quiz_template += template1 + template2 + template3 + template4 + template5 + template6 + template7 + template8 + template9 + template10
-
+        quiz_template += '<input value="' + passcode + '" name="passcode" hidden>'
         final_template = final_template[:start_pos] + quiz_template + final_template[end_pos:]
         return final_template
 
