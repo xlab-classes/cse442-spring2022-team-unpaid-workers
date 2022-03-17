@@ -4,27 +4,50 @@ db = mysql.connector.connect(
     host="localhost",
     user="root",
     passwd="ubcse442",
-    database = "QuizHub"
+    database="QuizHub"
 )
 mycursor = db.cursor()
 
 mycursor.execute("CREATE DATABASE IF NOT EXISTS QuizHub")
 
+
 def print_user_table():
+    db = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
+    )
+    mycursor = db.cursor()
     mycursor.execute('SELECT * FROM user')
     for row in mycursor:
         print(row)
     print("print successfully")
 
-def creat_user_table():
 
+def creat_user_table():
+    db = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
+    )
+    mycursor = db.cursor()
 
     mycursor.execute("CREATE TABLE IF NOT EXISTS user (role VARCHAR(10),"
-                      "username VARCHAR(20),"
-                      "password VARCHAR(20),"
-                      "_ID int PRIMARY key AUTO_INCREMENT)")
+                     "username VARCHAR(20),"
+                     "password VARCHAR(20),"
+                     "_ID int PRIMARY key AUTO_INCREMENT)")
+
 
 def insert_user(tuple):
+    db = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
+    )
+    mycursor = db.cursor()
     try:
         creat_user_table()
         mycursor.execute("INSERT INTO user (role,username,password) VALUES (%s,%s,%s)", tuple)
@@ -36,13 +59,14 @@ def insert_user(tuple):
     except mysql.connector.Error:
         print("insert failed")
 
+
 def username_is_not_exist(name):
     print(name)
     db = mysql.connector.connect(
         host="localhost",
         user="root",
         passwd="ubcse442",
-        database = "QuizHub"
+        database="QuizHub"
     )
     mycursor = db.cursor()
     mycursor.execute('SELECT * FROM user')
@@ -51,7 +75,15 @@ def username_is_not_exist(name):
             return False
     return True
 
+
 def user_authentication(name, pw):
+    db = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
+    )
+    mycursor = db.cursor()
 
     try:
         mycursor.execute('SELECT * FROM user')
@@ -66,22 +98,82 @@ def user_authentication(name, pw):
 
     except mysql.connector.Error:
         print("check failed")
+
+
 def create_quiz_table():
-    mycursor.execute("CREATE TABLE IF NOT EXISTS user (Question VARCHAR(100),"
-                     "Answer VARCHAR(100),"
+    db = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
+    )
+    mycursor = db.cursor()
+    mycursor.execute("CREATE TABLE IF NOT EXISTS Quiz_Data (Passcode VARCHAR(10),"
+                     "Quiz VARCHAR(2048),"
                      "_ID int PRIMARY key AUTO_INCREMENT)")
 
-def insert_question(input):
+
+def insert_quiz(tuple):
+    db = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
+    )
+    mycursor = db.cursor()
+    print("in insert:",tuple[1])
+    # tuple format ->  (passcode,json.format(quiz)
     try:
         create_quiz_table()
-        mycursor.execute("INSERT INTO user (Question,Answer) VALUES (%s,%s)", tuple)
+        print("created!")
+        mycursor.execute("INSERT INTO Quiz_Data (Passcode,Quiz) VALUES (%s,%s)", tuple)
+        print("executed")
         db.commit()
         print("insert question successfully")
-        mycursor.execute("SELECT * FROM user")
+        mycursor.execute("SELECT * FROM Quiz_Data")
+
         for x in mycursor:
-            print(x)
+            print("Quiz:",x)
     except mysql.connector.Error:
         print("insert question failed")
 
-def delete_table():
+
+def find_quiz(passcode):
+    db = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
+    )
+    mycursor = db.cursor()
+
+    try:
+        mycursor.execute('SELECT * FROM Quiz_Data')
+        print("user_authentication check")
+        for row in mycursor:
+            if row[0] == passcode:
+                return row[1]
+        return None
+    except mysql.connector.Error:
+        print("check failed")
+
+def print_passcode():
+    db = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
+    )
+    mycursor = db.cursor()
+    mycursor.execute('SELECT * FROM Quiz_Data')
+    for row in mycursor:
+        print(row)
+    print("print successfully")
+
+
+def delete_quiz_table():
+    mycursor.execute("DROP TABLE Quiz_Data")
+
+
+def delete_user_table():
     mycursor.execute("DROP TABLE user")
