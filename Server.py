@@ -50,6 +50,7 @@ def accessQuiz():
             choice_C = quiz.get('choice_C')[0]
             choice_D = quiz.get('choice_D')[0]
 
+
             template1 = "<p> " + question + " (" + point + "pts) </p>\n"
             template2 = "<input type=\"radio\" id=\""+str(quiz_number)+"a\" name=\"question"+str(quiz_number)+"\" value=\"" + str(quiz_number)+"a\">\n"
             template3 = '<label for="' + str(quiz_number)+'a">' + choice_A + '</label><br>\n'
