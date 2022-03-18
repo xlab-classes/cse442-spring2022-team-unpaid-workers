@@ -1,3 +1,4 @@
+from mysql.connector import(connection)
 import mysql.connector
 
 # db = mysql.connector.connect(
@@ -11,6 +12,7 @@ db = mysql.connector.connect(
     host="balfxq49nnpzz9niwuoy-mysql.services.clever-cloud.com",
     database="balfxq49nnpzz9niwuoy",
     user="ul05wz30fljlsi0y",
+
     passwd="49j34qWuliU9gKCXlNt4"
 )
 mycursor = db.cursor()
