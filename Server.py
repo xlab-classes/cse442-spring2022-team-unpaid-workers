@@ -72,7 +72,7 @@ def accessQuiz():
         full_quiz = json.loads(json_quiz)
         quiz_template = ""
         final_template = ""
-        f = open("templates/quiz.html", "r")
+        f = open("templates/student_take_quiz.html", "r")
         for line in f:
             final_template += line
 
@@ -136,7 +136,7 @@ def buidQuiz():
 
         if dict.get('build quiz') is None:
 
-            f = open("templates/teacher_or_studentquiz.html", "r")
+            f = open("templates/teacher_create_quiz.html", "r")
             t = ""
             for line in f:
                 t += line
@@ -196,7 +196,7 @@ def buidQuiz():
 
             return template
     else:
-        return render_template("teacher_or_studentquiz.html")
+        return render_template("teacher_create_quiz.html")
 
 
 @app.route('/new', methods=['POST', 'GET'])
