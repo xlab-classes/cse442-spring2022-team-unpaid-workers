@@ -126,13 +126,13 @@
                                             Student Grade
                                         </th>
                                     </tr>
+                                    {{loop}}
                                     <tr>
-                                        <td>Replace Me</td>
-                                        <td>Replace Me</td>
-                                        <td>Replace Me</td>
+                                        <td>{{QuizName}}</td>
+                                        <td>{{StudentName}}</td>
+                                        <td>{{StudentGrade}}</td>
                                     </tr>
-
-
+                                    {{end_loop}}
                                 </table>
                             </div>
 

@@ -3,13 +3,14 @@ Coder: Zhou Zhou  && Shkaraot
 '''
 
 import DataBase
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect,g
 from werkzeug.datastructures import ImmutableMultiDict
 import random
 import string
 import json
 
 app = Flask(__name__)
+
 
 
 @app.route('/')
@@ -22,13 +23,16 @@ def index():
 @app.route('/quiz_submit',methods=['POST','GET'])
 def quiz_submit():
     if request.method == "POST":
-        data = ImmutableMultiDict(request.form)
+        data = dict(request.form)
+        studentName = data.get("studentName")
+        print('StudentName:', studentName)
+        data.pop("studentName")
         passcode = data.get("passcode")
         json_quiz = DataBase.find_quiz(passcode)
         quiz = json.loads(json_quiz)
         student_score = 0
-
         for student_question_submission in data:
+            print(student_question_submission)
             question_number = get_question_number(student_question_submission)
             print(question_number)
             student_choice = data.get(student_question_submission)
@@ -42,7 +46,10 @@ def quiz_submit():
         start_pos = t.find('<p>Passcode:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Score:</p>')+len('<p>Passcode:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Score:</p>')
         score_template = '<p>'+passcode+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+str(student_score)+"<p>"
         final_template = t[:start_pos]+score_template+t[start_pos+1:]
-        return  final_template
+        DataBase.makeScoreRecord()
+        DataBase.insertScoreRecord(studentName,passcode,str(student_score))
+        DataBase.getInformation()
+        return final_template
     else:
         return "quiz"
 
@@ -55,16 +62,37 @@ def get_question_number(q):
 
 @app.route('/teacher_grade_book', methods=['GET'])
 def teacherGrade():
-
-    return render_template("teacher_grade_book.html")
+    allInformation = DataBase.getInformation()
+    newTemplate = b''
+    with open('templates/teacher_grade_book.html','rb') as s:
+        myTemplate = s.read()
+    beginTagIndex = myTemplate.find(b'{{loop}}')
+    endTagIndex = myTemplate.find(b'{{end_loop}}')
+    endData = myTemplate[endTagIndex+len(b'{{end_loop}}'):]
+    finalTeamplate = myTemplate[:beginTagIndex]
+    template = myTemplate[beginTagIndex+len(b'{{loop}}'):endTagIndex]
+    for x in allInformation:
+        quizname = x[1].encode()
+        studentname = x[0].encode()
+        studentGrade = x[2].encode()
+        t = template.replace(b'{{QuizName}}',quizname).replace(b'{{StudentName}}',studentname).replace(b'{{StudentGrade}}',studentGrade)
+        newTemplate += t
+    finalTeamplate += newTemplate
+    finalTeamplate += endData
+    return finalTeamplate
 
 
 @app.route('/accessQuiz', methods=['POST', 'GET'])
 def accessQuiz():
     if request.method == "POST":
         data = ImmutableMultiDict(request.form)
+        print(100*'-')
+        print(request.form)
         dict = data.to_dict(flat=False)
         passcode = dict.get("Access Code")[0]
+        studentName = dict.get("User Name")[0]
+        print(100*'*')
+        print(studentName)
         DataBase.print_passcode()
         json_quiz = DataBase.find_quiz(passcode)
         if json_quiz is None:
@@ -106,7 +134,10 @@ def accessQuiz():
             template10 = '<br><br>'
             quiz_template += template1 + template2 + template3 + template4 + template5 + template6 + template7 + template8 + template9 + template10
         quiz_template += '<input value="' + passcode + '" name="passcode" hidden>'
+        quiz_template += '<input value="' + studentName + '" name="studentName" hidden>'
         final_template = final_template[:start_pos] + quiz_template + final_template[end_pos:]
+        DataBase.makeStudentQuizRecord()
+        DataBase.studentTakeQuiz(studentName,passcode)
         return final_template
 
     return "quiz"

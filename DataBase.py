@@ -231,10 +231,86 @@ def print_passcode():
         print(row)
     print("print successfully")
 
+def makeStudentQuizRecord():
+    db = mysql.connector.connect(
+        host="balfxq49nnpzz9niwuoy-mysql.services.clever-cloud.com",
+        database="balfxq49nnpzz9niwuoy",
+        user="ul05wz30fljlsi0y",
+        passwd="49j34qWuliU9gKCXlNt4"
+    )
+    mycursor = db.cursor()
+    mycursor.execute("CREATE TABLE IF NOT EXISTS Quiz_Record (studentName VARCHAR(2048),"
+                     "QuizName VARCHAR(2048),"
+                     "_ID int PRIMARY key AUTO_INCREMENT)")
+
+def studentTakeQuiz(studentName,quizCode):
+    db = mysql.connector.connect(
+        host="balfxq49nnpzz9niwuoy-mysql.services.clever-cloud.com",
+        database="balfxq49nnpzz9niwuoy",
+        user="ul05wz30fljlsi0y",
+        passwd="49j34qWuliU9gKCXlNt4"
+    )
+    mycursor = db.cursor()
+    try:
+        makeStudentQuizRecord()
+        sql = "INSERT INTO Quiz_Record (studentName,QuizName) VALUES (%s,%s)"
+        val = (studentName,quizCode)
+        mycursor.execute(sql,val)
+        db.commit()
+    except:
+        print("Insert Student Record Fail")
 
 def delete_quiz_table():
     mycursor.execute("DROP TABLE Quiz_Data")
 
-
 def delete_user_table():
     mycursor.execute("DROP TABLE user")
+
+def makeScoreRecord():
+    db = mysql.connector.connect(
+        host="balfxq49nnpzz9niwuoy-mysql.services.clever-cloud.com",
+        database="balfxq49nnpzz9niwuoy",
+        user="ul05wz30fljlsi0y",
+        passwd="49j34qWuliU9gKCXlNt4"
+    )
+    mycursor = db.cursor()
+    mycursor.execute("CREATE TABLE IF NOT EXISTS Score_Record (studentName VARCHAR(2048),"
+                 "QuizName VARCHAR(2048),"
+                 "score VARCHAR(2048),"
+                 "_ID int PRIMARY key AUTO_INCREMENT)")
+
+def insertScoreRecord(studentName,QuizName,score):
+    db = mysql.connector.connect(
+        host="balfxq49nnpzz9niwuoy-mysql.services.clever-cloud.com",
+        database="balfxq49nnpzz9niwuoy",
+        user="ul05wz30fljlsi0y",
+        passwd="49j34qWuliU9gKCXlNt4"
+    )
+    mycursor = db.cursor()
+    try:
+        makeStudentQuizRecord()
+        sql = "INSERT INTO Score_Record (studentName,QuizName,score) VALUES (%s,%s,%s)"
+        val = (studentName,QuizName,score)
+        mycursor.execute(sql,val)
+        db.commit()
+    except:
+        print("Insert Student Record Fail")
+
+
+
+def getInformation():
+    db = mysql.connector.connect(
+        host="balfxq49nnpzz9niwuoy-mysql.services.clever-cloud.com",
+        database="balfxq49nnpzz9niwuoy",
+        user="ul05wz30fljlsi0y",
+        passwd="49j34qWuliU9gKCXlNt4"
+    )
+    mycursor = db.cursor()
+    try:
+        mycursor.execute("SELECT * FROM Score_Record")
+        myresult = mycursor.fetchall()
+        print(myresult)
+        return myresult
+    except:
+        print('No Score_Record Table !!!')
+
