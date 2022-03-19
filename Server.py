@@ -43,14 +43,21 @@ def quiz_submit():
         score_template = '<p>'+passcode+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+str(student_score)+"<p>"
         final_template = t[:start_pos]+score_template+t[start_pos+1:]
         return  final_template
-
     else:
         return "quiz"
+
 def get_question_number(q):
     n = 0
     for i in range(8,len(q)):
         n = n*10 + int(q[i])- int('0')
     return n
+
+
+@app.route('/teacher_grade_book', methods=['GET'])
+def teacherGrade():
+
+    return render_template("teacher_grade_book.html")
+
 
 @app.route('/accessQuiz', methods=['POST', 'GET'])
 def accessQuiz():
