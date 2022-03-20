@@ -57,7 +57,7 @@
 
         .box {
             float: left;
-            width: 25%;
+            width: 100%;
             padding: 50px;
         }
 
@@ -89,45 +89,56 @@
         <div id="myNavbar">
             <ul class="nav navbar-nav">
 
-                <li> <a href="#"><p> Home</p> </a>   </li> <!--replace # to another url -->
-                <li><a href="#" ><p> {% print(s) %}</p></a></li> <!--replace # to another url -->
+                <li> <a href=" "><p> Home</p > </a >   </li>    <!--replace # to another url -->
+                <li><a href="#" ><p> Join new Class</p ></a > </li>   <!--replace # to another url -->
+                <li><a href="#" ><p> Grades</p ></a > </li>   <!--replace # to another url -->
+
+                <!--                <li><a href="#" ><p> {% print(s) %}</p ></a ></li> &lt;!&ndash;replace # to another url &ndash;&gt;-->
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">sign out</a></li>
+                <li><a href="#">sign out</a ></li>
             </ul>
         </div>
     </div>
 </nav>
 
-
+<!--body of page-->
 <div class="container-fluid text-center">
     <div class="row content">
-        <div class="col-sm-2 sidenav">
-        </div>
-        <div class="col-sm-8 text-left">
+        <div class="col-lg-6 text-left">
+            <div class="stylebox">
+                <h1>Quizing...</h1>
 
-            <hr>
+                <div class="clearfix">
+                    <div class="box" style="background-color:#bbb">
 
-            <form action="http://localhost:9377/buildQuiz" method="POST">
-                <p>Question1 <input type = "text" name = "Question_1" size="120"/></p>
-                <p>Answer <input type = "text" name = "Answer_1" size="12"/></p>
-                <p>Point Worth <input type = "text" name = "Point_1" size="12"/></p>
-                <p>ChoiceA <input type = "text" name = "Choice_A_1" size="120" /></p>
-                <p>ChoiceB <input type = "text" name = "Choice_B_1" size="120"/></p>
-                <p>ChoiceC <input type = "text" name = "Choice_C_1" size="120"/></p>
-                <p>ChoiceD <input type = "text" name = "Choice_D_1" size="120"/></p>
-                <p><input type = "submit" value = "Build Quiz" name="build quiz"/></p>
-                <p><input type="submit" value="add Question" name="add question"/></p>
+                        <form action="http://localhost:9377/quiz_submit" method="POST">
+                            <p>Question1:</p>
+                             <input type="radio" id="A" name="A" value="A">
+                             <label for="A">A</label><br>
+                             <input type="radio" id="B" name="B" value="B">
+                             <label for="B">B</label><br>
+                             <input type="radio" id="C" name="C" value="C">
+                             <label for="C">C</label>
+                            <br>
+
+                            <input value="passcode" name="passcode" hidden>
+                            <input value="username" name="username" hidden>
+                            <input type="submit" value="Submit">
+                        </form>
 
 
-            </form>
+
+                        </p >
 
 
-        </div>
-        <div class="col-sm-2 sidenav">
+                    </div>
+                </div>
+            </div>
 
         </div>
     </div>
+</div>
 </div>
 
 <div class="container-fluid text-center">
@@ -144,17 +155,9 @@
 
 
 <footer class="container-fluid text-center">
-    <p>About Us</p>
+    <p>About Us</p >
 </footer>
 
 </body>
 
-<script>
-    let query = new URLSearchParams(window.location.search)
-    if (query.has('error')) {
-        if (query.get('error') === "username") {
-            document.querySelector('#fname-error').style.display = 'block'
-        }
-    }
-</script>
 </html>

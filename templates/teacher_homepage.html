@@ -57,7 +57,7 @@
 
         .box {
             float: left;
-            width: 25%;
+            width: 100%;
             padding: 50px;
         }
 
@@ -69,9 +69,6 @@
         #logo {
             text-align:center;
             color: #FEFAD7;
-        }
-        #txt{
-            resize: none;
         }
 
 
@@ -89,11 +86,12 @@
         <div id="myNavbar">
             <ul class="nav navbar-nav">
 
-                <li> <a href="#"><p> Home</p> </a>   </li> <!--replace # to another url -->
-                <li><a href="#" ><p> {% print(s) %}</p></a></li> <!--replace # to another url -->
+                <li> <a href="#"><p> Home</p> </a>   </li>    <!--replace # to another url -->
+                <li><a href="#" ><p>{% print(s) %}</p></a></li>   <!--replace # to another url -->
+                <li><a href="http://localhost:9377/teacher_grade_book" ><p>Grade Book</p></a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">sign out</a></li>
+                <li><a href="http://localhost:9377/">sign out</a></li>
             </ul>
         </div>
     </div>
@@ -102,45 +100,33 @@
 
 <div class="container-fluid text-center">
     <div class="row content">
-        <div class="col-sm-2 sidenav">
-        </div>
-        <div class="col-sm-8 text-left">
+        <div class="col-lg-6 text-left">
 
-            <hr>
+            <div class="stylebox">
 
-            <form action="http://localhost:9377/buildQuiz" method="POST">
-                <p>Question1 <input type = "text" name = "Question_1" size="120"/></p>
-                <p>Answer <input type = "text" name = "Answer_1" size="12"/></p>
-                <p>Point Worth <input type = "text" name = "Point_1" size="12"/></p>
-                <p>ChoiceA <input type = "text" name = "Choice_A_1" size="120" /></p>
-                <p>ChoiceB <input type = "text" name = "Choice_B_1" size="120"/></p>
-                <p>ChoiceC <input type = "text" name = "Choice_C_1" size="120"/></p>
-                <p>ChoiceD <input type = "text" name = "Choice_D_1" size="120"/></p>
-                <p><input type = "submit" value = "Build Quiz" name="build quiz"/></p>
-                <p><input type="submit" value="add Question" name="add question"/></p>
+                <h1>HomePage</h1>
+                <form action="http://localhost:9377/buildQuiz" method="GET">
+                    <input type="submit" value="Make Quiz" />
+                </form>
 
+                <div class="clearfix">
+                    <div class="box" style="background-color:#bbb">
+                        <div class="Box">
+                            <div class="Box-row Box-row--focus-gray navigation-focus">
+                                <p>Passcode: (Newest on the top)</p>
+                            </div>
 
-            </form>
+                        </div>
 
+                    </div>
+                </div>
 
-        </div>
-        <div class="col-sm-2 sidenav">
-
+            </div>
         </div>
     </div>
 </div>
 
-<div class="container-fluid text-center">
-    <div class="row content">
-        <div class="col-sm-2 sidenav">
-        </div>
-        <div class="col-sm-8 text-left">
-        </div>
-        <div class="col-sm-2 sidenav">
 
-        </div>
-    </div>
-</div>
 
 
 <footer class="container-fluid text-center">
