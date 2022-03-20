@@ -1,5 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+<style>
+    table, th, td {
+        border:1px solid black;
+    }
+</style>
 <head>
     <title>Sign up</title>
     <meta charset="utf-8">
@@ -86,28 +91,52 @@
         <div id="myNavbar">
             <ul class="nav navbar-nav">
 
-                <li> <a href="#"><p> Home</p> </a>   </li>    <!--replace # to another url -->
-                <li><a href="#" ><p>{% print(s) %}</p></a></li>   <!--replace # to another url -->
+                <li> <a href="#"><p> Teacher</p> </a> </li>    <!--replace # to another url -->
+                <li><a href="http://localhost:1010/teacher_grade_book" ><p>Grade Book</p></a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="http://localhost:9377/">sign out</a></li>
+                <li><a href="http://localhost:1010/">sign out</a></li>
             </ul>
         </div>
     </div>
 </nav>
 
+
 <div class="container-fluid text-center">
     <div class="row content">
         <div class="col-lg-6 text-left">
+
             <div class="stylebox">
-                <h1>HomePage</h1>
-                <form action="http://localhost:9377/makequiz" method="GET">
-                    <input type="submit" value="Make Quiz" />
-                </form>
+
+                <h1>All Grade For students</h1>
 
                 <div class="clearfix">
                     <div class="box" style="background-color:#bbb">
+                        <div class="Box">
+                            <div class="Box-row Box-row--focus-gray navigation-focus">
+                                <table>
+                                    <tr>
+                                        <th>
+                                            Quiz Name
+                                        </th>
+                                        <th>
+                                            Student Username:
+                                        </th>
+                                        <th>
+                                            Student Grade
+                                        </th>
+                                    </tr>
+                                    {{loop}}
+                                    <tr>
+                                        <td>{{QuizName}}</td>
+                                        <td>{{StudentName}}</td>
+                                        <td>{{StudentGrade}}</td>
+                                    </tr>
+                                    {{end_loop}}
+                                </table>
+                            </div>
 
+                        </div>
 
                     </div>
                 </div>
