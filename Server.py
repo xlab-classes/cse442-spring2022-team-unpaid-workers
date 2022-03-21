@@ -25,9 +25,10 @@ def quiz_submit():
     if request.method == "POST":
         data = dict(request.form)
         studentName = data.get("studentName")
-        print('StudentName:', studentName)
+        print('StudentName:', data)
         data.pop("studentName")
         passcode = data.get("passcode")
+        quizName = DataBase.obtainQuizName(passcode)
         json_quiz = DataBase.find_quiz(passcode)
         quiz = json.loads(json_quiz)
         student_score = 0
@@ -46,9 +47,9 @@ def quiz_submit():
         start_pos = t.find('<p>Passcode:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Score:</p>')+len('<p>Passcode:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Score:</p>')
         score_template = '<p>'+passcode+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+str(student_score)+"<p>"
         final_template = t[:start_pos]+score_template+t[start_pos+1:]
+        final_template = final_template.replace("http://localhost:9377/student_gradebook/","http://localhost:9377/student_gradebook/"+studentName)
         DataBase.makeScoreRecord()
-        DataBase.insertScoreRecord(studentName,passcode,str(student_score))
-        DataBase.getInformation()
+        DataBase.insertScoreRecord(studentName,quizName,str(student_score))
         return final_template
     else:
         return "quiz"
@@ -62,18 +63,24 @@ def get_question_number(q):
 @app.route('/student_gradebook/<name>', methods=['GET','POST'])
 def studentGrade(name):
     list_of_gradebook = DataBase.find_gradebook_baseon_studentname(name)
-    t = ""
     with open("templates/student_grade_book.html","r") as f:
         t = f.read()
-    start_pos = t.find("<th>quiz name</th>")
-    grade_book_template = ""
+    start_pos = t.find("{{Begin Loop}}")
+    end_pos = t.find("{{END LOOP}}")
+    front_data = t[:start_pos]
+    end_data = t[end_pos+len("{{END LOOP}}"):]
+    templates = t[start_pos+len("{{Begin Loop}}"):end_pos]
+    print('list_of_gradebook:',list_of_gradebook)
+    newTemp = ''
     for grade_book in list_of_gradebook:
-        grade_book_template += "<h3> "+grade_book[0] + "</h3>" + "\n"
-        grade_book_template += "</tr>"+"\n"
-        grade_book_template += "<tr>" +"\n"
-        grade_book_template +=
-
-    return "student gradebook"
+        print('Hello')
+        quiz_name = grade_book[0]
+        score = grade_book[1]
+        s = templates.replace('{{Quiz Name}}',quiz_name).replace('{{Total Point}}',score)
+        newTemp += s
+    front_data += newTemp
+    front_data += end_data
+    return front_data
 
 
 @app.route('/teacher_grade_book', methods=['GET'])

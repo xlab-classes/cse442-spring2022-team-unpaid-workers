@@ -1,24 +1,24 @@
 from mysql.connector import(connection)
 import mysql.connector
-
-# db = mysql.connector.connect(
-#     host="localhost",
-#     user="root",
-#     passwd="ubcse442",
-#     database="QuizHub"
-# )
+'''
+db = mysql.connector.connect(
+     host="localhost",
+     user="root",
+     passwd="@Zhou1534260",
+     database="QuizHub"
+)
+'''
 
 db = mysql.connector.connect(
     host="balfxq49nnpzz9niwuoy-mysql.services.clever-cloud.com",
     database="balfxq49nnpzz9niwuoy",
     user="ul05wz30fljlsi0y",
-
     passwd="49j34qWuliU9gKCXlNt4"
 )
+
 mycursor = db.cursor()
 
 mycursor.execute("CREATE DATABASE IF NOT EXISTS balfxq49nnpzz9niwuoy")
-
 
 def print_user_table():
     # db = mysql.connector.connect(
@@ -225,8 +225,11 @@ def find_quiz(passcode):
         mycursor.execute('SELECT * FROM Quiz_Data')
         print("user_authentication check")
         for row in mycursor:
+            print('row[0]: ',row[0])
+            print('row[1]:, ',row[1])
+            print('row[2]:', row[2])
             if row[0] == passcode:
-                return row[1]
+                return row[3]
         return None
     except mysql.connector.Error:
         print("check failed")
@@ -249,10 +252,6 @@ def print_passcode():
     for row in mycursor:
         print(row)
     print("print successfully")
-
-
-
-
 
 def delete_quiz_table():
     db = mysql.connector.connect(
@@ -296,7 +295,6 @@ def insertScoreRecord(studentName,QuizName,score):
     )
     mycursor = db.cursor()
     try:
-
         sql = "INSERT INTO Score_Record (studentName,QuizName,score) VALUES (%s,%s,%s)"
         val = (studentName,QuizName,score)
         mycursor.execute(sql,val)
@@ -315,11 +313,12 @@ def find_gradebook_baseon_studentname(student_name):
     mycursor.execute('SELECT * FROM Score_Record')
     all_gradebook = []
     for row in mycursor:
+        print('row:',row)
         if row[0] == student_name:
             all_gradebook.append((row[1],row[2]))
     return all_gradebook
 
-def getInformation(student):
+def getInformation():
     db = mysql.connector.connect(
         host="balfxq49nnpzz9niwuoy-mysql.services.clever-cloud.com",
         database="balfxq49nnpzz9niwuoy",
@@ -334,4 +333,27 @@ def getInformation(student):
         return myresult
     except:
         print('No Score_Record Table !!!')
+
+def obtainQuizName(passcode):
+    db = mysql.connector.connect(
+        host="balfxq49nnpzz9niwuoy-mysql.services.clever-cloud.com",
+        database="balfxq49nnpzz9niwuoy",
+        user="ul05wz30fljlsi0y",
+        passwd="49j34qWuliU9gKCXlNt4"
+    )
+    mycursor = db.cursor()
+
+    try:
+        mycursor.execute('SELECT * FROM Quiz_Data')
+        print("user_authentication check")
+        for row in mycursor:
+            print('row[0]: ',row[0])
+            print('row[1]:, ',row[1])
+            print('row[2]:', row[2])
+            if row[0] == passcode:
+                return row[2]
+        return None
+    except mysql.connector.Error:
+        print("check failed")
+
 
