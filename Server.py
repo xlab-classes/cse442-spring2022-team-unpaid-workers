@@ -59,6 +59,22 @@ def get_question_number(q):
         n = n*10 + int(q[i])- int('0')
     return n
 
+@app.route('/student_gradebook/<name>', methods=['GET','POST'])
+def studentGrade(name):
+    list_of_gradebook = DataBase.find_gradebook_baseon_studentname(name)
+    t = ""
+    with open("templates/student_grade_book.html","r") as f:
+        t = f.read()
+    start_pos = t.find("<th>quiz name</th>")
+    grade_book_template = ""
+    for grade_book in list_of_gradebook:
+        grade_book_template += "<h3> "+grade_book[0] + "</h3>" + "\n"
+        grade_book_template += "</tr>"+"\n"
+        grade_book_template += "<tr>" +"\n"
+        grade_book_template +=
+
+    return "student gradebook"
+
 
 @app.route('/teacher_grade_book', methods=['GET'])
 def teacherGrade():
@@ -136,8 +152,7 @@ def accessQuiz():
         quiz_template += '<input value="' + passcode + '" name="passcode" hidden>'
         quiz_template += '<input value="' + studentName + '" name="studentName" hidden>'
         final_template = final_template[:start_pos] + quiz_template + final_template[end_pos:]
-        DataBase.makeStudentQuizRecord()
-        DataBase.studentTakeQuiz(studentName,passcode)
+
         return final_template
 
     return "quiz"
@@ -152,7 +167,9 @@ def buidQuiz():
         dic_length = len(dict)
         key_list = list(dict)
         full_quiz = []
-        for i in range(0, dic_length - 1, 7):
+        quizname = dict.get("Quiz_name")[0]
+        print(dict)
+        for i in range(1, dic_length - 1, 7):
             question = {"question": dict.get(key_list[i])}
             answer = {"answer": dict.get(key_list[i + 1])}
             point = {"point": dict.get(key_list[i + 2])}
@@ -167,7 +184,7 @@ def buidQuiz():
 
         if dict.get('build quiz') is None:
 
-            f = open("templates/teacher_or_studentquiz.html", "r")
+            f = open("templates/teacher_quiz_generate.html", "r")
             t = ""
             for line in f:
                 t += line
@@ -223,11 +240,12 @@ def buidQuiz():
             start_pos = t.find("<p>Passcode: (Newest on the top)</p>") + len("<p>Passcode: (Newest on the top)</p>")
             template = t[:start_pos] + "\r" + passcode + t[start_pos + 1:]
             json_quiz = json.dumps(full_quiz)
-            DataBase.insert_quiz((passcode, json_quiz))
+            print(quizname)
+            DataBase.insert_quiz((passcode,quizname, json_quiz))
 
             return template
     else:
-        return render_template("teacher_or_studentquiz.html")
+        return render_template("teacher_quiz_generate.html")
 
 
 @app.route('/new', methods=['POST', 'GET'])
@@ -275,12 +293,17 @@ def user():
         return redirect("http://localhost:9377/?error=password", code=301)
     elif role == "Student":
         # jump to student profile
-        return render_template('student_homepage.html', s='Student')
+        t = ""
+        with open("templates/student_homepage.html","r") as f:
+            t = f.read()
+        t = t.replace("http://localhost:9377/student_gradebook/","http://localhost:9377/student_gradebook/"+name)
+        return t
     elif role == "Teacher":
         # jump to teacher profile
-        return render_template('teacher_homepage.html', s='Teacher')
+        return render_template('teacher_homepage.html', s='Teacher'+name)
 
 
 if __name__ == '__main__':
     DataBase.creat_user_table()
+
     app.run(host='0.0.0.0', port=9377, debug=True)
