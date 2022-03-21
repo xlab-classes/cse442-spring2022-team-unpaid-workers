@@ -264,6 +264,7 @@ def buidQuiz():
 
             DataBase.insert_quiz((passcode,name,quizname, json_quiz))
 
+
             return template
     else:
         data = ImmutableMultiDict(request.form)
