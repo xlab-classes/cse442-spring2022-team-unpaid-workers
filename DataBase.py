@@ -1,38 +1,27 @@
 from mysql.connector import(connection)
 import mysql.connector
 
-# db = mysql.connector.connect(
-#     host="localhost",
-#     user="root",
-#     passwd="ubcse442",
-#     database="QuizHub"
-# )
-
 db = mysql.connector.connect(
-    host="balfxq49nnpzz9niwuoy-mysql.services.clever-cloud.com",
-    database="balfxq49nnpzz9niwuoy",
-    user="ul05wz30fljlsi0y",
-
-    passwd="49j34qWuliU9gKCXlNt4"
+    host="localhost",
+    user="root",
+    passwd="ubcse442",
+    database="QuizHub"
 )
+
+
 mycursor = db.cursor()
 
 mycursor.execute("CREATE DATABASE IF NOT EXISTS balfxq49nnpzz9niwuoy")
 
 
 def print_user_table():
-    # db = mysql.connector.connect(
-    #     host="localhost",
-    #     user="root",
-    #     passwd="ubcse442",
-    #     database="QuizHub"
-    # )
     db = mysql.connector.connect(
-        host="balfxq49nnpzz9niwuoy-mysql.services.clever-cloud.com",
-        database="balfxq49nnpzz9niwuoy",
-        user="ul05wz30fljlsi0y",
-        passwd="49j34qWuliU9gKCXlNt4"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+
     mycursor = db.cursor()
     mycursor.execute('SELECT * FROM user')
     for row in mycursor:
@@ -41,18 +30,13 @@ def print_user_table():
 
 
 def creat_user_table():
-    # db = mysql.connector.connect(
-    #     host="localhost",
-    #     user="root",
-    #     passwd="ubcse442",
-    #     database="QuizHub"
-    # )
     db = mysql.connector.connect(
-        host="balfxq49nnpzz9niwuoy-mysql.services.clever-cloud.com",
-        database="balfxq49nnpzz9niwuoy",
-        user="ul05wz30fljlsi0y",
-        passwd="49j34qWuliU9gKCXlNt4"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+
     mycursor = db.cursor()
 
     mycursor.execute("CREATE TABLE IF NOT EXISTS user (role VARCHAR(10),"
@@ -62,18 +46,13 @@ def creat_user_table():
 
 
 def insert_user(tuple):
-    # db = mysql.connector.connect(
-    #     host="localhost",
-    #     user="root",
-    #     passwd="ubcse442",
-    #     database="QuizHub"
-    # )
     db = mysql.connector.connect(
-        host="balfxq49nnpzz9niwuoy-mysql.services.clever-cloud.com",
-        database="balfxq49nnpzz9niwuoy",
-        user="ul05wz30fljlsi0y",
-        passwd="49j34qWuliU9gKCXlNt4"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+
     mycursor = db.cursor()
     try:
         creat_user_table()
@@ -89,18 +68,13 @@ def insert_user(tuple):
 
 def username_is_not_exist(name):
     print(name)
-    # db = mysql.connector.connect(
-    #     host="localhost",
-    #     user="root",
-    #     passwd="ubcse442",
-    #     database="QuizHub"
-    # )
     db = mysql.connector.connect(
-        host="balfxq49nnpzz9niwuoy-mysql.services.clever-cloud.com",
-        database="balfxq49nnpzz9niwuoy",
-        user="ul05wz30fljlsi0y",
-        passwd="49j34qWuliU9gKCXlNt4"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+
     mycursor = db.cursor()
     mycursor.execute('SELECT * FROM user')
     for row in mycursor:
@@ -110,18 +84,13 @@ def username_is_not_exist(name):
 
 
 def user_authentication(name, pw):
-    # db = mysql.connector.connect(
-    #     host="localhost",
-    #     user="root",
-    #     passwd="ubcse442",
-    #     database="QuizHub"
-    # )
     db = mysql.connector.connect(
-        host="balfxq49nnpzz9niwuoy-mysql.services.clever-cloud.com",
-        database="balfxq49nnpzz9niwuoy",
-        user="ul05wz30fljlsi0y",
-        passwd="49j34qWuliU9gKCXlNt4"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+
     mycursor = db.cursor()
 
     try:
@@ -140,30 +109,26 @@ def user_authentication(name, pw):
 
 
 def create_quiz_table():
-    # db = mysql.connector.connect(
-    #     host="localhost",
-    #     user="root",
-    #     passwd="ubcse442",
-    #     database="QuizHub"
-    # )
     db = mysql.connector.connect(
-        host="balfxq49nnpzz9niwuoy-mysql.services.clever-cloud.com",
-        database="balfxq49nnpzz9niwuoy",
-        user="ul05wz30fljlsi0y",
-        passwd="49j34qWuliU9gKCXlNt4"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+
     mycursor = db.cursor()
     mycursor.execute("CREATE TABLE IF NOT EXISTS Quiz_Data (Passcode VARCHAR(10),"
+                     "TeacherName VARCHAR(32),"
                      "QuizName VARCHAR(32),"
                      "Quiz VARCHAR(2048),"
                      "_ID int PRIMARY key AUTO_INCREMENT)")
 
 def print_Quiz_Data():
     db = mysql.connector.connect(
-        host="balfxq49nnpzz9niwuoy-mysql.services.clever-cloud.com",
-        database="balfxq49nnpzz9niwuoy",
-        user="ul05wz30fljlsi0y",
-        passwd="49j34qWuliU9gKCXlNt4"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
     mycursor = db.cursor()
     mycursor.execute('SELECT * FROM Quiz_Data')
@@ -172,29 +137,20 @@ def print_Quiz_Data():
     print("print table Quiz_Data successfully")
 
 def insert_quiz(tuple):
-    # db = mysql.connector.connect(
-    #     host="localhost",
-    #     user="root",
-    #     passwd="ubcse442",
-    #     database="QuizHub"
-    # )
     db = mysql.connector.connect(
-        host="balfxq49nnpzz9niwuoy-mysql.services.clever-cloud.com",
-        database="balfxq49nnpzz9niwuoy",
-        user="ul05wz30fljlsi0y",
-        passwd="49j34qWuliU9gKCXlNt4"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+
     mycursor = db.cursor()
 
-    # tuple format ->  (passcode,json.format(quiz)
-    create_quiz_table()
-    print_Quiz_Data()
-    mycursor.execute("INSERT INTO Quiz_Data (Passcode,QuizName,Quiz) VALUES (%s,%s,%s)", tuple)
     try:
         create_quiz_table()
         print("created!")
         print("tuple:",tuple)
-        mycursor.execute("INSERT INTO Quiz_Data (Passcode,QuizName,Quiz) VALUES (%s,%s,%s)", tuple)
+        mycursor.execute("INSERT INTO Quiz_Data (Passcode,TeacherName,QuizName,Quiz) VALUES (%s,%s,%s,%s)", tuple)
         print("executed")
         db.commit()
         print("insert question successfully")
@@ -205,19 +161,12 @@ def insert_quiz(tuple):
     except mysql.connector.Error:
         print("insert question failed")
 
-
-def find_quiz(passcode):
-    # db = mysql.connector.connect(
-    #     host="localhost",
-    #     user="root",
-    #     passwd="ubcse442",
-    #     database="QuizHub"
-    # )
+def find_quiz_name(passcode):
     db = mysql.connector.connect(
-        host="balfxq49nnpzz9niwuoy-mysql.services.clever-cloud.com",
-        database="balfxq49nnpzz9niwuoy",
-        user="ul05wz30fljlsi0y",
-        passwd="49j34qWuliU9gKCXlNt4"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
     mycursor = db.cursor()
 
@@ -229,21 +178,36 @@ def find_quiz(passcode):
                 return row[1]
         return None
     except mysql.connector.Error:
-        print("check failed")
+        print("check quiz name failed")
+
+def find_quiz_data(passcode):
+    db = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
+    )
+
+    mycursor = db.cursor()
+
+    try:
+        mycursor.execute('SELECT * FROM Quiz_Data')
+        print("user_authentication check")
+        for row in mycursor:
+            if row[0] == passcode:
+                return row[2]
+        return None
+    except mysql.connector.Error:
+        print("check quiz data failed")
 
 def print_passcode():
-    # db = mysql.connector.connect(
-    #     host="localhost",
-    #     user="root",
-    #     passwd="ubcse442",
-    #     database="QuizHub"
-    # )
     db = mysql.connector.connect(
-        host="balfxq49nnpzz9niwuoy-mysql.services.clever-cloud.com",
-        database="balfxq49nnpzz9niwuoy",
-        user="ul05wz30fljlsi0y",
-        passwd="49j34qWuliU9gKCXlNt4"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+
     mycursor = db.cursor()
     mycursor.execute('SELECT * FROM Quiz_Data')
     for row in mycursor:
@@ -256,30 +220,30 @@ def print_passcode():
 
 def delete_quiz_table():
     db = mysql.connector.connect(
-        host="balfxq49nnpzz9niwuoy-mysql.services.clever-cloud.com",
-        database="balfxq49nnpzz9niwuoy",
-        user="ul05wz30fljlsi0y",
-        passwd="49j34qWuliU9gKCXlNt4"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
     mycursor = db.cursor()
     mycursor.execute("DROP TABLE Quiz_Data")
 
 def delete_user_table():
     db = mysql.connector.connect(
-        host="balfxq49nnpzz9niwuoy-mysql.services.clever-cloud.com",
-        database="balfxq49nnpzz9niwuoy",
-        user="ul05wz30fljlsi0y",
-        passwd="49j34qWuliU9gKCXlNt4"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
     mycursor = db.cursor()
     mycursor.execute("DROP TABLE user")
 
 def makeScoreRecord():
     db = mysql.connector.connect(
-        host="balfxq49nnpzz9niwuoy-mysql.services.clever-cloud.com",
-        database="balfxq49nnpzz9niwuoy",
-        user="ul05wz30fljlsi0y",
-        passwd="49j34qWuliU9gKCXlNt4"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
     mycursor = db.cursor()
     mycursor.execute("CREATE TABLE IF NOT EXISTS Score_Record (studentName VARCHAR(2048),"
@@ -289,10 +253,10 @@ def makeScoreRecord():
 
 def insertScoreRecord(studentName,QuizName,score):
     db = mysql.connector.connect(
-        host="balfxq49nnpzz9niwuoy-mysql.services.clever-cloud.com",
-        database="balfxq49nnpzz9niwuoy",
-        user="ul05wz30fljlsi0y",
-        passwd="49j34qWuliU9gKCXlNt4"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
     mycursor = db.cursor()
     try:
@@ -306,10 +270,10 @@ def insertScoreRecord(studentName,QuizName,score):
 
 def find_gradebook_baseon_studentname(student_name):
     db = mysql.connector.connect(
-        host="balfxq49nnpzz9niwuoy-mysql.services.clever-cloud.com",
-        database="balfxq49nnpzz9niwuoy",
-        user="ul05wz30fljlsi0y",
-        passwd="49j34qWuliU9gKCXlNt4"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
     mycursor = db.cursor()
     mycursor.execute('SELECT * FROM Score_Record')
@@ -321,10 +285,10 @@ def find_gradebook_baseon_studentname(student_name):
 
 def getInformation(student):
     db = mysql.connector.connect(
-        host="balfxq49nnpzz9niwuoy-mysql.services.clever-cloud.com",
-        database="balfxq49nnpzz9niwuoy",
-        user="ul05wz30fljlsi0y",
-        passwd="49j34qWuliU9gKCXlNt4"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
     mycursor = db.cursor()
     try:
