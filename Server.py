@@ -152,7 +152,8 @@ def buidQuiz():
         dic_length = len(dict)
         key_list = list(dict)
         full_quiz = []
-        for i in range(0, dic_length - 1, 7):
+        quizname = dict.get("Quizname")
+        for i in range(1, dic_length - 1, 7):
             question = {"question": dict.get(key_list[i])}
             answer = {"answer": dict.get(key_list[i + 1])}
             point = {"point": dict.get(key_list[i + 2])}
@@ -167,7 +168,7 @@ def buidQuiz():
 
         if dict.get('build quiz') is None:
 
-            f = open("templates/teacher_or_studentquiz.html", "r")
+            f = open("templates/teacher_quiz_generate.html", "r")
             t = ""
             for line in f:
                 t += line
@@ -177,36 +178,36 @@ def buidQuiz():
             i = 1
             for q in full_quiz:
                 question_template = "<p>Question" + str(i) + " <input type = \"text\" name = \"Question_" + str(
-                    i) + "\"" + " size=\"120\" " + "value=\"" + q.get("question")[0] + "\"/></p>" + "\n\t\t\t\t"
+                    i) + "\"" + " size=\"120\" " + "value=\"" + q.get("question")[0] + "\"/></p >" + "\n\t\t\t\t"
                 answer_template = "<p>Answer" + " <input type = \"text\" name = \"Answer_" + str(
-                    i) + "\"" + " size=\"12\" " + "value=\"" + q.get("answer")[0] + "\"/></p>" + "\n\t\t\t\t"
+                    i) + "\"" + " size=\"12\" " + "value=\"" + q.get("answer")[0] + "\"/></p >" + "\n\t\t\t\t"
                 point_template = "<p>Point Worth" + " <input type = \"text\" name = \"Point_" + str(
-                    i) + "\"" + " size=\"12\" " + "value=\"" + q.get("point")[0] + "\"/></p>" + "\n\t\t\t\t"
+                    i) + "\"" + " size=\"12\" " + "value=\"" + q.get("point")[0] + "\"/></p >" + "\n\t\t\t\t"
                 choice_a_template = "<p>ChoiceA" + " <input type = \"text\" name = \"Choice_A_" + str(
-                    i) + "\"" + " size=\"120\" " + "value=\"" + q.get("choice_A")[0] + "\"/></p>" + "\n\t\t\t\t"
+                    i) + "\"" + " size=\"120\" " + "value=\"" + q.get("choice_A")[0] + "\"/></p >" + "\n\t\t\t\t"
                 choice_b_template = "<p>ChoiceB" + " <input type = \"text\" name = \"Choice_B_" + str(
-                    i) + "\"" + " size=\"120\" " + "value=\"" + q.get("choice_B")[0] + "\"/></p>" + "\n\t\t\t\t"
+                    i) + "\"" + " size=\"120\" " + "value=\"" + q.get("choice_B")[0] + "\"/></p >" + "\n\t\t\t\t"
                 choice_c_template = "<p>ChoiceC" + " <input type = \"text\" name = \"Choice_C_" + str(
-                    i) + "\"" + " size=\"120\" " + "value=\"" + q.get("choice_C")[0] + "\"/></p>" + "\n\t\t\t\t"
+                    i) + "\"" + " size=\"120\" " + "value=\"" + q.get("choice_C")[0] + "\"/></p >" + "\n\t\t\t\t"
                 choice_d_template = "<p>ChoiceD" + " <input type = \"text\" name = \"Choice_D_" + str(
-                    i) + "\"" + " size=\"120\" " + "value=\"" + q.get("choice_D")[0] + "\"/></p>" + "\n\t\t\t\t"
+                    i) + "\"" + " size=\"120\" " + "value=\"" + q.get("choice_D")[0] + "\"/></p >" + "\n\t\t\t\t"
                 quiz_template = quiz_template + question_template + answer_template + point_template + choice_a_template + choice_b_template + choice_c_template + choice_d_template + "<br><br>"
                 i += 1
 
             new_question_template = "<p>Question" + str(i) + " <input type = \"text\" name = \"Question_" + str(
-                i) + "\"" + " size=\"120\" " + "\"/></p>" + "\n"
+                i) + "\"" + " size=\"120\" " + "\"/></p >" + "\n"
             new_answer_template = "<p>Answer" + " <input type = \"text\" name = \"Answer_" + str(
-                i) + "\"" + " size=\"12\" " + "\"/></p>" + "\n"
+                i) + "\"" + " size=\"12\" " + "\"/></p >" + "\n"
             new_point_template = "<p>Point Worth" + " <input type = \"text\" name = \"Point_" + str(
-                i) + "\"" + " size=\"12\" " + "\"/></p>" + "\n"
+                i) + "\"" + " size=\"12\" " + "\"/></p >" + "\n"
             new_choice_a_template = "<p>ChoiceA" + " <input type = \"text\" name = \"Choice_A_" + str(
-                i) + "\"" + " size=\"120\" " + "\"/></p>" + "\n"
+                i) + "\"" + " size=\"120\" " + "\"/></p >" + "\n"
             new_choice_b_template = "<p>ChoiceB" + " <input type = \"text\" name = \"Choice_B_" + str(
-                i) + "\"" + " size=\"120\" " + "\"/></p>" + "\n"
+                i) + "\"" + " size=\"120\" " + "\"/></p >" + "\n"
             new_choice_c_template = "<p>ChoiceC" + " <input type = \"text\" name = \"Choice_C_" + str(
-                i) + "\"" + " size=\"120\" " + "\"/></p>" + "\n"
+                i) + "\"" + " size=\"120\" " + "\"/></p >" + "\n"
             new_choice_d_template = "<p>ChoiceD" + " <input type = \"text\" name = \"Choice_D_" + str(
-                i) + "\"" + " size=\"120\" " + "\"/></p>" + "\n"
+                i) + "\"" + " size=\"120\" " + "\"/></p >" + "\n"
             new_quiz_template = new_question_template + new_answer_template + new_point_template + new_choice_a_template + new_choice_b_template + new_choice_c_template + new_choice_d_template
 
             template = t[:start_pos] + quiz_template + new_quiz_template + t[end_pos:]
@@ -220,14 +221,15 @@ def buidQuiz():
             t = ""
             for line in f:
                 t += line
-            start_pos = t.find("<p>Passcode: (Newest on the top)</p>") + len("<p>Passcode: (Newest on the top)</p>")
+            start_pos = t.find("<p>Passcode: (Newest on the top)</p >") + len("<p>Passcode: (Newest on the top)</p >")
             template = t[:start_pos] + "\r" + passcode + t[start_pos + 1:]
             json_quiz = json.dumps(full_quiz)
-            DataBase.insert_quiz((passcode, json_quiz))
+
+            DataBase.insert_quiz((passcode,quizname, json_quiz))
 
             return template
     else:
-        return render_template("teacher_or_studentquiz.html")
+        return render_template("teacher_quiz_generate.html")
 
 
 @app.route('/new', methods=['POST', 'GET'])
