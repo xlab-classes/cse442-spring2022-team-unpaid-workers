@@ -70,7 +70,7 @@
         .left_box {
             float: left;
             width: 50%;
-            padding: auto;
+            padding:auto;
         }
 
         .clearfix::after {
@@ -91,6 +91,7 @@
             text-align: -webkit-match-parent;
             line-height: 50px;
             width: 10%;
+            float: left;
         }
         table, th, td {
             border: 1px solid black;
@@ -147,27 +148,15 @@
                 <table style="width:100%">
                     <tr>
                         <th>quiz name</th>
-                    </tr>
-                    start
-                    <tr>
-                        <td>q1</td>
-                    </tr>
-
-
-                </table>
-
-            </div>
-            <div class="right_box">
-                <table style="width:100% ">
-                    <tr>
                         <th>point receive</th>
                     </tr>
+                    {{Begin Loop}}
                     <tr>
-                        <td>0</td>
+                        <td>{{Quiz Name}}</td>
+                        <td>{{Total Point}}</td>
                     </tr>
-
+                    {{END LOOP}}
                 </table>
-
             </div>
         </div>
     </div>

@@ -25,10 +25,11 @@ def quiz_submit():
     if request.method == "POST":
         data = dict(request.form)
         studentName = data.get("studentName")
-
         print('Data:', data)
         data.pop("studentName")
         passcode = data.get("passcode")
+
+        quizName = DataBase.obtainQuizName(passcode)
         json_quiz = DataBase.find_quiz_data(passcode)
         quiz = json.loads(json_quiz)
         student_score = 0
@@ -44,12 +45,18 @@ def quiz_submit():
         t = ""
         for line in f:
             t += line
+        t = t.replace('"http://localhost:9377/student_gradebook/"','"http://localhost:9377/student_gradebook/'+studentName+'"')
+
         start_pos = t.find('<p>Passcode:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Score:</p>')+len('<p>Passcode:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Score:</p>')
         score_template = '<p>'+passcode+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+str(student_score)+"<p>"
         final_template = t[:start_pos]+score_template+t[start_pos+1:]
         DataBase.makeScoreRecord()
-        #DataBase.insertScoreRecord(studentName,,str(student_score))
+        print("quizname",quizName)
+        #Passcode,TeacherName,QuizName,Quiz
+        #DataBase.insert_quiz(())
+        DataBase.insertScoreRecord(studentName,quizName,str(student_score),passcode)
         DataBase.getInformation()
+
         return final_template
     else:
         return "quiz"
@@ -62,27 +69,34 @@ def get_question_number(q):
 
 @app.route('/student_gradebook/<name>', methods=['GET','POST'])
 def studentGrade(name):
-    list_of_gradebook = DataBase.find_gradebook_baseon_studentname(name)
-    t = ""
+    list_of_gradebook = DataBase.find_gradebook_baseon_name(name)
     with open("templates/student_grade_book.html","r") as f:
         t = f.read()
-    start_pos = t.find("<th>quiz name</th>")
-    quiz_name_template = ""
-    quiz_score_template = ""
+    start_pos = t.find("{{Begin Loop}}")
+    end_pos = t.find("{{END LOOP}}")
+    front_data = t[:start_pos]
+    end_data = t[end_pos+len("{{END LOOP}}"):]
+    templates = t[start_pos+len("{{Begin Loop}}"):end_pos]
+    print('list_of_gradebook:',list_of_gradebook)
+    newTemp = ''
     for grade_book in list_of_gradebook:
-        quiz_name = grade_book(0)
-        score = grade_book(1)
-        quiz_name_template += "<tr>"+"\n"+"<td>"+quiz_name+"</td>"+"\n"+"</tr>"+"\n"
-        quiz_score_template += "<tr>"+"\n"+"<td>"+score+"</td>"+"\n"+"</tr>"+"\n"
-    name_start_pos = t.find("<tr><td>q1</td></tr>")
-    return "student gradebook"
+        print('Hello')
+        quiz_name = grade_book[0]
+        score = grade_book[1]
+        s = templates.replace('{{Quiz Name}}',quiz_name).replace('{{Total Point}}',score)
+        newTemp += s
+    front_data += newTemp
+    front_data += end_data
+    return front_data
 
 
-@app.route('/teacher_grade_book', methods=['GET'])
-def teacherGrade():
-
+@app.route('/teacher_grade_book/<name>', methods=['GET'])
+def teacherGrade(name):
+    # input: teacher name
+    list_of_passcode = DataBase.find_passcode_baseon_teacher_name(name)
 
     allInformation = DataBase.getInformation()
+
     newTemplate = b''
     with open('templates/teacher_grade_book.html','rb') as s:
         myTemplate = s.read()
@@ -91,27 +105,30 @@ def teacherGrade():
     endData = myTemplate[endTagIndex+len(b'{{end_loop}}'):]
     finalTeamplate = myTemplate[:beginTagIndex]
     template = myTemplate[beginTagIndex+len(b'{{loop}}'):endTagIndex]
+    print("all",allInformation)
     for x in allInformation:
-        quizname = x[1].encode()
-        studentname = x[0].encode()
-        studentGrade = x[2].encode()
-        t = template.replace(b'{{QuizName}}',quizname).replace(b'{{StudentName}}',studentname).replace(b'{{StudentGrade}}',studentGrade)
-        newTemplate += t
+        if x[3] in list_of_passcode:
+            quizname = x[1].encode()
+            studentname = x[0].encode()
+            studentGrade = x[2].encode()
+            t = template.replace(b'{{QuizName}}',quizname).replace(b'{{StudentName}}',studentname).replace(b'{{StudentGrade}}',studentGrade)
+            newTemplate += t
     finalTeamplate += newTemplate
     finalTeamplate += endData
     return finalTeamplate
-
 
 @app.route('/accessQuiz', methods=['POST', 'GET'])
 def accessQuiz():
     if request.method == "POST":
         data = ImmutableMultiDict(request.form)
+
         dict = data.to_dict(flat=False)
         passcode = dict.get("Access Code")[0]
         studentName = dict.get("User Name")[0]
+
         DataBase.print_passcode()
-        quiz_name = DataBase.find_quiz_name(passcode)
         json_quiz = DataBase.find_quiz_data(passcode)
+        print("json:",json_quiz)
         if json_quiz is None:
             return "passcode " + str(passcode) + "is not exist in the database"
         full_quiz = json.loads(json_quiz)
@@ -152,13 +169,11 @@ def accessQuiz():
             quiz_template += template1 + template2 + template3 + template4 + template5 + template6 + template7 + template8 + template9 + template10
         quiz_template += '<input value="' + passcode + '" name="passcode" hidden>'
         quiz_template += '<input value="' + studentName + '" name="studentName" hidden>'
-        quiz_template += '<input value="' + quiz_name + '" name="quiz_name" hidden>'
         final_template = final_template[:start_pos] + quiz_template + final_template[end_pos:]
 
         return final_template
 
     return "quiz"
-
 
 @app.route('/buildQuiz', methods=['POST', 'GET'])
 def buidQuiz():
@@ -320,7 +335,8 @@ def user():
         t = ""
         with open("templates/teacher_homepage.html","r") as f:
             t = f.read()
-        t = t.replace("http://localhost:9377/teacher_gradebook/","http://localhost:9377/teacher_gradebook/"+name)
+
+        t = t.replace("http://localhost:9377/teacher_grade_book","http://localhost:9377/teacher_grade_book/"+name)
 
         t = t.replace("teacher_name",name)
         return t
@@ -328,5 +344,5 @@ def user():
 
 if __name__ == '__main__':
     DataBase.creat_user_table()
-
+    DataBase.print_score_record_table()
     app.run(host='0.0.0.0', port=9377, debug=True)
