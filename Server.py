@@ -281,27 +281,30 @@ def buidQuiz():
 
         return t
 
-@app.route('/new', methods=['POST', 'GET'])
-def new():
-    return render_template("Signup.html")
+# @app.route('/new', methods=['POST', 'GET'])
+# def new():
+#     return render_template("Signup.html")
 
 
 @app.route('/Signup', methods=['POST', 'GET'])
 def Signup():
     print("in signup")
-    imd = ImmutableMultiDict(request.form)
-    print("imd:", imd)
-    dict = imd.to_dict(flat=False)
-    name = dict.get("Name")[0]
-    password = dict.get("Password")[0]
-    role = dict.get("who")[0]
-
-    if DataBase.username_is_not_exist(name):
-        DataBase.insert_user((role, name, password))
-        print("template")
-        return render_template("signup.html")
+    if request.method == 'GET':
+        return render_template("Signup.html")
     else:
-        return redirect("/Signup/?error=username", code=301)
+        imd = ImmutableMultiDict(request.form)
+        print("imd:", imd)
+        dict = imd.to_dict(flat=False)
+        name = dict.get("Name")[0]
+        password = dict.get("Password")[0]
+        role = dict.get("who")[0]
+
+        if DataBase.username_is_not_exist(name):
+            DataBase.insert_user((role, name, password))
+            print("success, back to index page")
+            return render_template("index.html")
+        else:
+            return redirect("/Signup/?error=username", code=301)
 
 
 @app.route('/user', methods=['POST', 'GET'])
