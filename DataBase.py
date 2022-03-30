@@ -12,11 +12,11 @@ db = mysql.connector.connect(
     host="oceanus",
     user="tingjiez",
     passwd="50380202",
-    database="QuizHub"
+    database="tingjiez_db"
 )
 
 mycursor = db.cursor()
-mycursor.execute("CREATE DATABASE IF NOT EXISTS QuizHub")
+mycursor.execute("CREATE DATABASE IF NOT EXISTS tingjiez_db")
 
 
 def print_user_table():
@@ -30,7 +30,7 @@ def print_user_table():
         host="oceanus",
         user="tingjiez",
         passwd="50380202",
-        database="QuizHub"
+        database="tingjiez_db"
     )
 
     mycursor = db.cursor()
@@ -51,7 +51,7 @@ def creat_user_table():
         host="oceanus",
         user="tingjiez",
         passwd="50380202",
-        database="QuizHub"
+        database="tingjiez_db"
     )
 
     mycursor = db.cursor()
@@ -73,7 +73,7 @@ def insert_user(tuple):
         host="oceanus",
         user="tingjiez",
         passwd="50380202",
-        database="QuizHub"
+        database="tingjiez_db"
     )
 
     mycursor = db.cursor()
@@ -101,7 +101,7 @@ def username_is_not_exist(name):
         host="oceanus",
         user="tingjiez",
         passwd="50380202",
-        database="QuizHub"
+        database="tingjiez_db"
     )
 
     mycursor = db.cursor()
@@ -123,7 +123,7 @@ def user_authentication(name, pw):
         host="oceanus",
         user="tingjiez",
         passwd="50380202",
-        database="QuizHub"
+        database="tingjiez_db"
     )
 
     mycursor = db.cursor()
@@ -154,7 +154,7 @@ def create_quiz_table():
         host="oceanus",
         user="tingjiez",
         passwd="50380202",
-        database="QuizHub"
+        database="tingjiez_db"
     )
 
     mycursor = db.cursor()
@@ -175,7 +175,7 @@ def print_Quiz_Data():
         host="oceanus",
         user="tingjiez",
         passwd="50380202",
-        database="QuizHub"
+        database="tingjiez_db"
     )
 
     mycursor = db.cursor()
@@ -195,7 +195,7 @@ def insert_quiz(tuple):
         host="oceanus",
         user="tingjiez",
         passwd="50380202",
-        database="QuizHub"
+        database="tingjiez_db"
     )
 
     mycursor = db.cursor()
@@ -226,7 +226,7 @@ def find_quiz_name(passcode):
         host="oceanus",
         user="tingjiez",
         passwd="50380202",
-        database="QuizHub"
+        database="tingjiez_db"
     )
     mycursor = db.cursor()
 
@@ -251,7 +251,7 @@ def find_quiz_data(passcode):
         host="oceanus",
         user="tingjiez",
         passwd="50380202",
-        database="QuizHub"
+        database="tingjiez_db"
     )
 
     mycursor = db.cursor()
@@ -278,7 +278,7 @@ def print_passcode():
         host="oceanus",
         user="tingjiez",
         passwd="50380202",
-        database="QuizHub"
+        database="tingjiez_db"
     )
 
     mycursor = db.cursor()
@@ -300,7 +300,7 @@ def delete_score_record_table():
         host="oceanus",
         user="tingjiez",
         passwd="50380202",
-        database="QuizHub"
+        database="tingjiez_db"
     )
     mycursor = db.cursor()
     mycursor.execute("DROP TABLE Score_Record")
@@ -316,7 +316,7 @@ def delete_quiz_data_table():
         host="oceanus",
         user="tingjiez",
         passwd="50380202",
-        database="QuizHub"
+        database="tingjiez_db"
     )
 
     mycursor = db.cursor()
@@ -333,7 +333,7 @@ def delete_user_table():
         host="oceanus",
         user="tingjiez",
         passwd="50380202",
-        database="QuizHub"
+        database="tingjiez_db"
     )
     mycursor = db.cursor()
     mycursor.execute("DROP TABLE user")
@@ -349,7 +349,7 @@ def makeScoreRecord():
         host="oceanus",
         user="tingjiez",
         passwd="50380202",
-        database="QuizHub"
+        database="tingjiez_db"
     )
 
     mycursor = db.cursor()
@@ -370,7 +370,7 @@ def insertScoreRecord(studentName,QuizName,score,passcode):
         host="oceanus",
         user="tingjiez",
         passwd="50380202",
-        database="QuizHub"
+        database="tingjiez_db"
     )
     makeScoreRecord()
     mycursor = db.cursor()
@@ -394,7 +394,7 @@ def find_passcode_baseon_teacher_name(teacher_name):
         host="oceanus",
         user="tingjiez",
         passwd="50380202",
-        database="QuizHub"
+        database="tingjiez_db"
     )
     mycursor = db.cursor()
     list_of_passcode = []
@@ -421,7 +421,7 @@ def find_gradebook_baseon_name(name):
         host="oceanus",
         user="tingjiez",
         passwd="50380202",
-        database="QuizHub"
+        database="tingjiez_db"
     )
     makeScoreRecord()
     mycursor = db.cursor()
@@ -453,7 +453,7 @@ def print_score_record_table():
         host="oceanus",
         user="tingjiez",
         passwd="50380202",
-        database="QuizHub"
+        database="tingjiez_db"
     )
     makeScoreRecord()
     mycursor = db.cursor()
@@ -473,7 +473,7 @@ def getInformation():
         host="oceanus",
         user="tingjiez",
         passwd="50380202",
-        database="QuizHub"
+        database="tingjiez_db"
     )
     mycursor = db.cursor()
     try:
@@ -498,7 +498,7 @@ def obtainQuizName(passcode):
         host="oceanus",
         user="tingjiez",
         passwd="50380202",
-        database="QuizHub"
+        database="tingjiez_db"
     )
     mycursor = db.cursor()
 
