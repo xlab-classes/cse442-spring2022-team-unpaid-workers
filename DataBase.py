@@ -4,7 +4,7 @@ import mysql.connector
 db = mysql.connector.connect(
     host="localhost",
     user="root",
-    passwd="ubcse442",
+    passwd="Shkaraot99@",
     database="QuizHub"
 )
 
@@ -18,7 +18,7 @@ def print_user_table():
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="Shkaraot99@",
         database="QuizHub"
     )
 
@@ -33,7 +33,7 @@ def creat_user_table():
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="Shkaraot99@",
         database="QuizHub"
     )
 
@@ -49,7 +49,7 @@ def insert_user(tuple):
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="Shkaraot99@",
         database="QuizHub"
     )
 
@@ -71,7 +71,7 @@ def username_is_not_exist(name):
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="Shkaraot99@",
         database="QuizHub"
     )
 
@@ -87,7 +87,7 @@ def user_authentication(name, pw):
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="Shkaraot99@",
         database="QuizHub"
     )
 
@@ -112,7 +112,7 @@ def create_quiz_table():
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="Shkaraot99@",
         database="QuizHub"
     )
 
@@ -127,7 +127,7 @@ def print_Quiz_Data():
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="Shkaraot99@",
         database="QuizHub"
     )
     mycursor = db.cursor()
@@ -140,7 +140,7 @@ def insert_quiz(tuple):
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="Shkaraot99@",
         database="QuizHub"
     )
 
@@ -165,7 +165,7 @@ def find_quiz_name(passcode):
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="Shkaraot99@",
         database="QuizHub"
     )
     mycursor = db.cursor()
@@ -184,7 +184,7 @@ def find_quiz_data(passcode):
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="Shkaraot99@",
         database="QuizHub"
     )
 
@@ -195,6 +195,7 @@ def find_quiz_data(passcode):
         print("user_authentication check")
         for row in mycursor:
             if row[0] == passcode:
+                # print(editQuizGrade("shkar", 5,"quiz"))
                 print(row[3])
                 return row[3]
         return None
@@ -205,7 +206,7 @@ def print_passcode():
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="Shkaraot99@",
         database="QuizHub"
     )
 
@@ -221,7 +222,7 @@ def delete_score_record_table():
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="Shkaraot99@",
         database="QuizHub"
     )
     mycursor = db.cursor()
@@ -231,7 +232,7 @@ def delete_quiz_data_table():
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="Shkaraot99@",
         database="QuizHub"
     )
     mycursor = db.cursor()
@@ -241,7 +242,7 @@ def delete_user_table():
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="Shkaraot99@",
         database="QuizHub"
     )
     mycursor = db.cursor()
@@ -251,7 +252,7 @@ def makeScoreRecord():
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="Shkaraot99@",
         database="QuizHub"
     )
     mycursor = db.cursor()
@@ -265,7 +266,7 @@ def insertScoreRecord(studentName,QuizName,score,passcode):
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="Shkaraot99@",
         database="QuizHub"
     )
     makeScoreRecord()
@@ -283,7 +284,7 @@ def find_passcode_baseon_teacher_name(teacher_name):
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="Shkaraot99@",
         database="QuizHub"
     )
     mycursor = db.cursor()
@@ -304,7 +305,7 @@ def find_gradebook_baseon_name(name):
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="Shkaraot99@",
         database="QuizHub"
     )
     makeScoreRecord()
@@ -330,7 +331,7 @@ def print_score_record_table():
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="Shkaraot99@",
         database="QuizHub"
     )
     makeScoreRecord()
@@ -344,7 +345,7 @@ def getInformation():
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="Shkaraot99@",
         database="QuizHub"
     )
     mycursor = db.cursor()
@@ -363,7 +364,7 @@ def obtainQuizName(passcode):
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="Shkaraot99@",
         database="QuizHub"
     )
     mycursor = db.cursor()
@@ -380,3 +381,28 @@ def obtainQuizName(passcode):
         return None
     except mysql.connector.Error:
         print("check failed")
+
+def editQuizGrade(studentName, newGrade, quizName, questionNumber):
+    db = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        passwd="Shkaraot99@",
+        database="QuizHub"
+    )
+    mycursor = db.cursor()
+
+    try:
+        # student gradebook returns tuple
+        # for example: tuple: ('01TFO9', 'jingjing', 'homework 1', '[{"question": ["find your name"], "answer": ["shkar"], "point": ["5"], "choice_A": ["shkar"], "choice_B": ["adam"], "choice_C":
+        # ["bassam"], "choice_D": ["nasrulla"]}]')
+        student_gradebook = find_gradebook_baseon_name(studentName)
+        if student_gradebook[2] == quizName:
+            for grade_book in student_gradebook[3]:
+                for question in grade_book.keys():
+                    if question == questionNumber:
+                        grade_book["answer"] = newGrade
+                        print("Question grade has been successfully changed!")
+
+    except:
+        print("did not find student name")
+

@@ -347,3 +347,4 @@ if __name__ == '__main__':
     DataBase.creat_user_table()
     DataBase.print_score_record_table()
     app.run(host='0.0.0.0', port=9377, debug=True)
+
