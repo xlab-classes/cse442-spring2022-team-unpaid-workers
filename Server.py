@@ -301,7 +301,7 @@ def Signup():
         print("template")
         return render_template("signup.html")
     else:
-        return redirect("/?error=username", code=301)
+        return redirect("/Signup/?error=username", code=301)
 
 
 @app.route('/user', methods=['POST', 'GET'])
