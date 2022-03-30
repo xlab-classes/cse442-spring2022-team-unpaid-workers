@@ -45,7 +45,7 @@ def quiz_submit():
         t = ""
         for line in f:
             t += line
-        t = t.replace('"http://localhost:9377/student_gradebook/"','"http://localhost:9377/student_gradebook/'+studentName+'"')
+        t = t.replace('"/student_gradebook/"','"/student_gradebook/'+studentName+'"')
 
         start_pos = t.find('<p>Passcode:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Score:</p>')+len('<p>Passcode:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Score:</p>')
         score_template = '<p>'+passcode+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+str(student_score)+"<p>"
@@ -321,15 +321,15 @@ def user():
     role = DataBase.user_authentication(name, password)
 
     if DataBase.username_is_not_exist(name):
-        return redirect("http://localhost:9377/?error=username", code=301)
+        return redirect("/?error=username", code=301)
     elif role is None:
-        return redirect("http://localhost:9377/?error=password", code=301)
+        return redirect("/?error=password", code=301)
     elif role == "Student":
         # jump to student profile
         t = ""
         with open("templates/student_homepage.html","r") as f:
             t = f.read()
-        t = t.replace("http://localhost:9377/student_gradebook/","http://localhost:9377/student_gradebook/"+name)
+        t = t.replace("/student_gradebook/","/student_gradebook/"+name)
         return t
     elif role == "Teacher":
         # jump to teacher profile
@@ -337,7 +337,7 @@ def user():
         with open("templates/teacher_homepage.html","r") as f:
             t = f.read()
 
-        t = t.replace("http://localhost:9377/teacher_grade_book","http://localhost:9377/teacher_grade_book/"+name)
+        t = t.replace("/teacher_grade_book","/teacher_grade_book/"+name)
 
         t = t.replace("teacher_name",name)
         return t
