@@ -13,7 +13,7 @@ app = Flask(__name__)
 
 
 
-@app.route('/')
+@app.route('/',methods=['POST','GET'])
 def index():
     print("print table")
     DataBase.print_user_table()
@@ -51,16 +51,16 @@ def quiz_submit():
         t = ""
         for line in f:
             t += line
-        t = t.replace('"http://localhost:9377/student_gradebook/"','"http://localhost:9377/student_gradebook/'+studentName+'"')
+        t = t.replace('"/student_gradebook/"','"/student_gradebook/'+studentName+'"')
 
         start_pos = t.find('<p>Passcode:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Score:</p>')+len('<p>Passcode:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Score:</p>')
         score_template = '<p>'+passcode+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+str(student_score)+"<p>"
         final_template = t[:start_pos]+score_template+t[start_pos+1:]
         DataBase.makeScoreRecord()
         print("quizname",quizName)
-        #Passcode,TeacherName,QuizName,Quiz
-        #DataBase.insert_quiz(())
-        DataBase.insertScoreRecord(studentName,quizName,str(student_score),passcode)
+
+        SubmissionID = ''.join(random.choices(string.ascii_lowercase, k=8))
+        DataBase.insertScoreRecord(studentName,quizName,str(student_score),passcode,SubmissionID)
         DataBase.getInformation()
 
         return final_template
@@ -95,9 +95,9 @@ def studentGrade(name):
     front_data += end_data
     return front_data
 
-
 @app.route('/teacher_grade_book/<name>', methods=['GET'])
 def teacherGrade(name):
+
     # input: teacher name
     list_of_passcode = DataBase.find_passcode_baseon_teacher_name(name)
 
@@ -183,10 +183,13 @@ def accessQuiz():
 
 @app.route('/buildQuiz', methods=['POST', 'GET'])
 def buidQuiz():
+
+    # need change, we now have question type
     print("type",request.method)
     if request.method == 'POST':
 
         data = ImmutableMultiDict(request.form)
+
         dict = data.to_dict(flat=False)
         dic_length = len(dict)
         key_list = list(dict)
@@ -195,6 +198,7 @@ def buidQuiz():
 
         print("dict",dict)
         for i in range(1, dic_length - 2, 7):
+
             question = {"question": dict.get(key_list[i])}
             answer = {"answer": dict.get(key_list[i + 1])}
             point = {"point": dict.get(key_list[i + 2])}
@@ -287,30 +291,32 @@ def buidQuiz():
 
         return t
 
-@app.route('/new', methods=['POST', 'GET'])
-def new():
-    return render_template("Signup.html")
+# @app.route('/new', methods=['POST', 'GET'])
+# def new():
+#     return render_template("Signup.html")
 
 
 @app.route('/Signup', methods=['POST', 'GET'])
 def Signup():
     print("in signup")
-    imd = ImmutableMultiDict(request.form)
-    print("imd:", imd)
-    dict = imd.to_dict(flat=False)
-    name = dict.get("Name")[0]
-    password = dict.get("Password")[0]
-    role = dict.get("who")[0]
-
-    if DataBase.username_is_not_exist(name):
-        DataBase.insert_user((role, name, password))
-        print("template")
-        return render_template("signup.html")
+    if request.method == 'GET':
+        return render_template("Signup.html")
     else:
-        print("redirect to error")
-        return redirect(
-            "http://localhost:63342/cse442-spring2022-team-unpaid-workers/templates/Signup.html?_ijt=s7rqo2hienhphcdu4968qssg9l&_ij_reload=RELOAD_ON_SAVE&error=username",
-            code=301)
+        imd = ImmutableMultiDict(request.form)
+        print("imd:", imd)
+        dict = imd.to_dict(flat=False)
+        name = dict.get("Name")[0]
+        password = dict.get("Password")[0]
+        role = dict.get("who")[0]
+
+        if DataBase.username_is_not_exist(name):
+            DataBase.insert_user((role, name, password))
+            print("success, back to index page")
+            return render_template("index.html")
+        else:
+            return redirect("/Signup?error=username", code=301)
+
+
 
 
 @app.route('/user', methods=['POST', 'GET'])
@@ -327,15 +333,15 @@ def user():
     role = DataBase.user_authentication(name, password)
 
     if DataBase.username_is_not_exist(name):
-        return redirect("http://localhost:9377/?error=username", code=301)
+        return redirect("/?error=username", code=301)
     elif role is None:
-        return redirect("http://localhost:9377/?error=password", code=301)
+        return redirect("/?error=password", code=301)
     elif role == "Student":
         # jump to student profile
         t = ""
         with open("templates/student_homepage.html","r") as f:
             t = f.read()
-        t = t.replace("http://localhost:9377/student_gradebook/","http://localhost:9377/student_gradebook/"+name)
+        t = t.replace("/student_gradebook/","/student_gradebook/"+name)
         return t
     elif role == "Teacher":
         # jump to teacher profile
@@ -343,7 +349,7 @@ def user():
         with open("templates/teacher_homepage.html","r") as f:
             t = f.read()
 
-        t = t.replace("http://localhost:9377/teacher_grade_book","http://localhost:9377/teacher_grade_book/"+name)
+        t = t.replace("/teacher_grade_book","/teacher_grade_book/"+name)
 
         t = t.replace("teacher_name",name)
         return t

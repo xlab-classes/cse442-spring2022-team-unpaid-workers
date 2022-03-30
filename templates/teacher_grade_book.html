@@ -92,7 +92,7 @@
             <ul class="nav navbar-nav">
 
                 <li> <a href="#"><p> Teacher</p> </a> </li>    <!--replace # to another url -->
-                <li><a href="/teacher_grade_book" ><p>Grade Book</p></a></li>
+                <li><a href="#" ><p>Grade Book</p></a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/">sign out</a></li>
@@ -117,6 +117,7 @@
                                 <table>
                                     <tr>
                                         <th>
+
                                             Quiz Name
                                         </th>
                                         <th>
@@ -128,7 +129,7 @@
                                     </tr>
                                     {{loop}}
                                     <tr>
-                                        <td>{{QuizName}}</td>
+                                        <td>{{<p><a href="/submission/abc12345">CSE331 Midterm1</a></p>}}</td>
                                         <td>{{StudentName}}</td>
                                         <td>{{StudentGrade}}</td>
                                     </tr>
