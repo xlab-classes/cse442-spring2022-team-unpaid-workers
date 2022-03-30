@@ -262,7 +262,7 @@ def makeScoreRecord():
                  "Passcode VARCHAR (10),"    
                  "_ID int PRIMARY key AUTO_INCREMENT)")
 
-def insertScoreRecord(studentName,QuizName,score,passcode):
+def insertScoreRecord(studentName,QuizName,score,passcode,submissionID):
     db = mysql.connector.connect(
         host="localhost",
         user="root",
@@ -273,8 +273,8 @@ def insertScoreRecord(studentName,QuizName,score,passcode):
     mycursor = db.cursor()
     try:
 
-        sql = "INSERT INTO Score_Record (studentName,QuizName,score,Passcode) VALUES (%s,%s,%s,%s)"
-        val = (studentName,QuizName,score,passcode)
+        sql = "INSERT INTO Score_Record (studentName,QuizName,score,Passcode,submissionID) VALUES (%s,%s,%s,%s)"
+        val = (studentName,QuizName,score,passcode,submissionID)
         mycursor.execute(sql,val)
         db.commit()
     except:
@@ -315,16 +315,16 @@ def find_gradebook_baseon_name(name):
     for row in mycursor:
         if row[0] == name:
             # 1.
-            # Passcode,TeacherName,QuizName,Quiz -> quiz库
+            # Passcode,TeacherName,QuizName,Quiz -> QuizTable
 
             # 2.
             # student1, cse331, 15, jesse
-            # studentName,QuizName,score,passcode -> 分数库
+            # studentName,QuizName,score,passcode, submissionID -> scoreRecord
             # 3.
             # user, list_of_passcode
             # 4.
             # user
-            all_gradebook.append((row[1],row[2]))
+            all_gradebook.append((row[1],row[2],row[3],row[4]))
     return all_gradebook
 
 def print_score_record_table():
@@ -382,27 +382,54 @@ def obtainQuizName(passcode):
     except mysql.connector.Error:
         print("check failed")
 
-def editQuizGrade(studentName, newGrade, quizName, questionNumber):
-    db = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        passwd="Shkaraot99@",
-        database="QuizHub"
-    )
-    mycursor = db.cursor()
+# def editQuizGrade(studentName, submissionID, newGrade, quizName):
+#     db = mysql.connector.connect(
+#         host="localhost",
+#         user="root",
+#         passwd="Shkaraot99@",
+#         database="QuizHub"
+#     )
+#     mycursor = db.cursor()
+#
+#     try:
+#         # student gradebook returns tuple
+#         # for example: tuple: ('01TFO9', 'jingjing', 'homework 1', '[{"question": ["find your name"], "answer": ["shkar"], "point": ["5"], "choice_A": ["shkar"], "choice_B": ["adam"], "choice_C":
+#         # ["bassam"], "choice_D": ["nasrulla"]}]')
+#         student_gradebook = find_gradebook_baseon_name(studentName)
+#         student_info = [student_gradebook[0], student_gradebook[2], student_gradebook[4]]
+#
+#         if student_gradebook[2] == quizName:
+#             for grade_book in student_gradebook[3]:
+#                 for question in grade_book.keys():
+#                     if question == questionNumber:
+#                         grade_book["answer"] = newGrade
+#                         print("Question grade has been successfully changed!")
+#
+#     except:
+#         print("did not find student name")
 
-    try:
-        # student gradebook returns tuple
-        # for example: tuple: ('01TFO9', 'jingjing', 'homework 1', '[{"question": ["find your name"], "answer": ["shkar"], "point": ["5"], "choice_A": ["shkar"], "choice_B": ["adam"], "choice_C":
-        # ["bassam"], "choice_D": ["nasrulla"]}]')
-        student_gradebook = find_gradebook_baseon_name(studentName)
-        if student_gradebook[2] == quizName:
-            for grade_book in student_gradebook[3]:
-                for question in grade_book.keys():
-                    if question == questionNumber:
-                        grade_book["answer"] = newGrade
-                        print("Question grade has been successfully changed!")
+def find_question_basedOn_submissionID(submissionID):
+        db = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            passwd="Shkaraot99@",
+            database="QuizHub"
+        )
+        makeScoreRecord()
+        mycursor = db.cursor()
+        mycursor.execute('SELECT * FROM Score_Record')
+        all_gradebook = []
+        for row in mycursor:
+            if row[4] == submissionID:
+                # 1.
+                # Passcode,TeacherName,QuizName,Quiz -> QuizTable
 
-    except:
-        print("did not find student name")
-
+                # 2.
+                # student1, cse331, 15, jesse
+                # studentName,QuizName,score,passcode, submissionID -> scoreRecord
+                # 3.
+                # user, list_of_passcode
+                # 4.
+                # user
+                all_gradebook.append((row[1], row[2], row[3], row[4]))
+        return all_gradebook

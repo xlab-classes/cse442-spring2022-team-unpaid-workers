@@ -19,10 +19,16 @@ def index():
     DataBase.print_user_table()
     return render_template("index.html")
 
+@app.route('/submission/<id>',methods=['POST','GET'])
+def submission(id):
+    if request.method == "POST":
+        submission = DataBase.find_question_basedOn_submissionID(id)
+
 
 @app.route('/quiz_submit',methods=['POST','GET'])
 def quiz_submit():
     if request.method == "POST":
+        # Final Data
         data = dict(request.form)
         studentName = data.get("studentName")
         print('Data:', data)
