@@ -13,7 +13,7 @@ app = Flask(__name__)
 
 
 
-@app.route('/')
+@app.route('/',methods=['POST','GET'])
 def index():
     print("print table")
     DataBase.print_user_table()
