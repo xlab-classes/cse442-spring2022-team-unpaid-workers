@@ -260,6 +260,7 @@ def find_quiz_data(passcode):
         mycursor.execute('SELECT * FROM Quiz_Data')
         print("user_authentication check")
         for row in mycursor:
+            print("row:",passcode,row[0])
             if row[0] == passcode:
                 print(row[3])
                 return row[3]
