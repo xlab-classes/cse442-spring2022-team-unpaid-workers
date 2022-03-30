@@ -16,13 +16,14 @@
         }
 
         /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-        .row.content {height: 450px}
+        .row.content {height: 50px}
 
         /* Set gray background color and 100% height */
         .sidenav {
             padding-top: 20px;
             background-color: #8C8757;
             height: 100%;
+
         }
 
         /* Set black background color, white text and some padding */
@@ -37,7 +38,7 @@
         }
 
         /* On small screens, set height to 'auto' for sidenav and grid */
-        @media screen and (max-width: 767px) {
+        @media screen and (max-width: 746px) {
             .sidenav {
                 height: auto;
                 padding: 15px;
@@ -57,7 +58,7 @@
 
         .box {
             float: left;
-            width: 100%;
+            width: 25%;
             padding: 50px;
         }
 
@@ -69,6 +70,13 @@
         #logo {
             text-align:center;
             color: #FEFAD7;
+        }
+        #txt{
+            resize: none;
+        }
+        .centerbox{
+            text-align:center;
+            font-size:30px
         }
 
 
@@ -86,12 +94,12 @@
         <div id="myNavbar">
             <ul class="nav navbar-nav">
 
-                <li> <a href="#"><p> Home</p> </a>   </li>    <!--replace # to another url -->
-                <li><a href="#" ><p>Teacher</p></a></li>   <!--replace # to another url -->
-                <li><a href="/teacher_grade_book" ><p>Grade Book</p></a></li>
+                <li> <a href=" "><p> Home</p > </a >   </li>    <!--replace # to another url -->
+                <li><a href="#" ><p> Create new Class</p ></a > </li>   <!--replace # to another url -->
+                <li><a href="#" ><p> View Student Grades</p ></a > </li>   <!--replace # to another url -->
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/">sign out</a></li>
+                <li><a href="#">sign out</a ></li>
             </ul>
         </div>
     </div>
@@ -100,38 +108,47 @@
 
 <div class="container-fluid text-center">
     <div class="row content">
-        <div class="col-lg-6 text-left">
+        <div class="col-sm-2 sidenav"></div>
+        <div class="col-sm-8 text-left">
 
-            <div class="stylebox">
+            <form action="/buildQuiz" method="POST">
+                <div style="text-align: center"><h3>Quiz Name</h3>
+                    <input type = "text" name = "Quiz_name" size="120" style="display: inline-block;width: 30%; min-width: 100px;"/></div >
+                <hr>
 
-                <h1>HomePage</h1>
-                <form action="/buildQuiz" method="GET">
-                    <input value="teacher_name" name="name" hidden>
-                    <input type="submit" value="Make Quiz" />
-                </form>
+                <p>Question1 <input type = "text" name = "Question_1" size="120"/></p >
+                <p>Answer <input type = "text" name = "Answer_1" size="12"/></p >
+                <p>Point Worth <input type = "text" name = "Point_1" size="12"/></p >
+                <p>ChoiceA <input type = "text" name = "Choice_A_1" size="120" /></p >
+                <p>ChoiceB <input type = "text" name = "Choice_B_1" size="120"/></p >
+                <p>ChoiceC <input type = "text" name = "Choice_C_1" size="120"/></p >
+                <p>ChoiceD <input type = "text" name = "Choice_D_1" size="120"/></p >
+                <p><input type = "submit" value = "Build Quiz" name="build quiz"/></p >
+                <p><input type="submit" value="add Question" name="add question"/></p >
 
-                <div class="clearfix">
-                    <div class="box" style="background-color:#bbb">
-                        <div class="Box">
-                            <div class="Box-row Box-row--focus-gray navigation-focus">
-                                <p>Passcode: (Newest on the top)</p>
-                            </div>
+            </form>
 
-                        </div>
 
-                    </div>
-                </div>
+        </div>
 
-            </div>
+    </div>
+</div>
+
+<div class="container-fluid text-center">
+    <div class="row content">
+        <div class="col-sm-2 sidenav">
+        </div>
+        <div class="col-sm-8 text-left">
+        </div>
+        <div class="col-sm-2 sidenav">
+
         </div>
     </div>
 </div>
 
 
-
-
 <footer class="container-fluid text-center">
-    <p>About Us</p>
+    <p>About Us</p >
 </footer>
 
 </body>
