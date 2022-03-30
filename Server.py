@@ -52,9 +52,9 @@ def quiz_submit():
         final_template = t[:start_pos]+score_template+t[start_pos+1:]
         DataBase.makeScoreRecord()
         print("quizname",quizName)
-        #Passcode,TeacherName,QuizName,Quiz
-        #DataBase.insert_quiz(())
-        DataBase.insertScoreRecord(studentName,quizName,str(student_score),passcode)
+
+        SubmissionID = ''.join(random.choices(string.ascii_lowercase, k=8))
+        DataBase.insertScoreRecord(studentName,quizName,str(student_score),passcode,SubmissionID)
         DataBase.getInformation()
 
         return final_template
@@ -89,9 +89,9 @@ def studentGrade(name):
     front_data += end_data
     return front_data
 
-
 @app.route('/teacher_grade_book/<name>', methods=['GET'])
 def teacherGrade(name):
+
     # input: teacher name
     list_of_passcode = DataBase.find_passcode_baseon_teacher_name(name)
 
@@ -177,10 +177,13 @@ def accessQuiz():
 
 @app.route('/buildQuiz', methods=['POST', 'GET'])
 def buidQuiz():
+
+    # need change, we now have question type
     print("type",request.method)
     if request.method == 'POST':
 
         data = ImmutableMultiDict(request.form)
+
         dict = data.to_dict(flat=False)
         dic_length = len(dict)
         key_list = list(dict)
@@ -189,6 +192,7 @@ def buidQuiz():
 
         print("dict",dict)
         for i in range(1, dic_length - 2, 7):
+
             question = {"question": dict.get(key_list[i])}
             answer = {"answer": dict.get(key_list[i + 1])}
             point = {"point": dict.get(key_list[i + 2])}
@@ -305,6 +309,8 @@ def Signup():
             return render_template("index.html")
         else:
             return redirect("/Signup?error=username", code=301)
+
+
 
 
 @app.route('/user', methods=['POST', 'GET'])

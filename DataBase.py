@@ -360,7 +360,7 @@ def makeScoreRecord():
                  "Passcode VARCHAR (10),"    
                  "_ID int PRIMARY key AUTO_INCREMENT)")
 
-def insertScoreRecord(studentName,QuizName,score,passcode):
+def insertScoreRecord(studentName,QuizName,score,passcode,SubmissionID):
     # db = mysql.connector.connect(
     #     host="localhost",
     #     user="root",
@@ -377,8 +377,8 @@ def insertScoreRecord(studentName,QuizName,score,passcode):
     mycursor = db.cursor()
     try:
 
-        sql = "INSERT INTO Score_Record (studentName,QuizName,score,Passcode) VALUES (%s,%s,%s,%s)"
-        val = (studentName,QuizName,score,passcode)
+        sql = "INSERT INTO Score_Record (studentName,QuizName,score,Passcode,SubmissionID) VALUES (%s,%s,%s,%s,%s)"
+        val = (studentName,QuizName,score,passcode,SubmissionID)
         mycursor.execute(sql,val)
         db.commit()
     except:
@@ -515,3 +515,24 @@ def obtainQuizName(passcode):
         return None
     except mysql.connector.Error:
         print("check failed")
+
+
+'''
+Table1 users
+
+
+
+Table2  Quiz_Data
+Quiz -> {passcode,teachername,questions)
+Passcode,TeacherName,QuizName,Quiz   -> Get the quiz base on the passcode
+
+
+
+Table3  Score_Record    
+studentName,QuizName,score,passcode,submissionID   -> record score
+
+Table4 Submission  
+when do we insert data to this table? When student submit their quit
+[{"question1":["mult","actual question","student answer","point receive"], {"question2":["mult","actual question","student answer","point receive"]]
+studentName,passcode, questions, submissionID 
+'''
