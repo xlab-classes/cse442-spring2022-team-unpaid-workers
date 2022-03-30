@@ -301,10 +301,7 @@ def Signup():
         print("template")
         return render_template("signup.html")
     else:
-        print("redirect to error")
-        return redirect(
-            "http://localhost:63342/cse442-spring2022-team-unpaid-workers/templates/Signup.html?_ijt=s7rqo2hienhphcdu4968qssg9l&_ij_reload=RELOAD_ON_SAVE&error=username",
-            code=301)
+        return redirect("/?error=username", code=301)
 
 
 @app.route('/user', methods=['POST', 'GET'])
