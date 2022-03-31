@@ -21,8 +21,28 @@ def index():
 
 @app.route('/submission/<id>',methods=['POST','GET'])
 def submission(id):
-    if request.method == "POST":
+    if request.method == "GET":
+
         submission = DataBase.find_question_basedOn_submissionID(id)
+
+
+@app.route('/changeScore',methods=['POST','GET'])
+def changeScore():
+    '''data= {"submissionID":["abc12345"],"name":["Jesse"],"question1":['5'],"question2":["2"]...'''
+    ''' 1. add values up then update score based on the submissionID
+        2. in score_record, change score based on submissionID
+        3. redirect to teacher gradebook
+    '''
+    sumScore = 0
+    data = dict(request.form)
+    submissionID = data.get("submissionID")[0]
+    teacherName = data.get("name")[0]
+    for eachData in data.keys():
+        if eachData[0] == submissionID and eachData.__contains__("question"):
+            sumScore += int(data[eachData[0]])
+    submissionID["score"] = sumScore
+    # teacherName = "Jesse" for example
+    return redirect("/teacher_grade_book/"+teacherName, code=301)
 
 
 @app.route('/quiz_submit',methods=['POST','GET'])
