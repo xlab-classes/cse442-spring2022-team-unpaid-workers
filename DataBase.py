@@ -196,8 +196,8 @@ def find_quiz_data(passcode):
         for row in mycursor:
             if row[0] == passcode:
                 # print(editQuizGrade("shkar", 5,"quiz"))
-                print(row[3])
-                return row[3]
+                print(row[1])
+                return row[1]
         return None
     except mysql.connector.Error:
         print("check quiz data failed")

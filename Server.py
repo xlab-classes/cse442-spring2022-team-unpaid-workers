@@ -37,10 +37,15 @@ def changeScore():
     data = dict(request.form)
     submissionID = data.get("submissionID")[0]
     teacherName = data.get("name")[0]
+    # check all keys in the data
     for eachData in data.keys():
+        # if id matches the submissionID we looking for
+        # and we find question
         if eachData[0] == submissionID and eachData.__contains__("question"):
+            # add the question points to the sumScore
             sumScore += int(data[eachData[0]])
-    submissionID["score"] = sumScore
+            # update score based on submission id
+            eachData["score"] = sumScore
     # teacherName = "Jesse" for example
     return redirect("/teacher_grade_book/"+teacherName, code=301)
 
@@ -217,19 +222,25 @@ def buidQuiz():
         quizname = dict.get("Quiz_name")[0]
 
         print("dict",dict)
-        for i in range(1, dic_length - 2, 7):
+        # for i in range(1, dic_length - 2, 7):
 
-            question = {"question": dict.get(key_list[i])}
-            answer = {"answer": dict.get(key_list[i + 1])}
-            point = {"point": dict.get(key_list[i + 2])}
-            a = {"choice_A": dict.get(key_list[i + 3])}
-            b = {"choice_B": dict.get(key_list[i + 4])}
-            c = {"choice_C": dict.get(key_list[i + 5])}
-            d = {"choice_D": dict.get(key_list[i + 6])}
-            quiz = {}
-            for d in (question, answer, point, a, b, c, d):
-                quiz.update(d)
-            full_quiz.append(quiz)
+        question = {"question": dict.get(key_list[0])}
+        answer = {"answer": dict.get(key_list[1 + 3])}
+        print("answer: ", answer)
+        point = {"point": dict.get(key_list[1 + 4])}
+        print("point, ", point)
+        a = {"choice_A": dict.get(key_list[1 + 5])}
+        print("A, ", a)
+        b = {"choice_B": dict.get(key_list[1 + 6])}
+        print("B, ", b)
+        c = {"choice_C": dict.get(key_list[1 + 7])}
+        print("C, ", c)
+        d = {"choice_D": dict.get(key_list[1 + 8])}
+        print("D, ", d)
+        quiz = {}
+        for d in (question, answer, point, a, b, c, d):
+            quiz.update(d)
+        full_quiz.append(quiz)
 
         name = dict.get('name')[0]
 
