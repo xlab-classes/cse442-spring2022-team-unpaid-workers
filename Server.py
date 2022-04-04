@@ -2,7 +2,6 @@
 Coder: Zhou Zhou  && Shkaraot
 '''
 
-
 import DataBase
 from flask import Flask, render_template, request, redirect,g
 from werkzeug.datastructures import ImmutableMultiDict
