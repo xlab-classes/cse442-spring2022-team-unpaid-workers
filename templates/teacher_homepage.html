@@ -88,10 +88,10 @@
 
                 <li> <a href="#"><p> Home</p> </a>   </li>    <!--replace # to another url -->
                 <li><a href="#" ><p>{% print(s) %}</p></a></li>   <!--replace # to another url -->
-                <li><a href="http://localhost:8849/teacher_grade_book" ><p>Grade Book</p></a></li>
+                <li><a href="/teacher_grade_book" ><p>Grade Book</p></a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="http://localhost:8849/">sign out</a></li>
+                <li><a href="/">sign out</a></li>
             </ul>
         </div>
     </div>
@@ -105,7 +105,7 @@
             <div class="stylebox">
 
                 <h1>HomePage</h1>
-                <form action="http://localhost:8849/buildQuiz" method="GET">
+                <form action="/buildQuiz" method="GET">
                     <input type="submit" value="Make Quiz" />
                 </form>
 
