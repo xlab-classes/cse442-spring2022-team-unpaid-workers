@@ -7,79 +7,10 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="cssFile.css">
     <style>
-        /* Remove the navbar's default margin-bottom and rounded borders */
-        .navbar {
-            margin-bottom: 0;
-            border-radius: 0;
-            background-color: #321E0F;
-        }
-
         /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
         .row.content {height: 50px}
-
-        /* Set gray background color and 100% height */
-        .sidenav {
-            padding-top: 20px;
-            background-color: #8C8757;
-            height: 100%;
-
-        }
-
-        /* Set black background color, white text and some padding */
-        footer {
-            position: fixed;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            background-color: #321E0F;
-            color: white;
-            text-align: center;
-        }
-
-        /* On small screens, set height to 'auto' for sidenav and grid */
-        @media screen and (max-width: 746px) {
-            .sidenav {
-                height: auto;
-                padding: 15px;
-
-            }
-            .row.content {height:auto;}
-        }
-        body{
-            background-color: #8C8757;
-        }
-        .stylebox{
-            /*width: 320px;*/
-            padding: 0px;
-            border: 5px solid gray;
-            margin: 0;
-        }
-
-        .box {
-            float: left;
-            width: 25%;
-            padding: 50px;
-        }
-
-        .clearfix::after {
-            content: "";
-            clear: both;
-            display: table;
-        }
-        #logo {
-            text-align:center;
-            color: #FEFAD7;
-        }
-        #txt{
-            resize: none;
-        }
-        .centerbox{
-            text-align:center;
-            font-size:30px
-        }
-
-
     </style>
 </head>
 <body>
@@ -88,33 +19,57 @@
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
-            <h1 id="logo">Quiz <span style="color:#ffbb22">Hub</span></h1>
+
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"> </span>
+                <span class="icon-bar"> </span>
+                <span class="icon-bar"> </span>
+            </button>
+            <h1 id="logo">Quiz <span id="hub">Hub</span></h1>
         </div>
-
-        <div id="myNavbar">
+        <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
-
-                <li> <a href=" "><p> Home</p > </a >   </li>    <!--replace # to another url -->
-                <li><a href="#" ><p> Create new Class</p ></a > </li>   <!--replace # to another url -->
-                <li><a href="#" ><p> View Student Grades</p ></a > </li>   <!--replace # to another url -->
+                <li ><a href="#">Home</a></li>
+                <li ><a href="#">Create new Class</a></li>
+                <li><a href="/teacher_grade_book">Grade Book</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">sign out</a></li>
+                <li><a href="/"><span class="glyphicon glyphicon-log-in"></span> sign out</a></li>
             </ul>
         </div>
     </div>
 </nav>
 
 
+
+
+
 <div class="container-fluid text-center">
     <div class="row content">
         <div class="col-sm-2 sidenav"></div>
-        <div class="col-sm-8 text-left">
+        <div class="col-sm-8 text-left stylebox"  >
 
+<<<<<<<< HEAD:templates/teacher_create_quiz.html
+            <form action="http://localhost:9377/buildQuiz" method="POST">
+                <div style="text-align: center"><h3>Quiz Name</h3>
+                    <input type = "text" name = "Quiz_name" size="120" style="display: inline-block;width: 30%; min-width: 100px;"/></div >
+                <hr>
+
+                <p>Question1 <input type = "text" name = "Question_1" size="120"/></p >
+                <p>Answer <input type = "text" name = "Answer_1" size="12"/></p >
+                <p>Point Worth <input type = "text" name = "Point_1" size="12"/></p >
+                <p>ChoiceA <input type = "text" name = "Choice_A_1" size="120" /></p >
+                <p>ChoiceB <input type = "text" name = "Choice_B_1" size="120"/></p >
+                <p>ChoiceC <input type = "text" name = "Choice_C_1" size="120"/></p >
+                <p>ChoiceD <input type = "text" name = "Choice_D_1" size="120"/></p >
+                <p><input type = "submit" value = "Build Quiz" name="build quiz"/></p >
+                <p><input type="submit" value="add Question" name="add question"/></p >
+========
             <form action="/buildQuiz" method="POST">
                 <div style="text-align: center"><h3>Quiz Name</h3>
                     <input type = "text" name = "Quiz_name" size="120" style="display: inline-block;width: 30%; min-width: 100px;"/></div >
                 <hr>
+>>>>>>>> 8d2af0051edc67a440707e85d81a64b549c2f0d5:templates/teacher_quiz_generate.html
 
                 <p>Question1 <input type = "text" name = "Question_1" size="120"/></p >
                 <p>Answer <input type = "text" name = "Answer_1" size="12"/></p >

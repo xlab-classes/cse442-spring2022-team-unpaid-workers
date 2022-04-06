@@ -1,0 +1,101 @@
+/* On small screens, set height to 'auto' for sidenav and grid */
+@media screen and (max-width: 767px) {
+    .sidenav {
+        height: auto;
+        padding: 15px;
+    }
+    .row.content {height:auto;}
+}
+
+/*class*/
+
+.stylebox{
+    /*width: 320px;*/
+    padding: 0px;
+    margin: 0;
+    background-color:#bbb
+}
+
+/* Remove the navbar's default margin-bottom and rounded borders */
+.navbar {
+    margin-bottom: 0;
+    border-radius: 0;
+    background-color: #1b1b1b;
+}
+
+/* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+.row.content {height: 450px}
+
+/* Set gray background color and 100% height */
+.sidenav {
+    padding-top: 20px;
+    background-color: #1b1b1b;
+    height: 100%;
+}
+
+
+.sidenav {
+    background-color: #000000;
+}
+.box {
+    float: left;
+    width: 100%;
+    padding: 50px;
+}
+
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+.Full_width_input{
+    width: 100%;
+}
+/*whole name */
+
+/* Set black background color, white text and some padding */
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #1b1b1b;
+    color: white;
+    text-align: center;
+}
+
+
+body{
+    background-color: #000000;
+}
+
+/*this is id */
+#logo {
+    text-align:center;
+    color: white;
+}
+#sign_in2{
+    margin: auto;
+    text-align:center;
+    color: white;
+}
+
+#hub{
+    color:#000000;
+    background-color: #f7971d;
+    border-radius: 5%;
+}
+#underline{
+    text-decoration: underline;
+    color: black;
+}
+.box {
+
+    width: 30%;
+
+<!--            border: 5px dotted MediumSeaGreen;-->
+
+}
+#option{
+    color: black;
+}
