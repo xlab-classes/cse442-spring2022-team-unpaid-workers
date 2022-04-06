@@ -9,22 +9,9 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="cssFile.css">
     <style>
-        .stylebox{
-            /*width: 320px;*/
-            padding: 0px;
 
-            margin: 0;
-        }
-        .box {
-            float: left;
-            width: 100%;
-            padding: 50px;
-        }
-        .clearfix::after {
-            content: "";
-            clear: both;
-            display: table;
-        }
+        /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+        .row.content {height: 50px}
 
     </style>
 </head>
@@ -54,48 +41,45 @@
     </div>
 </nav>
 
-
-
-
 <div class="container-fluid text-center">
     <div class="row content">
-        <div class="col-lg-2 sidenav"  style="background-color: #000000;"  >
-        </div>
-        <div class="col-lg-8 text-left" style="text-align: center;" >
-            <div class="stylebox">
-                <h1 >HomePage</h1>
-                <!--                <form action="/buildQuiz" method="GET">-->
-                <!--                    <input type="submit" value="Make Quiz" />-->
-                </form>
+        <div class="col-sm-2 sidenav"></div>
+        <div class="col-sm-8 text-left stylebox" >
 
-                <div class="clearfix">
-                    <div class="box" >
-                        <label for="lname" >Access Code:</label>
-                        <form action="/accessQuiz" method="POST">
-                            <input  type="text" id="lname" name="Access Code"><br><br>
-                            <label for="lname" >Input Your Name:</label>
-                            <br>
-                            <input  type="text" id="fname" name="User Name"><br><br>
-                            <input type="submit" style="color:black" value="Join This Quiz">
-                        </form>
+            <form action="/buildQuiz" method="POST">
+                <div style="text-align: center"><h3>Quiz Name</h3>
+                    <input type = "text" name = "Quiz_name" style="display: inline-block;width: 30%; min-width: 100px;"/></div >
+                <hr>
 
-                    </div>
-                    <div class="box" >
-                        <label for="lname" >Quiz History:</label>
-                        <p >Passcode:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Score:</p>
-                    </div>
-                </div>
+                <p>Question1 <input type = "text" name = "Question_1"  class="Full_width_input"/></p >
+                <p>Answer <input type = "text" name = "Answer_1" style="width: 10%"/></p >
+                <p>Point Worth <input type = "text" name = "Point_1" style="width: 10%"/></p >
+                <p>ChoiceA <input type = "text" name = "Choice_A_1" class="Full_width_input" /></p >
+                <p>ChoiceB <input type = "text" name = "Choice_B_1" class="Full_width_input"/></p >
+                <p>ChoiceC <input type = "text" name = "Choice_C_1" class="Full_width_input"/></p >
+                <p>ChoiceD <input type = "text" name = "Choice_D_1" class="Full_width_input"/></p >
+                <p><input type = "submit" value = "Build Quiz" name="build quiz"/></p >
+                <p><input type="submit" value="add Question" name="add question"/></p >
 
-            </div>
+            </form>
+
+
         </div>
-        <div class="col-lg-2 sidenav" style="background-color: #000000;">
-        </div>
+
     </div>
 </div>
 
+<div class="container-fluid text-center">
+    <div class="row content">
+        <div class="col-sm-2 sidenav">
+        </div>
+        <div class="col-sm-8 text-left">
+        </div>
+        <div class="col-sm-2 sidenav">
 
-
-
+        </div>
+    </div>
+</div>
 
 
 <footer class="container-fluid text-center">
