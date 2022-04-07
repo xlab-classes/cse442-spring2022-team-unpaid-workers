@@ -1,5 +1,5 @@
 '''
-Coder: Zhou Zhou  && Shkaraot
+Coder: Zhou Zhou  && Shkar Bassam
 '''
 import time
 
@@ -265,7 +265,7 @@ def buidQuiz():
     # need change, we now have question type
     print("type", request.method)
     if request.method == 'POST':
-
+        print("request.form: ", request.form)
         data = ImmutableMultiDict(request.form)
 
         dict = data.to_dict(flat=False)
@@ -283,11 +283,12 @@ def buidQuiz():
             type = dict.get(key_list[i])[0]
             print("key_list[i]: ", key_list[i])
             print("dict.get(key_list[i])[0]: ", dict.get(key_list[i])[0])
+            print("full_quiz: ", full_quiz)
 
             print("while",i,type)
             if type == "Multiple_Choice":
                 print("type Multiple: ", type)
-                question = {"question": dict.get(key_list[i])}
+                question = {"question": dict.get(key_list[i-1])}
                 question_type = {"type":type}
                 answer = {"answer": dict.get(key_list[i+1])}
                 point = {"point": dict.get(key_list[i+2])}
@@ -302,28 +303,38 @@ def buidQuiz():
                 i += 8
             elif type == "True_or_False":
                 print("type T/F: ", type)
-                question = {"question": dict.get(key_list[i])}
+                question = {"question": dict.get(key_list[i-1])}
                 question_type = {"type":type}
                 point = {"point": dict.get(key_list[i + 1])}
                 print("point,", point)
-                # answer = {"choice": dict.get(key_list[i + 2])}
+                # a,b,c,d does not have answers stored, this is just for keeping the algorithm
+                # working when iterating through the dictionary
+                a = {"choice_A": None}
+                b = {"choice_B": None}
+                c = {"choice_C": None}
+                d = {"choice_D": None}
+                answer = {"choice": dict.get(key_list[i + 2])}
                 # print("answer,", answer)
                 quiz = {}
-                for d in (question, question_type, point,answer):
+                for d in (question, question_type, point,answer, a,b,c,d):
                     quiz.update(d)
                 full_quiz.append(quiz)
                 i += 4
 
             elif type == "Short_Answer":
                 print("type Short: ", type)
-                question = {"question": dict.get(key_list[i])}
+                question = {"question": dict.get(key_list[i-1])}
                 question_type = {"type":type}
                 answer = {"answer": dict.get(key_list[i + 2])}
                 point = {"point": dict.get(key_list[i + 3])}
                 a = {"choice_A": dict.get(key_list[i + 4])}
+                b = {"choice_B": None}
+                c = {"choice_C": None}
+                d = {"choice_D": None}
                 quiz = {}
-                for d in (question,question_type,answer, point, a):
+                for d in (question,question_type,answer, point, a,b,c,d):
                     quiz.update(d)
+
                 full_quiz.append(quiz)
                 i += 4
 
