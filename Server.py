@@ -281,10 +281,12 @@ def buidQuiz():
         while i < (dic_length-2):
             time.sleep(1)
             type = dict.get(key_list[i])[0]
+            print("key_list[i]: ", key_list[i])
+            print("dict.get(key_list[i])[0]: ", dict.get(key_list[i])[0])
 
             print("while",i,type)
             if type == "Multiple_Choice":
-                print("type: ", type)
+                print("type Multiple: ", type)
                 question = {"question": dict.get(key_list[i])}
                 question_type = {"type":type}
                 answer = {"answer": dict.get(key_list[i+1])}
@@ -299,12 +301,13 @@ def buidQuiz():
                 full_quiz.append(quiz)
                 i += 8
             elif type == "True_or_False":
-                print("type: ", type)
+                print("type T/F: ", type)
                 question = {"question": dict.get(key_list[i])}
                 question_type = {"type":type}
-                point = {"point": dict.get(key_list[i + 2])}
-                answer = {"choice": dict.get(key_list[i + 3])}
-
+                point = {"point": dict.get(key_list[i + 1])}
+                print("point,", point)
+                # answer = {"choice": dict.get(key_list[i + 2])}
+                # print("answer,", answer)
                 quiz = {}
                 for d in (question, question_type, point,answer):
                     quiz.update(d)
@@ -312,7 +315,7 @@ def buidQuiz():
                 i += 4
 
             elif type == "Short_Answer":
-                print("type: ", type)
+                print("type Short: ", type)
                 question = {"question": dict.get(key_list[i])}
                 question_type = {"type":type}
                 answer = {"answer": dict.get(key_list[i + 2])}
@@ -343,7 +346,7 @@ def buidQuiz():
             js_template = ""
 
             for q in full_quiz:
-                print("here:",q)
+                print("q:",q)
                 js_template += '<script>' + '\n'
                 js_template += 'var x'+str(i)+' = document.getElementById("option' + str(i) + '");'+'\n'
                 js_template += 'x'+str(i)+'.addEventListener("change", myFunction'+str(i)+');'+'\n'
@@ -381,7 +384,7 @@ def buidQuiz():
 
 
                 if q.get("type") == "Multiple_Choice":
-                    quiz_template += '<label> Question' +str(i) + ' <input type = "text" name = "Question_' + str(i)+ '" size="120" value="' + q.get("question")[0] + '" required/></label >' + "<br>" +"\n"
+                    quiz_template += '<label> Question' +str(i) + ' <input type = "text" name = "Question_' + str(i)+ '" size="120" value="' + dict.get("Question_" + str(i))[0] + '" required/></label >' + "<br>" +"\n"
                     quiz_template += '<label for="option'+str(i)+'">Question Type :</label>' + '\n'
                     quiz_template += '<select name="question_type'+str(i)+ '" id="option'+str(i)+'" value="Multiple_Choice" >' +'\n'
                     quiz_template += '<option  value="Multiple_Choice" selected>Multiple Choice</option>' + '\n'
@@ -389,25 +392,29 @@ def buidQuiz():
                     # quiz_template += '<option  value="True_or_False" >T/F Question </option>' + '\n'
                     quiz_template += '</select><br>' + '\n'
                     quiz_template += '<label>Answer : <input type = "text" name = "Answer_' + str(i) + '" size="12" value="' + q.get("answer")[0]+'"/></label ><br>' + '\n'
-                    quiz_template += '<label>Point Worth : <input type = "text" name = "Point_' + str(i) + '" size="12"/></label ><br>' + '\n'
+                    # print("point: ",q.get("point"))
+                    quiz_template += '<label>Point Worth : <input type = "text" name = "Point_' + str(i) + '" size="12" value="'+ q.get("point")[0]+'"/></label ><br>' + '\n'
                     quiz_template += '<br>' + '\n'
                     quiz_template += '<p id="question_content'+str(i)+'">' + '\n'
                     quiz_template += '</p>' + '\n'
-                    quiz_template += '<label>ChoiceA <input type = "text" name = "Choice_A_' + str(i) + '" size="120" value="'+str(q.get("Choice_A_" + str(i))) +'/></label >' + '\n'
-                    quiz_template += '<label>ChoiceB <input type = "text" name = "Choice_B_' + str(i) + '" size="120" value="'+str(q.get("Choice_B_" + str(i))) +'/></label >' + '\n'
-                    quiz_template += '<label>ChoiceC <input type = "text" name = "Choice_C_' + str(i) + '" size="120" value="'+str(q.get("Choice_C_" + str(i))) +'/></label >' + '\n'
-                    quiz_template += '<label>ChoiceD <input type = "text" name = "Choice_D_' + str(i) + '" size="120" value="'+str(q.get("Choice_D_" + str(i))) +'/></label >' + '\n'
+                    print("choiceA: ",q.get("choice_A"))
+                    # print("choice_A"+ str(i))
+
+                    quiz_template += '<label>ChoiceA <input type = "text" name = "Choice_A_' + str(i) + '" size="120" value="'+str(q.get("choice_A")[0])+'"/></label >' + '\n'
+                    quiz_template += '<label>ChoiceB <input type = "text" name = "Choice_B_' + str(i) + '" size="120" value="'+str(q.get("choice_B")[0]) +'"/></label >' + '\n'
+                    quiz_template += '<label>ChoiceC <input type = "text" name = "Choice_C_' + str(i) + '" size="120" value="'+str(q.get("choice_C")[0]) +'"/></label >' + '\n'
+                    quiz_template += '<label>ChoiceD <input type = "text" name = "Choice_D_' + str(i) + '" size="120" value="'+str(q.get("choice_D")[0]) +'"/></label >' + '\n'
                     quiz_template += '</p>' + '\n'
 
                 elif q.get("type") == "True_or_False":
-                    quiz_template += '<label> Question' + str(i) + ' <input type = "text" name = "Question_' + str(i)+ '" size="120" value="' + q.get("question")[0] + '"/></label >' + "\n"
+                    quiz_template += '<label> Question' + str(i) + ' <input type = "text" name = "Question_' + str(i)+ '" size="120" value="' + dict.get("Question_" + str(i))[0] + '"/></label >' + "\n"
                     quiz_template += '<label for="option'+str(i)+'">Question Type :</label>' + '\n'
                     quiz_template += '<select name="question_type'+str(i)+'" id="option'+str(i)+'" value="True_or_False" >' +'\n'
                     # quiz_template += '<option  value="Multiple_Choice" >Multiple Choice</option>' + '\n'
                     # quiz_template += '<option  value="Short_Answer">Short Answer</option>' + '\n'
                     quiz_template += '<option  value="True_or_False" selected>T/F Question </option>' + '\n'
                     quiz_template += '</select><br>' + '\n'
-                    quiz_template += '<label>Point Worth : <input type = "text" name = "Point_' + str(i) + '" size="12"/></label ><br>' + '\n'
+                    quiz_template += '<label>Point Worth : <input type = "text" name = "Point_' + str(i) + '" size="120" value="'+str(dict.get("Point_"+ str(i))[0]) +'"/></label >' + '\n'
                     quiz_template += '<br>' + '\n'
                     quiz_template += '<p id="question_content'+str(i)+'">' + '\n'
                     quiz_template += '</p>' + '\n'
