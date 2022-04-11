@@ -1,5 +1,5 @@
 '''
-Coder: Zhou Zhou  && Shkar Bassam
+Coder: Zhou Zhou  && Shkaraot
 '''
 import time
 
@@ -19,28 +19,6 @@ def index():
     DataBase.print_user_table()
     return render_template("index.html")
 
-@app.route('/changeScore',methods=['POST','GET'])
-def changeScore():
-    '''data= {"submissionID":["abc12345"],"name":["Jesse"],"question1":['5'],"question2":["2"]...'''
-    ''' 1. add values up then update score based on the submissionID
-        2. in score_record, change score based on submissionID
-        3. redirect to teacher gradebook
-    '''
-    sumScore = 0
-    data = dict(request.form)
-    submissionID = data.get("submissionID")[0]
-    teacherName = data.get("name")[0]
-    # check all keys in the data
-    for eachData in data.keys():
-        # if id matches the submissionID we looking for
-        # and we find question
-        if eachData[0] == submissionID and eachData.__contains__("question"):
-            # add the question points to the sumScore
-            sumScore += int(data[eachData[0]])
-            # update score based on submission id
-            eachData["score"] = sumScore
-    # teacherName = "Jesse" for example
-    return redirect("/teacher_grade_book/"+teacherName, code=301)
 
 @app.route('/updateQuiz', methods=['POST', 'GET'])
 def updateQuiz():
@@ -87,14 +65,18 @@ def quiz_submit():
         json_quiz = DataBase.find_quiz_data(passcode)
         quiz = json.loads(json_quiz)
         student_score = 0
-        for student_question_submission in data:
-            question_number = get_question_number(student_question_submission)
-            student_choice = data.get(student_question_submission)
-            answer = quiz[question_number - 1].get("answer")[0]
-            p = 0
-            if student_choice == answer:
-                p = int(quiz[question_number - 1].get("point")[0]) - int('0')
-                student_score += p
+        print("quiz:",quiz)
+        idx = 0
+        for k,v in data.items():
+            if k == 'passcode':
+                break
+            print(v,quiz[idx]["answer"][0],student_score)
+            if v == quiz[idx]["answer"][0]:
+                student_score += int(quiz[idx]['point'][0])
+
+            idx += 1
+        SubmissionID = ''.join(random.choices(string.ascii_lowercase, k=8))
+        DataBase.insertScoreRecord(data.get('studentName'),quizName,student_score,passcode,SubmissionID)
 
         f = open("templates/student_homepage.html", "r")
         t = ""
@@ -107,23 +89,12 @@ def quiz_submit():
         score_template = '<p>' + passcode + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + str(
             student_score) + "<p>"
         final_template = t[:start_pos] + score_template + t[start_pos + 1:]
-        DataBase.makeScoreRecord()
-        print("quizname", quizName)
-
-        SubmissionID = ''.join(random.choices(string.ascii_lowercase, k=8))
-        DataBase.insertScoreRecord(studentName, quizName, str(student_score), passcode, SubmissionID)
-        DataBase.getInformation()
-
         return final_template
     else:
         return "quiz"
 
 
-def get_question_number(q):
-    n = 0
-    for i in range(8, len(q)):
-        n = n * 10 + int(q[i]) - int('0')
-    return n
+
 
 
 @app.route('/student_gradebook/<name>', methods=['GET', 'POST'])
@@ -189,10 +160,11 @@ def accessQuiz():
 
         DataBase.print_passcode()
         json_quiz = DataBase.find_quiz_data(passcode)
-        print("json:", json_quiz)
+
         if json_quiz is None:
             return "passcode " + str(passcode) + "is not exist in the database"
         full_quiz = json.loads(json_quiz)
+
         quiz_template = ""
         final_template = ""
         f = open("templates/quiz.html", "r")
@@ -203,19 +175,23 @@ def accessQuiz():
         end_pos = final_template.find("<input type=\"submit\" value=\"Submit\">")
 
         quiz_number = 0
+
         for quiz in full_quiz:
             quiz_number += 1
             question = quiz.get("question")[0]
-            question_type = quiz.get("type")[0]
+            question_type = quiz.get("type")
             answer = quiz.get('answer')[0]
             point = quiz.get('point')[0]
-            choice_A = quiz.get('choice_A')[0]
-            choice_B = quiz.get('choice_B')[0]
-            choice_C = quiz.get('choice_C')[0]
-            choice_D = quiz.get('choice_D')[0]
 
-            if question_type == "mult":
-                template1 = "<p> " + question + " (" + point + "pts) </p>\n"
+
+            if question_type == "Multiple_Choice":
+
+                choice_A = quiz.get('choice_A')[0]
+                choice_B = quiz.get('choice_B')[0]
+                choice_C = quiz.get('choice_C')[0]
+                choice_D = quiz.get('choice_D')[0]
+
+                template1 = "<p> " + str(quiz_number)+". "+question + " (" + point + "pts) </p>\n"
                 template2 = "<input type=\"radio\" id=\"" + str(quiz_number) + "a\" name=\"question" + str(
                     quiz_number) + "\" value=\"" + choice_A + "\">\n"
                 template3 = '<label for="' + str(quiz_number) + 'a">' + choice_A + '</label><br>\n'
@@ -234,22 +210,21 @@ def accessQuiz():
                 template10 = '<br><br>'
                 quiz_template += template1 + template2 + template3 + template4 + template5 + template6 + template7 + template8 + template9 + template10
 
-            elif question_type == "t/f":
-                template1 = "<p> " + question + " (" + point + "pts) </p>\n"
+            elif question_type == "True_or_False":
+                template1 = "<p> " + str(quiz_number)+". "+question + " (" + point + "pts) </p>\n"
                 template2 = "<input type=\"radio\" id=\"" + str(quiz_number) + "a\" name=\"question" + str(
-                    quiz_number) + "\" value=\"" + choice_A + "\">\n"
-                template3 = '<label for="' + str(quiz_number) + 'a">' + "TRUE" + '</label><br>\n'
+                    quiz_number) + "\" value=\"" + 'T' + "\">\n"
+                template3 = '<label for="' + str(quiz_number) + 'a">' + "True" + '</label><br>\n'
 
                 template4 = "<input type=\"radio\" id=\"" + str(quiz_number) + "b\" name=\"question" + str(
-                    quiz_number) + "\" value=\"" + choice_B + "\">\n"
-                template5 = '<label for="' + str(quiz_number) + 'b">' + "False" + '</label><br>\n'
-                quiz_template += template1 + template2 + template3 + template4 + template5
-            elif question_type == "short":
-                template1 = "<p> " + question + " (" + point + "pts) </p>\n"
-                template2 = "<input type=\"radio\" id=\"" + str(quiz_number) + "a\" name=\"question" + str(
-                    quiz_number) + "\" value=\"" + choice_A + "\">\n"
-                template3 = '<label for="' + str(quiz_number) + 'a">' + "TRUE" + '</label><br>\n'
+                    quiz_number) + "\" value=\"" + 'F' + "\">\n"
+                template5 = '<label for="' + str(quiz_number) + 'b">' + "False/" + '</label><br>\n'
+                quiz_template += template1 + template2 + template3 + template4 + template5 + '<br><br>'
 
+            elif question_type == "Short_Answer":
+                template1 = "<p> " + str(quiz_number)+". "+question + " (" + point + "pts) </p>\n"
+                template2 = "<div class=\"form-group\">" + '\n' +"<label for=\"comment\">Short Question_Answer:</label>" + "<textarea class=\"form-control\" name=\"Answer_"+str(quiz_number)+"\" rows=\"5\" id=\"comment\" required></textarea></div>";
+                quiz_template += template1+template2 + '<br><br>'
 
         quiz_template += '<input value="' + passcode + '" name="passcode" hidden>'
         quiz_template += '<input value="' + studentName + '" name="studentName" hidden>'
@@ -259,13 +234,11 @@ def accessQuiz():
 
     return "quiz"
 
-
 @app.route('/buildQuiz', methods=['POST', 'GET'])
 def buidQuiz():
     # need change, we now have question type
-    print("type", request.method)
     if request.method == 'POST':
-        print("request.form: ", request.form)
+
         data = ImmutableMultiDict(request.form)
 
         dict = data.to_dict(flat=False)
@@ -274,74 +247,53 @@ def buidQuiz():
         full_quiz = []
         quizname = dict.get("Quiz_name")[0]
 
-        print("dict", dict)
-        print("key_list",key_list)
-        print("len",dic_length)
+
         i = 3
+
         while i < (dic_length-2):
             time.sleep(1)
-            type = dict.get(key_list[i])[0]
-            print("key_list[i]: ", key_list[i])
-            print("dict.get(key_list[i])[0]: ", dict.get(key_list[i])[0])
-            print("full_quiz: ", full_quiz)
-
+            type = dict.get(key_list[i+1])[0]
             print("while",i,type)
             if type == "Multiple_Choice":
-                print("type Multiple: ", type)
-                question = {"question": dict.get(key_list[i-1])}
+
+                question = {"question": dict.get(key_list[i])}
                 question_type = {"type":type}
-                answer = {"answer": dict.get(key_list[i+1])}
-                point = {"point": dict.get(key_list[i+2])}
-                a = {"choice_A": dict.get(key_list[i+3])}
-                b = {"choice_B": dict.get(key_list[i+4])}
-                c = {"choice_C": dict.get(key_list[i+5])}
-                d = {"choice_D": dict.get(key_list[i+6])}
+                answer = {"answer": dict.get(key_list[i + 3])}
+                point = {"point": dict.get(key_list[i + 2])}
+                a = {"choice_A": dict.get(key_list[i + 4])}
+                b = {"choice_B": dict.get(key_list[i + 5])}
+                c = {"choice_C": dict.get(key_list[i + 6])}
+                d = {"choice_D": dict.get(key_list[i + 7])}
                 quiz = {}
                 for d in (question, question_type,answer, point, a, b, c, d):
                     quiz.update(d)
                 full_quiz.append(quiz)
                 i += 8
             elif type == "True_or_False":
-                print("type T/F: ", type)
-                question = {"question": dict.get(key_list[i-1])}
+                question = {"question": dict.get(key_list[i])}
                 question_type = {"type":type}
-                point = {"point": dict.get(key_list[i + 1])}
-                print("point,", point)
-                # a,b,c,d does not have answers stored, this is just for keeping the algorithm
-                # working when iterating through the dictionary
-                a = {"choice_A": None}
-                b = {"choice_B": None}
-                c = {"choice_C": None}
-                d = {"choice_D": None}
-                answer = {"choice": dict.get(key_list[i + 2])}
-                # print("answer,", answer)
+                point = {"point": dict.get(key_list[i + 2])}
+                answer = {"answer":dict.get(key_list[i + 3])[0]}
                 quiz = {}
-                for d in (question, question_type, point,answer, a,b,c,d):
+                for d in (question, question_type, point,answer):
                     quiz.update(d)
                 full_quiz.append(quiz)
                 i += 4
 
             elif type == "Short_Answer":
-                print("type Short: ", type)
-                question = {"question": dict.get(key_list[i-1])}
+                question = {"question": dict.get(key_list[i])}
                 question_type = {"type":type}
-                answer = {"answer": dict.get(key_list[i + 2])}
-                point = {"point": dict.get(key_list[i + 3])}
-                a = {"choice_A": dict.get(key_list[i + 4])}
-                b = {"choice_B": None}
-                c = {"choice_C": None}
-                d = {"choice_D": None}
+                point = {"point": dict.get(key_list[i + 2])}
+                answer = {"answer": dict.get(key_list[i + 3])}
                 quiz = {}
-                for d in (question,question_type,answer, point, a,b,c,d):
+                for d in (question,question_type,answer, point):
                     quiz.update(d)
-
                 full_quiz.append(quiz)
-                i += 3
-
+                i += 4
 
         name = dict.get('Quiz_name')[0]
-        hr = dict.get('Time_Limit_hr')
-        min = dict.get('Time_Limit_min')
+        hr = dict.get('Time_Limit_hr')[0]
+        min = dict.get('Time_Limit_min')[0]
 
         if dict.get('build quiz') is None:
 
@@ -355,6 +307,10 @@ def buidQuiz():
 
             i = 1
             js_template = ""
+
+            quizName_template = '<input type = "text" name = "Quiz_name" size="120" value="'+name+'"style="display: inline-block;width: 30%; min-width: 100px;" required/>'
+            time_hour_template = '<input type = "text" id="time_limit_hour" name = "Time_Limit_hr" size="100" value="'+hr+'"style="display: inline-block;width: 1%; min-width: 50px;" required/>'
+            time_min_template = '<input type = "text" id="time_limit_min" name = "Time_Limit_min" size="100" value="'+min+'"style="display: inline-block;width: 1%; min-width: 50px;" required/>'
 
             for q in full_quiz:
                 print("q:",q)
@@ -429,23 +385,27 @@ def buidQuiz():
                     quiz_template += '<br>' + '\n'
                     quiz_template += '<p id="question_content'+str(i)+'">' + '\n'
                     quiz_template += '</p>' + '\n'
-                    quiz_template += '<label>True <input type = "radio" name = "T/F' + str(i) + '" size="120" /></label >' + '\n'
-                    quiz_template += '<label>False <input type = "radio" name = "T/F' + str(i) + '" size="120" /></label >' + '\n'
+                    if q.get("answer") == "True":
+                        quiz_template += '<label>True <input type = "radio" name = "T/F' + str(i) + '" size="120" value="True" checked/></label >' + '\n' + '<br>'
+                        quiz_template += '<label>False <input type = "radio" name = "T/F' + str(i) + '" size="120" value="False"/></label >' + '\n'
+                    else:
+                        quiz_template += '<label>True <input type = "radio" name = "T/F' + str(i) + '" size="120" value="True" /></label >' + '\n' + '<br>'
+                        quiz_template += '<label>False <input type = "radio" name = "T/F' + str(i) + '" size="120" value="False" checked/></label >' + '\n'
                     quiz_template += '</p>' + '\n'
 
                 elif q.get("type") == "Short_Answer":
                     quiz_template += '<label> Question' +str(i) + ' <input type = "text" name = "Question_' + str(i)+ '" size="120" value="' + q.get("question")[0] + '"/></label >' + "\n"
                     quiz_template += '<label for="option'+str(i)+'">Question Type :</label>' + '\n'
-                    quiz_template += '<select name="question_type'+str(i)+ '" id="option'+str(i)+'" value="Short_Answer" >' +'\n'
+                    quiz_template += '<select name="question_type'+str(i)+ '" id="option'+str(i)+'" value="'+q.get("type")+'" >' +'\n'
                     #quiz_template += '<option  value="Multiple_Choice" >Multiple Choice</option>' + '\n'
                     quiz_template += '<option  value="Short_Answer" selected>Short Answer</option>' + '\n'
                     #quiz_template += '<option  value="True_or_False" >T/F Question </option>' + '\n'
                     quiz_template += '</select><br>' + '\n'
-                    quiz_template += '<label>Point Worth : <input type = "text" name = "Point_' + str(i) + '" size="12"/></label >'
+                    quiz_template += '<label>Point Worth : <input type = "text" name = "Point_' + str(i) + '" size="12" value="'+q.get("point")[0]+'"/></label >'
                     quiz_template += '<br>' +'\n'
                     quiz_template += '<p id="question_content'+str(i)+'">' + '\n'
                     quiz_template += '</p>'+ '\n'
-                    quiz_template += '<div class="form-group"><label for="comment">Short Question_Answer:</label><textarea class="form-control" name="Answer_'+str(i)+'" rows="5" id="comment"></textarea></div>'
+                    quiz_template += '<div class="form-group"><label for="comment">Short Question_Answer:</label><textarea class="form-control" name="Answer_'+str(i)+'" rows="5" id="comment" >'+q.get('answer')[0]+'</textarea></div>'
                     quiz_template += '</p>'+'\n'
 
                 quiz_template += "<br><br>"+"\n\n"
@@ -498,8 +458,8 @@ def buidQuiz():
             new_quiz_template += '<br>' + '\n'
             new_quiz_template += '<p id="question_content'+str(i)+'">' + '\n'
             new_quiz_template += '</p>' + '\n'
-            new_quiz_template += '<p><input type = "submit" value = "Build Quiz" name="build quiz"/></p >' + '\n'
-            new_quiz_template += '<p><input type="submit" value="add Question" name="add question"/></p >' + '\n'
+            # new_quiz_template += '<p><input type = "submit" value = "Build Quiz" name="build quiz"/></p >' + '\n'
+            # new_quiz_template += '<p><input type="submit" value="add Question" name="add question"/></p >' + '\n'
             # new_quiz_template += '<label>ChoiceA <input type = "text" name = "Choice_A_' + str(i) + '" size="120" /></label >' + '\n'
             # new_quiz_template += '<label>ChoiceB <input type = "text" name = "Choice_B_' + str(i) + '" size="120" /></label >' + '\n'
             # new_quiz_template += '<label>ChoiceC <input type = "text" name = "Choice_C_' + str(i) + '" size="120" /></label >' + '\n'
@@ -508,7 +468,9 @@ def buidQuiz():
             js_start_pos = t.find('<p><input value="starting_pos" name="pos" hidden/></p >')+len('<p><input value="starting_pos" name="pos" hidden/></p >')
             template = t[:start_pos] + quiz_template + new_quiz_template + t[end_pos:js_start_pos]+js_template
             template = template.replace("teacher_name", name)
-
+            template = template.replace('<input type = "text" name = "Quiz_name" size="120" style="display: inline-block;width: 30%; min-width: 100px;" required/>',quizName_template)
+            template = template.replace('<input type = "text" id="time_limit_hour" name = "Time_Limit_hr" size="100" style="display: inline-block;width: 1%; min-width: 50px;" required/>',time_hour_template)
+            template = template.replace('<input type = "text" id="time_limit_min" name = "Time_Limit_min" size="100" style="display: inline-block;width: 1%; min-width: 50px;" required/>',time_min_template)
             return template
 
         else:
@@ -522,7 +484,12 @@ def buidQuiz():
             template = t[:start_pos] + "\r" + passcode + t[start_pos + 1:]
             json_quiz = json.dumps(full_quiz)
 
-            DataBase.insert_quiz((passcode, name, quizname, json_quiz))
+            url = request.url
+            start_pos = url.find('=')
+            teacher_name = ""
+            for i in range(start_pos + 1, len(url)):
+                teacher_name += url[i]
+            DataBase.insert_quiz((passcode, teacher_name, quizname, json_quiz))
 
             return template
     else:
@@ -530,13 +497,13 @@ def buidQuiz():
         dict = data.to_dict(flat=False)
         url = request.url
         start_pos = url.find('=')
-        name = ""
+        teacher_name = ""
         for i in range(start_pos + 1, len(url)):
-            name += url[i]
+            teacher_name += url[i]
         t = ""
         with open("templates/teacher_quiz_generate.html", 'r') as f:
             t = f.read()
-        t = t.replace("teacher_name", name)
+        t = t.replace("teacher_name", teacher_name)
 
         return t
 
@@ -599,6 +566,7 @@ def user():
 
 
 if __name__ == '__main__':
+
     DataBase.creat_user_table()
     DataBase.print_score_record_table()
     app.run(host='0.0.0.0', port=9377, debug=True)

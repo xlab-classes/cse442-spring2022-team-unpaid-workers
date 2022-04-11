@@ -114,11 +114,11 @@
             <form action="/buildQuiz" method="POST">
                 <div style="text-align: center">
                     <h3>Quiz Name</h3>
-                    <input type = "text" name = "Quiz_name" size="120" style="display: inline-block;width: 30%; min-width: 100px;"/>
+                    <input type = "text" name = "Quiz_name" size="120" style="display: inline-block;width: 30%; min-width: 100px;" required/>
                     <h3>Time Limit</h3>
-                    <input type = "text" id="time_limit_hour" name = "Time_Limit" size="100" style="display: inline-block;width: 1%; min-width: 50px;"/>
+                    <input type = "text" id="time_limit_hour" name = "Time_Limit_hr" size="100" style="display: inline-block;width: 1%; min-width: 50px;" required/>
                     <label for="time_limit_hour">hours </label>
-                    <input type = "text" id="time_limit_min" name = "Time_Limit" size="100" style="display: inline-block;width: 1%; min-width: 50px;"/>
+                    <input type = "text" id="time_limit_min" name = "Time_Limit_min" size="100" style="display: inline-block;width: 1%; min-width: 50px;" required/>
                     <label for="time_limit_min">minutes </label>
                 </div >
 
@@ -126,18 +126,17 @@
 
 
                 <label>Question1 <input type = "text" name = "Question_1" size="120"/></label >
-                <label for="option">Question Type :</label>
-                <select name="question_type" id="option">
+                <label for="option1">Question Type :</label>
+                <select name="question_type_1" id="option1" >
                     <option  value="Multiple_Choice">Multiple Choice</option>
                     <option  value="Short_Answer">Short Answer</option>
-                    <option  value="True_or_False">T/F Question</option>
+                    <option  value="True_or_False" >T/F Question </option>
                 </select><br>
-                <label>Answer : <input type = "text" name = "Answer_1" size="12"/></label ><br>
                 <label>Point Worth : <input type = "text" name = "Point_1" size="12"/></label ><br>
                 <br>
 
                 <p id="question_content">
-
+                    <label>Answer : <input type = "text" name = "Answer_1" size="12"/></label ><br>
                     <label>ChoiceA <input type = "text" name = "Choice_A_1" size="120" /></label >
                     <label>ChoiceB <input type = "text" name = "Choice_B_1" size="120"/></label >
                     <label>ChoiceC <input type = "text" name = "Choice_C_1" size="120"/></label >
@@ -175,30 +174,41 @@
 
 </body>
 
+<p><input value="starting_pos" name="pos" hidden/></p >
 <script>
-    var x = document.getElementById("option");
-    x.addEventListener("change", myFunction1);
+    var x1 = document.getElementById("option1");
+    x1.addEventListener("change", myFunction1);
 
     function myFunction1() {
-        if (x.value == "Multiple_Choice"){
+
+        if (x1.value == "Multiple_Choice"){
             document.getElementById("question_content").innerHTML =
-                "<label>ChoiceA <input type = \"text\" name = \"Choice_A_1\" size=\"120\"/></label ><label>ChoiceB <input type = \"text\" name = \"Choice_B_1\" size=\"120\"/></label ><label>ChoiceC <input type = \"text\" name = \"Choice_C_1\" size=\"120\"/></label ><label>ChoiceD <input type = \"text\" name = \"Choice_D_1\" size=\"120\"/></label >" ;
 
-
+                "<label>Answer : <input type = \"text\" name = \"Answer_1\" size=\"12\" required/></label >" +
+                "<br>" +
+                "<label>ChoiceA <input type = \"text\" name = \"Choice_A_1\" size=\"120\"/></label >" +
+                "<label>ChoiceB <input type = \"text\" name = \"Choice_B_1\" size=\"120\"/></label >" +
+                "<label>ChoiceC <input type = \"text\" name = \"Choice_C_1\" size=\"120\"/></label >" +
+                "<label>ChoiceD <input type = \"text\" name = \"Choice_D_1\" size=\"120\"/></label >" ;
         }
-        else if (x.value == "Short_Answer"){
-            document.getElementById("question_content").innerHTML = "<div class=\"form-group\"><label> <type = \"text\" name = \"Choice_A_1\" size=\"120\"/></label ><type = \"text\" name = \"Choice_B_1\" size=\"120\"/></label ><type = \"text\" name = \"Choice_C_1\" size=\"120\"/></label ><type = \"text\" name = \"Choice_D_1\" size=\"120\"/></label ><label for=\"comment\">Short Question Answer:</label><textarea class=\"form-control\" rows=\"5\" id=\"comment\"></textarea></div>";
-
-
+        else if (x1.value == "Short_Answer"){
+            document.getElementById("question_content").innerHTML =
+                "<div class=\"form-group\">" +
+                "<label for=\"comment\">Short Question_Answer:</label>" +
+                "<textarea class=\"form-control\" name=\"Answer_1\" rows=\"5\" id=\"comment\" required></textarea></div>";
         }
         else{
-            document.getElementById("question_content").innerHTML = "<label> T/F answer:</label> <br><input type=\"radio\" id=\"T\" name=\"T\" value=\"True\"><label for=\"T\">True</label><br><input type=\"radio\" id=\"F\" name=\"F\" value=\"False\"><label for=\"F\">False</label><br>";
+            document.getElementById("question_content").innerHTML =
+                "<label> T/F answer:</label> " +
+                "<br>" +
+                "<input type=\"radio\" id=\"T\" name=\"T/F1\" value=\"True\">" +
+                "<label for=\"T\">True</label>" +
+                "<br>" +
+                "<input type=\"radio\" id=\"F\" name=\"T/F1\" value=\"False\">" +
+                "<label for=\"F\">False</label><br>";
 
         }
     }
-
-
-
-
 </script>
+
 </html>

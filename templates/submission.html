@@ -144,15 +144,14 @@
 
                 <div class="clearfix">
                     <div class="box" style="background-color:#bbb">
-                        <form action="http://localhost:9377/changeScore" method="POST">
-                            <p><input value="submissionID" name="ID" hidden/></p>
-                            <p><input value="teacherName" name="name" hidden/></p>
+
+                        <form action="/updateQuiz" method="POST">
+                            <p><input value="submissionID" name="submissionID" hidden/></p >
 
                             <h3>{{Question_Name}}: </h3>
-                            <p>Question Body</p >
                             <p>Correct Answer: {{Prof_answer}}</p >
                             <p>Actual Answer: {{student_answer}}</p >
-                            <label>Point Worth : <input type = "text" name = "Question_1" size="3" /> / {{point_worth}}</label >
+                            <label>Point Worth : <input type = "text" name = "Choice_A_1" size="3" /> / {{point_worth}}</label >
 
                             <br>
                             <br>
