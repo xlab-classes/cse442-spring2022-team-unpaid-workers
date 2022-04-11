@@ -336,7 +336,7 @@ def buidQuiz():
                     quiz.update(d)
 
                 full_quiz.append(quiz)
-                i += 4
+                i += 3
 
 
         name = dict.get('Quiz_name')[0]
