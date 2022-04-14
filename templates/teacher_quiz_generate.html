@@ -124,7 +124,6 @@
 
                 <hr>
 
-
                 <label>Question1 <input type = "text" name = "Question_1" size="120"/></label >
                 <label for="option">Question Type :</label>
                 <select name="question_type" id="option">
@@ -138,14 +137,14 @@
 
                 <p id="question_content">
 
-                    <label>ChoiceA <input type = "text" name = "Choice_A_1" size="120" /></label >
+                    <label>ChoiceA <input type = "text" name = "Choice_A_1" size="120"/></label >
                     <label>ChoiceB <input type = "text" name = "Choice_B_1" size="120"/></label >
                     <label>ChoiceC <input type = "text" name = "Choice_C_1" size="120"/></label >
                     <label>ChoiceD <input type = "text" name = "Choice_D_1" size="120"/></label >
                 </p >
 
 
-                <p><input type = "submit" value = "Build Quiz" name="build quiz"/></p >
+                <p><input type="submit" value ="Build Quiz" name="build quiz"/></p >
                 <p><input type="submit" value="add Question" name="add question"/></p >
                 <p><input value="teacher_name" name="name" hidden/></p >
 
@@ -174,7 +173,6 @@
 </footer>
 
 </body>
-
 <script>
     var x = document.getElementById("option");
     x.addEventListener("change", myFunction1);
@@ -183,16 +181,20 @@
         if (x.value == "Multiple_Choice"){
             document.getElementById("question_content").innerHTML =
                 "<label>ChoiceA <input type = \"text\" name = \"Choice_A_1\" size=\"120\"/></label ><label>ChoiceB <input type = \"text\" name = \"Choice_B_1\" size=\"120\"/></label ><label>ChoiceC <input type = \"text\" name = \"Choice_C_1\" size=\"120\"/></label ><label>ChoiceD <input type = \"text\" name = \"Choice_D_1\" size=\"120\"/></label >" ;
-
-
         }
         else if (x.value == "Short_Answer"){
             document.getElementById("question_content").innerHTML = "<div class=\"form-group\"><label for=\"comment\">Short Question_Answer:</label><textarea class=\"form-control\" rows=\"5\" id=\"comment\"></textarea></div>";
-
-
         }
         else{
-            document.getElementById("question_content").innerHTML = "<label> T/F answer:</label> <br><input type=\"radio\" id=\"T\" name=\"T\" value=\"True\"><label for=\"T\">True</label><br><input type=\"radio\" id=\"F\" name=\"F\" value=\"False\"><label for=\"F\">False</label><br>";
+            document.getElementById("question_content").innerHTML =
+                "<label> T/F answer:</label> " +
+                "<br>" +
+                "<input type=\"radio\" id=\"T\" name=\"T\" value=\"True\">" +
+                "<label for=\"T\">True</label>" +
+                "<br>" +
+                "<input type=\"radio\" id=\"F\" name=\"F\" value=\"False\">" +
+                "<label for=\"F\">False</label>" +
+                "<br>";
 
         }
     }
