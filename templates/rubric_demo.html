@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <input type="number" id="row_count">x
+    <input type="number" id="column_count">
+
+    <button onclick="buttonClicked()" id="update">update</button>
+</div>
+
+<form action="">
+    <table id="rubric"></table>
+</form>
+</body>
+
+<script>
+    let table = document.querySelector("#rubric")
+
+    function buttonClicked(){
+
+        table.innerHTML = ""
+        let row_count = parseInt(document.querySelector("input#row_count").value)
+        let column_count = parseInt(document.querySelector("input#column_count").value)
+
+        console.log(row_count, column_count)
+
+        /*let header = document.createElement("th")
+
+        for (let column = 0; column < column_count; column++){
+            let cell = document.createElement("tb")
+            cell.id = "cell-" + column + "-comment"
+            cell.innerHTML = "<input name='" + column + "-comment'/>"
+            header.appendChild(cell)
+        }
+
+        table.appendChild(header)
+        */
+
+
+        for(let row = 0; row < row_count; row++){
+            let row_element = document.createElement("tr")
+
+            for(let column = 0; column < column_count; column++){
+
+                let cell = document.createElement("tb")
+                cell.id = "cell-" + row + "-" + column
+                cell.innerHTML = "<input name='" + row + "-" + column +  "'/>"
+                row_element.append(cell)
+            }
+
+            table.append(row_element)
+        }
+    }
+</script>
+</html>
