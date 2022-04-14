@@ -22,26 +22,32 @@ def index():
 
 @app.route('/updateQuiz', methods=['POST', 'GET'])
 def updateQuiz():
+    data = dict(request.form)
+    print(data)
     pass
 
 
 @app.route('/submission/<id>', methods=['POST', 'GET'])
 def studentSubmission(id):
     # submission = {"question1":["actual answer","sudent answer","point receive","point worth"]}
-    submission = DataBase.get_studentAnswer_baseon_submissionID(id)
+    submission_str = DataBase.get_studentAnswer_baseon_submissionID(id)
+    submission = json.loads(submission_str)
     with open("templates/submission.html", "r") as f:
         t = f.read()
     template = ""
     i = 0
     startPos = t.find("<h3>{{Question_Name}}: </h3>")
     endPos = t.find('<p><input type = "submit" value = "Update" name="Update Quiz"/></p >')
-    for k, v in submission:
-        i += 1
-        questionName = k
-        actual_answer = v[0]
-        student_answer = v[1]
-        point_receive = v[2]
-        point_worth = v[3]
+    print("subm:",submission)
+    print("type: ",type(submission))
+    for s in submission:
+        print("s: ",s)
+        i+=1
+        questionName = s[0]
+        actual_answer = s[1]
+        student_answer = s[2]
+        point_receive = s[3]
+        point_worth = s[4]
         template += "<h3>" + str(i) + ". " + questionName + "</h3>" + "\n"
         template += "<p>Correct Answer: " + actual_answer + "</p >" + "\n"
         template += "<p>Student Answer: " + student_answer + "</p >" + "\n"
@@ -58,7 +64,7 @@ def quiz_submit():
         data = dict(request.form)
         studentName = data.get("studentName")
         print('Data:', data)
-        data.pop("studentName")
+
         passcode = data.get("passcode")
 
         quizName = DataBase.obtainQuizName(passcode)
@@ -67,16 +73,22 @@ def quiz_submit():
         student_score = 0
         print("quiz:",quiz)
         idx = 0
+        studentAnswer = []
         for k,v in data.items():
             if k == 'passcode':
                 break
-            print(v,quiz[idx]["answer"][0],student_score)
+
+            # studentAnswer = [questionName,questionAnswer,studentAnswer, pointGain, pointTotal
             if v == quiz[idx]["answer"][0]:
                 student_score += int(quiz[idx]['point'][0])
+                studentAnswer.append([quiz[idx]["question"][0],quiz[idx]["answer"][0],v,quiz[idx]["point"][0],quiz[idx]["point"][0]])
+            else:
+                studentAnswer.append([quiz[idx]["question"][0],quiz[idx]["answer"][0],v,"0",quiz[idx]["point"][0]])
 
             idx += 1
         SubmissionID = ''.join(random.choices(string.ascii_lowercase, k=8))
         DataBase.insertScoreRecord(data.get('studentName'),quizName,student_score,passcode,SubmissionID)
+        DataBase.insertSubmission(data.get("studentName"),passcode,json.dumps(studentAnswer),SubmissionID)
 
         f = open("templates/student_homepage.html", "r")
         t = ""
@@ -127,6 +139,7 @@ def teacherGrade(name):
 
     allInformation = DataBase.getInformation()
 
+
     newTemplate = b''
     with open('templates/teacher_grade_book.html', 'rb') as s:
         myTemplate = s.read()
@@ -136,13 +149,15 @@ def teacherGrade(name):
     finalTeamplate = myTemplate[:beginTagIndex]
     template = myTemplate[beginTagIndex + len(b'{{loop}}'):endTagIndex]
     print("all", allInformation)
+    print(list_of_passcode)
     for x in allInformation:
         if x[3] in list_of_passcode:
             quizname = x[1].encode()
             studentname = x[0].encode()
             studentGrade = x[2].encode()
+            submissionID = x[4].encode()
             t = template.replace(b'{{QuizName}}', quizname).replace(b'{{StudentName}}', studentname).replace(
-                b'{{StudentGrade}}', studentGrade)
+                b'{{StudentGrade}}', studentGrade).replace(b"submissionID",submissionID)
             newTemplate += t
     finalTeamplate += newTemplate
     finalTeamplate += endData
@@ -247,19 +262,23 @@ def buidQuiz():
         full_quiz = []
         quizname = dict.get("Quiz_name")[0]
 
+        teacher_name = dict.get("name")[0]
 
         i = 3
-
+        print("keylist: ",key_list)
         while i < (dic_length-2):
             time.sleep(1)
             type = dict.get(key_list[i+1])[0]
-            print("while",i,type)
+
             if type == "Multiple_Choice":
 
                 question = {"question": dict.get(key_list[i])}
                 question_type = {"type":type}
-                answer = {"answer": dict.get(key_list[i + 3])}
+
                 point = {"point": dict.get(key_list[i + 2])}
+
+                answer = {"answer": dict.get(key_list[i + 3])}
+                print(question,answer,point)
                 a = {"choice_A": dict.get(key_list[i + 4])}
                 b = {"choice_B": dict.get(key_list[i + 5])}
                 c = {"choice_C": dict.get(key_list[i + 6])}
@@ -295,12 +314,14 @@ def buidQuiz():
         hr = dict.get('Time_Limit_hr')[0]
         min = dict.get('Time_Limit_min')[0]
 
+        print("quiz: ",quiz)
         if dict.get('build quiz') is None:
-
+            print("add question: ",full_quiz)
             f = open("templates/teacher_quiz_generate.html", "r")
             t = ""
             for line in f:
                 t += line
+            t = t.replace("teacher_name",teacher_name)
             start_pos = t.find('<label>Question1 <input type = "text" name = "Question_1" size="120"/></label >')
             end_pos = t.find(' <p><input type = "submit" value = "Build Quiz" name="build quiz"/></p >')  # security risk
             quiz_template = ""
@@ -313,7 +334,7 @@ def buidQuiz():
             time_min_template = '<input type = "text" id="time_limit_min" name = "Time_Limit_min" size="100" value="'+min+'"style="display: inline-block;width: 1%; min-width: 50px;" required/>'
 
             for q in full_quiz:
-                print("q:",q)
+
                 js_template += '<script>' + '\n'
                 js_template += 'var x'+str(i)+' = document.getElementById("option' + str(i) + '");'+'\n'
                 js_template += 'x'+str(i)+'.addEventListener("change", myFunction'+str(i)+');'+'\n'
@@ -358,9 +379,9 @@ def buidQuiz():
                     # quiz_template += '<option  value="Short_Answer">Short Answer</option>' + '\n'
                     # quiz_template += '<option  value="True_or_False" >T/F Question </option>' + '\n'
                     quiz_template += '</select><br>' + '\n'
+                    quiz_template += '<label>Point Worth : <input type = "text" name = "Point_' + str(i) + '" size="12" value="'+ q.get("point")[0]+'"/></label ><br>' + '\n'
                     quiz_template += '<label>Answer : <input type = "text" name = "Answer_' + str(i) + '" size="12" value="' + q.get("answer")[0]+'"/></label ><br>' + '\n'
                     # print("point: ",q.get("point"))
-                    quiz_template += '<label>Point Worth : <input type = "text" name = "Point_' + str(i) + '" size="12" value="'+ q.get("point")[0]+'"/></label ><br>' + '\n'
                     quiz_template += '<br>' + '\n'
                     quiz_template += '<p id="question_content'+str(i)+'">' + '\n'
                     quiz_template += '</p>' + '\n'
@@ -483,12 +504,7 @@ def buidQuiz():
             start_pos = t.find("<p>Passcode: (Newest on the top)</p>") + len("<p>Passcode: (Newest on the top)</p>")
             template = t[:start_pos] + "\r" + passcode + t[start_pos + 1:]
             json_quiz = json.dumps(full_quiz)
-
-            url = request.url
-            start_pos = url.find('=')
-            teacher_name = ""
-            for i in range(start_pos + 1, len(url)):
-                teacher_name += url[i]
+            print("build quiz: ",full_quiz)
             DataBase.insert_quiz((passcode, teacher_name, quizname, json_quiz))
 
             return template
@@ -566,7 +582,7 @@ def user():
 
 
 if __name__ == '__main__':
-
+    DataBase.print_submission_table()
     DataBase.creat_user_table()
     DataBase.print_score_record_table()
     app.run(host='0.0.0.0', port=9377, debug=True)
