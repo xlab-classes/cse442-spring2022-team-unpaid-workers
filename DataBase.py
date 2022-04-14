@@ -338,6 +338,43 @@ def delete_user_table():
     mycursor = db.cursor()
     mycursor.execute("DROP TABLE user")
 
+def print_submission_table():
+    db = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
+    )
+    # db = mysql.connector.connect(
+    #     host="oceanus",
+    #     user="tingjiez",
+    #     passwd="50380202",
+    #     database="tingjiez_db"
+    # )
+
+    mycursor = db.cursor()
+    mycursor.execute('SELECT * FROM Submission')
+    for row in mycursor:
+        print(row)
+    print("print submission table successfully")
+
+def delete_submission_table():
+    db = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
+    )
+    # db = mysql.connector.connect(
+    #     host="oceanus",
+    #     user="tingjiez",
+    #     passwd="50380202",
+    #     database="tingjiez_db"
+    # )
+    mycursor = db.cursor()
+    mycursor.execute("DROP TABLE Submission")
+
+
 def makeScoreRecord():
     db = mysql.connector.connect(
         host="localhost",
@@ -404,6 +441,7 @@ def find_passcode_baseon_teacher_name(teacher_name):
         mycursor.execute('SELECT * FROM Quiz_Data')
         print("user_authentication check")
         for row in mycursor:
+            print("row: ",row)
             if row[1] == teacher_name:
                 list_of_passcode.append(row[0])
 
@@ -478,9 +516,7 @@ def getInformation():
     # )
     mycursor = db.cursor()
     try:
-        print("1")
         mycursor.execute("SELECT * FROM Score_Record")
-        print("2")
         myresult = mycursor.fetchall()
         print(myresult)
         return myresult
@@ -575,10 +611,12 @@ def get_studentAnswer_baseon_submissionID(id):
     # )
 
     mycursor = db.cursor()
+    create_Submission_table()
     print("checking studentAnswer")
     try:
         mycursor.execute('SELECT * FROM Submission')
         for row in mycursor:
+
             if row[3] == id:
                 return row[2]
         return None
