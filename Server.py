@@ -19,43 +19,109 @@ def index():
     DataBase.print_user_table()
     return render_template("index.html")
 
+@app.route('/aboutUS', methods=['POST', 'GET'])
+def aboutUS():
+    return render_template('aboutUS.html')
+
 
 @app.route('/updateQuiz', methods=['POST', 'GET'])
 def updateQuiz():
     data = dict(request.form)
-    print(data)
-    pass
+
+    newScore = 0
+    i = 0
+    name,passcode = DataBase.get_studentName_And_passcode_baseon_submissionID(data['ID'])
+    student_answer = json.loads(DataBase.get_studentAnswer_baseon_submissionID(data['ID']))
+
+    print("answer: ",student_answer)
+
+    for k,v in data.items():
+        if k != 'ID' and k != 'Update Quiz' and k!='username':
+            newScore += int(v)
+            print(i)
+            print(type(student_answer))
+            print( type(student_answer[i][3]))
+            print(type(student_answer[i]))
+            student_answer[i][3] = v
+            i += 1
+
+    print("ret: ",DataBase.update_student_quiz(json.dumps(student_answer),data['ID']))
 
 
-@app.route('/submission/<id>', methods=['POST', 'GET'])
-def studentSubmission(id):
+    DataBase.update_student_quizscore(name,passcode,newScore)
+    username = data.get("username")
+    role = DataBase.get_role_baseon_name(username)
+
+
+
+    if role == "Student":
+        return redirect("/student_gradebook/"+username, code=301)
+    else:
+        return redirect("/teacher_grade_book/"+username, code=301)
+
+@app.route('/submission/<role>/<id>', methods=['POST', 'GET'])
+def studentSubmission(role,id):
+
     # submission = {"question1":["actual answer","sudent answer","point receive","point worth"]}
     submission_str = DataBase.get_studentAnswer_baseon_submissionID(id)
-    submission = json.loads(submission_str)
-    with open("templates/submission.html", "r") as f:
-        t = f.read()
-    template = ""
-    i = 0
-    startPos = t.find("<h3>{{Question_Name}}: </h3>")
-    endPos = t.find('<p><input type = "submit" value = "Update" name="Update Quiz"/></p >')
-    print("subm:",submission)
-    print("type: ",type(submission))
-    for s in submission:
-        print("s: ",s)
-        i+=1
-        questionName = s[0]
-        actual_answer = s[1]
-        student_answer = s[2]
-        point_receive = s[3]
-        point_worth = s[4]
-        template += "<h3>" + str(i) + ". " + questionName + "</h3>" + "\n"
-        template += "<p>Correct Answer: " + actual_answer + "</p >" + "\n"
-        template += "<p>Student Answer: " + student_answer + "</p >" + "\n"
-        template += "<label>Point Worth : <input type = \"text\" name = \"Choice" + str(i)+"\" size=\"3\" value=\""+ point_receive + "\" />/" + point_worth + "</label>" + "\n"
-        template += "<br>" + "\n" + "<br>" + "\n"
+    print("id",id)
+    if role == "student":
+        submission = json.loads(submission_str)
+        with open("templates/submission.html", "r") as f:
+            t = f.read()
+        t = t.replace("submissionID",id)
+        template = ""
+        i = 0
+        startPos = t.find("<h3>{{Question_Name}}: </h3>")
+        endPos = t.find('<input value="username123" name="username" hidden>')
+        print("subm:",submission)
+        print("type: ",type(submission))
+        for s in submission:
+            i+=1
+            questionName = s[0]
+            actual_answer = s[1]
+            student_answer = s[2]
+            point_receive = s[3]
+            point_worth = s[4]
+            template += "<h3>" + str(i) + ". " + questionName + "</h3>" + "\n"
+            template += "<p>Correct Answer: " + actual_answer + "</p >" + "\n"
+            template += "<p>Student Answer: " + student_answer + "</p >" + "\n"
+            template += "<label>Point Worth : <input type = \"text\" name = \"Choice" + str(i)+"\" size=\"3\" value=\""+ point_receive + "\" readonly/>/" + point_worth + "</label>" + "\n"
+            template += "<br>" + "\n" + "<br>" + "\n"
 
-    final_temp = t[:startPos] + template + t[endPos:]
-    return final_temp
+        name = DataBase.get_studentName_And_passcode_baseon_submissionID(id)[0]
+        final_temp = t[:startPos] + template + t[endPos:]
+        final_temp = final_temp.replace("username123",name)
+        return final_temp
+
+    else:
+        submission = json.loads(submission_str)
+        with open("templates/submission.html", "r") as f:
+            t = f.read()
+        t = t.replace("submissionID",id)
+        template = ""
+        i = 0
+        startPos = t.find("<h3>{{Question_Name}}: </h3>")
+        endPos = t.find('<input value="username123" name="username" hidden>')
+        print("type: ",type(submission))
+        for s in submission:
+            print("s: ",s)
+            i+=1
+            questionName = s[0]
+            actual_answer = s[1]
+            student_answer = s[2]
+            point_receive = s[3]
+            point_worth = s[4]
+            template += "<h3>" + str(i) + ". " + questionName + "</h3>" + "\n"
+            template += "<p>Correct Answer: " + actual_answer + "</p >" + "\n"
+            template += "<p>Student Answer: " + student_answer + "</p >" + "\n"
+            template += "<label>Point Worth : <input type = \"text\" name = \"Choice" + str(i)+"\" size=\"3\" value=\""+ point_receive + "\" />/" + point_worth + "</label>" + "\n"
+            template += "<br>" + "\n" + "<br>" + "\n"
+        passcode = DataBase.get_passcode_baseon_submissionID(id)
+        name = DataBase.get_teacherName_baseon_passcode(passcode)
+        final_temp = t[:startPos] + template + t[endPos:]
+        final_temp = final_temp.replace("username123",name)
+        return final_temp
 
 
 @app.route('/quiz_submit', methods=['POST', 'GET'])
@@ -68,7 +134,8 @@ def quiz_submit():
         passcode = data.get("passcode")
 
         quizName = DataBase.obtainQuizName(passcode)
-        json_quiz = DataBase.find_quiz_data(passcode)
+        json_quiz = DataBase.find_quiz_data(passcode)[0]
+        print("json quiz:",json_quiz[0])
         quiz = json.loads(json_quiz)
         student_score = 0
         print("quiz:",quiz)
@@ -102,11 +169,6 @@ def quiz_submit():
             student_score) + "<p>"
         final_template = t[:start_pos] + score_template + t[start_pos + 1:]
         return final_template
-    else:
-        return "quiz"
-
-
-
 
 
 @app.route('/student_gradebook/<name>', methods=['GET', 'POST'])
@@ -119,13 +181,15 @@ def studentGrade(name):
     front_data = t[:start_pos]
     end_data = t[end_pos + len("{{END LOOP}}"):]
     templates = t[start_pos + len("{{Begin Loop}}"):end_pos]
-    print('list_of_gradebook:', list_of_gradebook)
+
     newTemp = ''
+
     for grade_book in list_of_gradebook:
-        print('Hello')
+
         quiz_name = grade_book[0]
         score = grade_book[1]
-        s = templates.replace('{{Quiz Name}}', quiz_name).replace('{{Total Point}}', score)
+        submissionID = grade_book[2]
+        s = templates.replace('QuizName', quiz_name).replace('{{Total Point}}', score).replace('role','student').replace('submissionID',submissionID)
         newTemp += s
     front_data += newTemp
     front_data += end_data
@@ -138,7 +202,6 @@ def teacherGrade(name):
     list_of_passcode = DataBase.find_passcode_baseon_teacher_name(name)
 
     allInformation = DataBase.getInformation()
-
 
     newTemplate = b''
     with open('templates/teacher_grade_book.html', 'rb') as s:
@@ -157,8 +220,9 @@ def teacherGrade(name):
             studentGrade = x[2].encode()
             submissionID = x[4].encode()
             t = template.replace(b'{{QuizName}}', quizname).replace(b'{{StudentName}}', studentname).replace(
-                b'{{StudentGrade}}', studentGrade).replace(b"submissionID",submissionID)
+                b'{{StudentGrade}}', studentGrade).replace(b"submissionID",submissionID).replace(b"role",b"teacher")
             newTemplate += t
+
     finalTeamplate += newTemplate
     finalTeamplate += endData
     return finalTeamplate
@@ -166,6 +230,7 @@ def teacherGrade(name):
 
 @app.route('/accessQuiz', methods=['POST', 'GET'])
 def accessQuiz():
+
     if request.method == "POST":
         data = ImmutableMultiDict(request.form)
 
@@ -174,7 +239,9 @@ def accessQuiz():
         studentName = dict.get("User Name")[0]
 
         DataBase.print_passcode()
-        json_quiz = DataBase.find_quiz_data(passcode)
+
+        json_quiz,time_limit = DataBase.find_quiz_data(passcode)
+        print("time:", time_limit)
 
         if json_quiz is None:
             return "passcode " + str(passcode) + "is not exist in the database"
@@ -186,9 +253,10 @@ def accessQuiz():
         for line in f:
             final_template += line
 
+        final_template = final_template.replace("999999",time_limit)
         start_pos = final_template.find("<p>Question1:</p>")
-        end_pos = final_template.find("<input type=\"submit\" value=\"Submit\">")
-
+        end_pos = final_template.find('<input type="submit" value="Submit" >')
+        print("end_pos ",end_pos)
         quiz_number = 0
 
         for quiz in full_quiz:
@@ -197,7 +265,6 @@ def accessQuiz():
             question_type = quiz.get("type")
             answer = quiz.get('answer')[0]
             point = quiz.get('point')[0]
-
 
             if question_type == "Multiple_Choice":
 
@@ -247,7 +314,7 @@ def accessQuiz():
 
         return final_template
 
-    return "quiz"
+
 
 @app.route('/buildQuiz', methods=['POST', 'GET'])
 def buidQuiz():
@@ -257,17 +324,24 @@ def buidQuiz():
         data = ImmutableMultiDict(request.form)
 
         dict = data.to_dict(flat=False)
+        hr = dict.get("hr")
+        min = dict.get("min")
+
         dic_length = len(dict)
         key_list = list(dict)
         full_quiz = []
         quizname = dict.get("Quiz_name")[0]
+        hr = dict.get('Time_Limit_hr')[0]
+
+        min = dict.get('Time_Limit_min')[0]
 
         teacher_name = dict.get("name")[0]
-
+        print(dict)
+        print("teachername: ",teacher_name)
         i = 3
         print("keylist: ",key_list)
         while i < (dic_length-2):
-            time.sleep(1)
+
             type = dict.get(key_list[i+1])[0]
 
             if type == "Multiple_Choice":
@@ -311,8 +385,7 @@ def buidQuiz():
                 i += 4
 
         name = dict.get('Quiz_name')[0]
-        hr = dict.get('Time_Limit_hr')[0]
-        min = dict.get('Time_Limit_min')[0]
+
 
         print("quiz: ",quiz)
         if dict.get('build quiz') is None:
@@ -504,9 +577,16 @@ def buidQuiz():
             start_pos = t.find("<p>Passcode: (Newest on the top)</p>") + len("<p>Passcode: (Newest on the top)</p>")
             template = t[:start_pos] + "\r" + passcode + t[start_pos + 1:]
             json_quiz = json.dumps(full_quiz)
-            print("build quiz: ",full_quiz)
-            DataBase.insert_quiz((passcode, teacher_name, quizname, json_quiz))
 
+
+            time_limit = (int(hr)*3600+int(min)*60)*1000
+
+            DataBase.insert_quiz((passcode, teacher_name, quizname, json_quiz,str(time_limit)))
+            DataBase.print_Quiz_Data()
+            print("find ",template.find("teacher_name"))
+            print(teacher_name)
+            template = template.replace('/teacher_grade_book','/teacher_grade_book/'+teacher_name)
+            template = template.replace("teacher_name", teacher_name)
             return template
     else:
         data = ImmutableMultiDict(request.form)
@@ -582,7 +662,10 @@ def user():
 
 
 if __name__ == '__main__':
+
+    DataBase.create_Submission_table()
     DataBase.print_submission_table()
     DataBase.creat_user_table()
     DataBase.print_score_record_table()
+
     app.run(host='0.0.0.0', port=9377, debug=True)
