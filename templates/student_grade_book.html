@@ -51,28 +51,56 @@
         .stylebox{
             /*width: 320px;*/
             padding: 0px;
-            border: 5px solid gray;
             margin: 0;
         }
 
         .box {
-            float: left;
-            width: 25%;
+            float: center;
+            width: 30%;
             padding: 50px;
+        <!--            border: 5px dotted MediumSeaGreen;-->
+
+        }
+        .right_box {
+            float: right;
+            width: 50%;
+            padding: auto;
+        <!--            border: 5px solid gray;-->
+        }
+        .left_box {
+            float: left;
+            width: 50%;
+            padding:auto;
         }
 
         .clearfix::after {
             content: "";
             clear: both;
             display: table;
+
         }
         #logo {
             text-align:center;
             color: #FEFAD7;
         }
-        #txt{
-            resize: none;
+        .center {
+        <!--        border: 5px solid #FFFF00;-->
+            text-align: center;
         }
+        pp {
+            text-align: -webkit-match-parent;
+            line-height: 50px;
+            width: 10%;
+            float: left;
+        }
+        table, th, td {
+            border: 1px solid black;
+            text-align: center;
+        }
+        h3 {
+            text-decoration: underline;
+        }
+
 
 
     </style>
@@ -89,11 +117,12 @@
         <div id="myNavbar">
             <ul class="nav navbar-nav">
 
-                <li> <a href="#"><p> Home</p> </a>   </li> <!--replace # to another url -->
-                <li><a href="#" ><p> {% print(s) %}</p></a></li> <!--replace # to another url -->
+                <li> <a href="#"><p> Home</p> </a>   </li>    <!--replace # to another url -->
+                <li><a href="#" ><p> Join new Class</p></a> </li>   <!--replace # to another url -->
+                <li><a href="#" ><p> Grades</p></a> </li>   <!--replace # to another url -->
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">sign out</a></li>
+                <li><a href="/">sign out</a></li>
             </ul>
         </div>
     </div>
@@ -102,45 +131,38 @@
 
 <div class="container-fluid text-center">
     <div class="row content">
-        <div class="col-sm-2 sidenav">
+        <div class="col-lg-6 text-left">
+            <div class="stylebox">
+                <h1>Grade Results</h1>
+                <!--                <form action="/buildQuiz" method="GET">-->
+                <!--                    <input type="submit" value="Make Quiz" />-->
+            </div>
         </div>
-        <div class="col-sm-8 text-left">
-
-            <hr>
-
-            <form action="http://localhost:9377/buildQuiz" method="POST">
-                <p>Question1 <input type = "text" name = "Question_1" size="120"/></p>
-                <p>Answer <input type = "text" name = "Answer_1" size="12"/></p>
-                <p>Point Worth <input type = "text" name = "Point_1" size="12"/></p>
-                <p>ChoiceA <input type = "text" name = "Choice_A_1" size="120" /></p>
-                <p>ChoiceB <input type = "text" name = "Choice_B_1" size="120"/></p>
-                <p>ChoiceC <input type = "text" name = "Choice_C_1" size="120"/></p>
-                <p>ChoiceD <input type = "text" name = "Choice_D_1" size="120"/></p>
-                <p><input type = "submit" value = "Build Quiz" name="build quiz"/></p>
-                <p><input type="submit" value="add Question" name="add question"/></p>
-
-
-            </form>
-
-
-        </div>
-        <div class="col-sm-2 sidenav">
-
-        </div>
-    </div>
-</div>
-
-<div class="container-fluid text-center">
-    <div class="row content">
-        <div class="col-sm-2 sidenav">
-        </div>
-        <div class="col-sm-8 text-left">
-        </div>
-        <div class="col-sm-2 sidenav">
-
+        <br>
+        <br/>
+        <div class="box">
+            <div class="pp">
+                <h3> Quiz Book</h3>
+            </div>
+            <div class="left_box">
+                <table style="width:100%">
+                    <tr>
+                        <th>quiz name</th>
+                        <th>point receive</th>
+                    </tr>
+                    {{Begin Loop}}
+                    <tr>
+                        <td><p><a href="/submission/role/submissionID">QuizName</a></p></td>
+                        <td>{{Total Point}}</td>
+                    </tr>
+                    {{END LOOP}}
+                </table>
+            </div>
         </div>
     </div>
 </div>
+
+
 
 
 <footer class="container-fluid text-center">
