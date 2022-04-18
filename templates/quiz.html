@@ -9,9 +9,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script>
         // Set the date we're counting down to
-
         var countDownDate = new Date().getTime();
-        countDownDate += input_time //note 1000 is 1 s Also need to replace 1000 with user count
+        countDownDate += 999999 //note 1000 is 1 s Also need to replace 1000 with user count
         // Update the count down every 1 second
         var x = setInterval(function() {
 
@@ -28,14 +27,15 @@
             var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
             // Output the result in an element with id="demo"
-            document.getElementById("demo").innerHTML = days + "d " + hours + "h "
+            document.getElementById("timer").innerHTML = days + "d " + hours + "h "
                 + minutes + "m " + seconds + "s ";
 
             // If the count down is over, write some text
             if (distance < 0) {
-
                 clearInterval(x);
                 document.getElementById("timer").innerHTML = "EXPIRED";
+                let form = document.getElementById("submiteme");
+                form.submit();
             }
         }, 1000);
     </script>
@@ -116,7 +116,7 @@
     <div class="container-fluid">
         <div class="navbar-header">
             <h1 id="logo">Quiz <span style="color:#ffbb22">Hub</span></h1>
-            <p id="timer"></p>
+
         </div>
 
         <div id="myNavbar">
@@ -140,12 +140,13 @@
     <div class="row content">
         <div class="col-lg-6 text-left">
             <div class="stylebox">
+
                 <h1>Quizing...</h1>
 
                 <div class="clearfix">
                     <div class="box" style="background-color:#bbb">
-
-                        <form action="/quiz_submit" method="POST">
+                        <p id="timer"></p>
+                        <form action="/quiz_submit" method="POST"  id="submiteme">
                             <p>Question1:</p>
                             <input type="radio" id="A" name="A" value="A">
                             <label for="A">A</label><br>
@@ -156,7 +157,7 @@
                             <br>
 
                             <input value="passcode" name="passcode" hidden>
-                            <input type="submit" value="Submit">
+                            <input type="submit" value="Submit" >
                         </form>
 
 
