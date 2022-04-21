@@ -608,6 +608,7 @@ Passcode,TeacherName,QuizName,Quiz, TimeLimit   -> Get the quiz base on the pass
 
 
 
+
 Table3  Score_Record    
 studentName,QuizName,score,passcode,submissionID   -> record score
 
