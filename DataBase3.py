@@ -1,7 +1,12 @@
 from mysql.connector import(connection)
 import mysql.connector
 
-
+# db = mysql.connector.connect(
+#     host="localhost",
+#     user="root",
+#     passwd="ubcse442",
+#     database="QuizHub"
+# )
 db = mysql.connector.connect(
     host="oceanus.cse.buffalo.edu",
     user="tingjiez",
@@ -14,13 +19,18 @@ mycursor.execute("CREATE DATABASE IF NOT EXISTS tingjiez_db")
 
 
 def print_user_table():
-
     db = mysql.connector.connect(
-        host="oceanus",
-        user="tingjiez",
-        passwd="50380202",
-        database="tingjiez_db"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+    # db = mysql.connector.connect(
+    #     host="oceanus",
+    #     user="tingjiez",
+    #     passwd="50380202",
+    #     database="tingjiez_db"
+    # )
 
     mycursor = db.cursor()
     mycursor.execute('SELECT * FROM user')
@@ -30,13 +40,18 @@ def print_user_table():
 
 
 def creat_user_table():
-
     db = mysql.connector.connect(
-        host="oceanus",
-        user="tingjiez",
-        passwd="50380202",
-        database="tingjiez_db"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+    # db = mysql.connector.connect(
+    #     host="oceanus",
+    #     user="tingjiez",
+    #     passwd="50380202",
+    #     database="tingjiez_db"
+    # )
 
     mycursor = db.cursor()
 
@@ -47,13 +62,18 @@ def creat_user_table():
 
 
 def insert_user(tuple):
-
     db = mysql.connector.connect(
-        host="oceanus",
-        user="tingjiez",
-        passwd="50380202",
-        database="tingjiez_db"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+    # db = mysql.connector.connect(
+    #     host="oceanus",
+    #     user="tingjiez",
+    #     passwd="50380202",
+    #     database="tingjiez_db"
+    # )
 
     mycursor = db.cursor()
     try:
@@ -69,11 +89,17 @@ def insert_user(tuple):
 def get_role_baseon_name(name):
 
     db = mysql.connector.connect(
-        host="oceanus",
-        user="tingjiez",
-        passwd="50380202",
-        database="tingjiez_db"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+    # db = mysql.connector.connect(
+    #     host="oceanus",
+    #     user="tingjiez",
+    #     passwd="50380202",
+    #     database="tingjiez_db"
+    # )
 
     mycursor = db.cursor()
     mycursor.execute('SELECT * FROM user')
@@ -84,13 +110,18 @@ def get_role_baseon_name(name):
 
 def username_is_not_exist(name):
     print(name)
-
     db = mysql.connector.connect(
-        host="oceanus",
-        user="tingjiez",
-        passwd="50380202",
-        database="tingjiez_db"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+    # db = mysql.connector.connect(
+    #     host="oceanus",
+    #     user="tingjiez",
+    #     passwd="50380202",
+    #     database="tingjiez_db"
+    # )
 
     mycursor = db.cursor()
     mycursor.execute('SELECT * FROM user')
@@ -101,13 +132,18 @@ def username_is_not_exist(name):
 
 
 def user_authentication(name, pw):
-
     db = mysql.connector.connect(
-        host="oceanus",
-        user="tingjiez",
-        passwd="50380202",
-        database="tingjiez_db"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+    # db = mysql.connector.connect(
+    #     host="oceanus",
+    #     user="tingjiez",
+    #     passwd="50380202",
+    #     database="tingjiez_db"
+    # )
 
     mycursor = db.cursor()
 
@@ -127,13 +163,18 @@ def user_authentication(name, pw):
 
 
 def create_quiz_table():
-
     db = mysql.connector.connect(
-        host="oceanus",
-        user="tingjiez",
-        passwd="50380202",
-        database="tingjiez_db"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+    # db = mysql.connector.connect(
+    #     host="oceanus",
+    #     user="tingjiez",
+    #     passwd="50380202",
+    #     database="tingjiez_db"
+    # )
 
     mycursor = db.cursor()
     mycursor.execute("CREATE TABLE IF NOT EXISTS Quiz_Data (Passcode VARCHAR(10),"
@@ -144,13 +185,18 @@ def create_quiz_table():
                      "_ID int PRIMARY key AUTO_INCREMENT)")
 
 def print_Quiz_Data():
-
     db = mysql.connector.connect(
-        host="oceanus",
-        user="tingjiez",
-        passwd="50380202",
-        database="tingjiez_db"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+    # db = mysql.connector.connect(
+    #     host="oceanus",
+    #     user="tingjiez",
+    #     passwd="50380202",
+    #     database="tingjiez_db"
+    # )
 
     mycursor = db.cursor()
     mycursor.execute('SELECT * FROM Quiz_Data')
@@ -159,13 +205,18 @@ def print_Quiz_Data():
     print("print table Quiz_Data successfully")
 
 def insert_quiz(tuple):
-
     db = mysql.connector.connect(
-        host="oceanus",
-        user="tingjiez",
-        passwd="50380202",
-        database="tingjiez_db"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+    # db = mysql.connector.connect(
+    #     host="oceanus",
+    #     user="tingjiez",
+    #     passwd="50380202",
+    #     database="tingjiez_db"
+    # )
 
     mycursor = db.cursor()
 
@@ -178,13 +229,18 @@ def insert_quiz(tuple):
         print("insert question failed")
 
 def find_quiz_name(passcode):
-
     db = mysql.connector.connect(
-        host="oceanus",
-        user="tingjiez",
-        passwd="50380202",
-        database="tingjiez_db"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+    # db = mysql.connector.connect(
+    #     host="oceanus",
+    #     user="tingjiez",
+    #     passwd="50380202",
+    #     database="tingjiez_db"
+    # )
     mycursor = db.cursor()
 
     try:
@@ -198,13 +254,19 @@ def find_quiz_name(passcode):
         print("check quiz name failed")
 
 def find_quiz_data(passcode):
-
     db = mysql.connector.connect(
-        host="oceanus",
-        user="tingjiez",
-        passwd="50380202",
-        database="tingjiez_db"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+
+    # db = mysql.connector.connect(
+    #     host="oceanus",
+    #     user="tingjiez",
+    #     passwd="50380202",
+    #     database="tingjiez_db"
+    # )
 
     mycursor = db.cursor()
 
@@ -221,13 +283,18 @@ def find_quiz_data(passcode):
         print("check quiz data failed")
 
 def print_passcode():
-
     db = mysql.connector.connect(
-        host="oceanus",
-        user="tingjiez",
-        passwd="50380202",
-        database="tingjiez_db"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+    # db = mysql.connector.connect(
+    #     host="oceanus",
+    #     user="tingjiez",
+    #     passwd="50380202",
+    #     database="tingjiez_db"
+    # )
 
     mycursor = db.cursor()
     mycursor.execute('SELECT * FROM Quiz_Data')
@@ -238,47 +305,67 @@ def print_passcode():
 
 
 def delete_score_record_table():
-
     db = mysql.connector.connect(
-        host="oceanus",
-        user="tingjiez",
-        passwd="50380202",
-        database="tingjiez_db"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+    # db = mysql.connector.connect(
+    #     host="oceanus",
+    #     user="tingjiez",
+    #     passwd="50380202",
+    #     database="tingjiez_db"
+    # )
     mycursor = db.cursor()
     mycursor.execute("DROP TABLE Score_Record")
 
 def delete_quiz_data_table():
-
     db = mysql.connector.connect(
-        host="oceanus",
-        user="tingjiez",
-        passwd="50380202",
-        database="tingjiez_db"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+    # db = mysql.connector.connect(
+    #     host="oceanus",
+    #     user="tingjiez",
+    #     passwd="50380202",
+    #     database="tingjiez_db"
+    # )
 
     mycursor = db.cursor()
     mycursor.execute("DROP TABLE Quiz_Data")
 
 def delete_user_table():
-
     db = mysql.connector.connect(
-        host="oceanus",
-        user="tingjiez",
-        passwd="50380202",
-        database="tingjiez_db"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+    # db = mysql.connector.connect(
+    #     host="oceanus",
+    #     user="tingjiez",
+    #     passwd="50380202",
+    #     database="tingjiez_db"
+    # )
     mycursor = db.cursor()
     mycursor.execute("DROP TABLE user")
 
 def print_submission_table():
-
     db = mysql.connector.connect(
-        host="oceanus",
-        user="tingjiez",
-        passwd="50380202",
-        database="tingjiez_db"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+    # db = mysql.connector.connect(
+    #     host="oceanus",
+    #     user="tingjiez",
+    #     passwd="50380202",
+    #     database="tingjiez_db"
+    # )
 
     mycursor = db.cursor()
     mycursor.execute('SELECT * FROM Submission')
@@ -287,42 +374,57 @@ def print_submission_table():
     print("print submission table successfully")
 
 def delete_submission_table():
-
     db = mysql.connector.connect(
-        host="oceanus",
-        user="tingjiez",
-        passwd="50380202",
-        database="tingjiez_db"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+    # db = mysql.connector.connect(
+    #     host="oceanus",
+    #     user="tingjiez",
+    #     passwd="50380202",
+    #     database="tingjiez_db"
+    # )
     mycursor = db.cursor()
     mycursor.execute("DROP TABLE Submission")
 
 
 def makeScoreRecord():
-
     db = mysql.connector.connect(
-        host="oceanus",
-        user="tingjiez",
-        passwd="50380202",
-        database="tingjiez_db"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+    # db = mysql.connector.connect(
+    #     host="oceanus",
+    #     user="tingjiez",
+    #     passwd="50380202",
+    #     database="tingjiez_db"
+    # )
 
     mycursor = db.cursor()
     mycursor.execute("CREATE TABLE IF NOT EXISTS Score_Record (studentName VARCHAR(2048),"
-                     "QuizName VARCHAR(2048),"
-                     "score VARCHAR(2048),"
-                     "Passcode VARCHAR (10),"
-                     "SubmissionID VARCHAR (10),"
-                     "_ID int PRIMARY key AUTO_INCREMENT)")
+                 "QuizName VARCHAR(2048),"
+                 "score VARCHAR(2048),"
+                 "Passcode VARCHAR (10),"
+                 "SubmissionID VARCHAR (10),"    
+                 "_ID int PRIMARY key AUTO_INCREMENT)")
 
 def insertScoreRecord(studentName,QuizName,score,passcode,SubmissionID):
-
     db = mysql.connector.connect(
-        host="oceanus",
-        user="tingjiez",
-        passwd="50380202",
-        database="tingjiez_db"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+    # db = mysql.connector.connect(
+    #     host="oceanus",
+    #     user="tingjiez",
+    #     passwd="50380202",
+    #     database="tingjiez_db"
+    # )
     makeScoreRecord()
     mycursor = db.cursor()
     try:
@@ -335,13 +437,18 @@ def insertScoreRecord(studentName,QuizName,score,passcode,SubmissionID):
         print("Insert Student Record Fail")
 
 def find_passcode_baseon_teacher_name(teacher_name):
-
     db = mysql.connector.connect(
-        host="oceanus",
-        user="tingjiez",
-        passwd="50380202",
-        database="tingjiez_db"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+    # db = mysql.connector.connect(
+    #     host="oceanus",
+    #     user="tingjiez",
+    #     passwd="50380202",
+    #     database="tingjiez_db"
+    # )
     mycursor = db.cursor()
     list_of_passcode = []
 
@@ -358,13 +465,18 @@ def find_passcode_baseon_teacher_name(teacher_name):
         print("check find_gradebook_baseon_teacher_name failed")
 
 def find_gradebook_baseon_name(name):
-
     db = mysql.connector.connect(
-        host="oceanus",
-        user="tingjiez",
-        passwd="50380202",
-        database="tingjiez_db"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+    # db = mysql.connector.connect(
+    #     host="oceanus",
+    #     user="tingjiez",
+    #     passwd="50380202",
+    #     database="tingjiez_db"
+    # )
     makeScoreRecord()
     mycursor = db.cursor()
     mycursor.execute('SELECT * FROM Score_Record')
@@ -375,13 +487,18 @@ def find_gradebook_baseon_name(name):
     return all_gradebook
 
 def print_score_record_table():
-
     db = mysql.connector.connect(
-        host="oceanus",
-        user="tingjiez",
-        passwd="50380202",
-        database="tingjiez_db"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+    # db = mysql.connector.connect(
+    #     host="oceanus",
+    #     user="tingjiez",
+    #     passwd="50380202",
+    #     database="tingjiez_db"
+    # )
     makeScoreRecord()
     mycursor = db.cursor()
     mycursor.execute('SELECT * FROM Score_Record')
@@ -390,13 +507,18 @@ def print_score_record_table():
     print("print table Score_Record successfully")
 
 def getInformation():
-
     db = mysql.connector.connect(
-        host="oceanus",
-        user="tingjiez",
-        passwd="50380202",
-        database="tingjiez_db"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+    # db = mysql.connector.connect(
+    #     host="oceanus",
+    #     user="tingjiez",
+    #     passwd="50380202",
+    #     database="tingjiez_db"
+    # )
     mycursor = db.cursor()
     try:
         mycursor.execute("SELECT * FROM Score_Record")
@@ -408,13 +530,18 @@ def getInformation():
 
 def obtainQuizName(passcode):
 
-
     db = mysql.connector.connect(
-        host="oceanus",
-        user="tingjiez",
-        passwd="50380202",
-        database="tingjiez_db"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+    # db = mysql.connector.connect(
+    #     host="oceanus",
+    #     user="tingjiez",
+    #     passwd="50380202",
+    #     database="tingjiez_db"
+    # )
     mycursor = db.cursor()
 
     try:
@@ -430,29 +557,39 @@ def obtainQuizName(passcode):
 
 
 def create_Submission_table():
+    # db = mysql.connector.connect(
+    #     host="oceanus",
+    #     user="tingjiez",
+    #     passwd="50380202",
+    #     database="tingjiez_db"
+    # )
     db = mysql.connector.connect(
-        host="oceanus",
-        user="tingjiez",
-        passwd="50380202",
-        database="tingjiez_db"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
-
     mycursor = db.cursor()
     mycursor.execute("CREATE TABLE IF NOT EXISTS Submission (studentName VARCHAR(32),"
-                     "passcode VARCHAR(10),"
-                     "studentAnswer VARCHAR(2048),"
-                     "submissionID VARCHAR (10),"
-                     "_ID int PRIMARY key AUTO_INCREMENT)")
+                 "passcode VARCHAR(10),"
+                 "studentAnswer VARCHAR(2048),"
+                 "submissionID VARCHAR (10),"
+                 "_ID int PRIMARY key AUTO_INCREMENT)")
 
 
 def insertSubmission(studentName,passcode,studentAnwer,submissionID):
-
     db = mysql.connector.connect(
-        host="oceanus",
-        user="tingjiez",
-        passwd="50380202",
-        database="tingjiez_db"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+    # db = mysql.connector.connect(
+    #     host="oceanus",
+    #     user="tingjiez",
+    #     passwd="50380202",
+    #     database="tingjiez_db"
+    # )
     create_Submission_table()
     mycursor = db.cursor()
     try:
@@ -465,13 +602,18 @@ def insertSubmission(studentName,passcode,studentAnwer,submissionID):
         print("Insert submission Fail")
 
 def get_passcode_baseon_submissionID(id):
-
     db = mysql.connector.connect(
-        host="oceanus",
-        user="tingjiez",
-        passwd="50380202",
-        database="tingjiez_db"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+    # db = mysql.connector.connect(
+    #     host="oceanus",
+    #     user="tingjiez",
+    #     passwd="50380202",
+    #     database="tingjiez_db"
+    # )
     makeScoreRecord()
     mycursor = db.cursor()
     mycursor.execute('SELECT * FROM Score_Record')
@@ -483,13 +625,18 @@ def get_passcode_baseon_submissionID(id):
     return None
 
 def update_student_quiz(new_quiz,submissionID):
-
     db = mysql.connector.connect(
-        host="oceanus",
-        user="tingjiez",
-        passwd="50380202",
-        database="tingjiez_db"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+    # db = mysql.connector.connect(
+    #     host="oceanus",
+    #     user="tingjiez",
+    #     passwd="50380202",
+    #     database="tingjiez_db"
+    # )
     try:
         #sql = "INSERT INTO Score_Record (studentName,QuizName,score,Passcode,SubmissionID) VALUES (%s,%s,%s,%s,%s)"
 
@@ -506,13 +653,18 @@ def update_student_quiz(new_quiz,submissionID):
 
 
 def update_student_quizscore(name,passcode,newScore):
-
     db = mysql.connector.connect(
-        host="oceanus",
-        user="tingjiez",
-        passwd="50380202",
-        database="tingjiez_db"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+    # db = mysql.connector.connect(
+    #     host="oceanus",
+    #     user="tingjiez",
+    #     passwd="50380202",
+    #     database="tingjiez_db"
+    # )
     try:
         #sql = "INSERT INTO Score_Record (studentName,QuizName,score,Passcode,SubmissionID) VALUES (%s,%s,%s,%s,%s)"
 
@@ -529,13 +681,18 @@ def update_student_quizscore(name,passcode,newScore):
         print("update score fail")
 
 def get_teacherName_baseon_passcode(passcode):
-
     db = mysql.connector.connect(
-        host="oceanus",
-        user="tingjiez",
-        passwd="50380202",
-        database="tingjiez_db"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+    # db = mysql.connector.connect(
+    #     host="oceanus",
+    #     user="tingjiez",
+    #     passwd="50380202",
+    #     database="tingjiez_db"
+    # )
     mycursor = db.cursor()
 
 
@@ -553,13 +710,18 @@ def get_teacherName_baseon_passcode(passcode):
 
 
 def get_studentName_And_passcode_baseon_submissionID(id):
-
     db = mysql.connector.connect(
-        host="oceanus",
-        user="tingjiez",
-        passwd="50380202",
-        database="tingjiez_db"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+    # db = mysql.connector.connect(
+    #     host="oceanus",
+    #     user="tingjiez",
+    #     passwd="50380202",
+    #     database="tingjiez_db"
+    # )
 
     mycursor = db.cursor()
     create_Submission_table()
@@ -575,13 +737,18 @@ def get_studentName_And_passcode_baseon_submissionID(id):
         print("check submission table failed")
 
 def get_studentAnswer_baseon_submissionID(id):
-
     db = mysql.connector.connect(
-        host="oceanus",
-        user="tingjiez",
-        passwd="50380202",
-        database="tingjiez_db"
+        host="localhost",
+        user="root",
+        passwd="ubcse442",
+        database="QuizHub"
     )
+    # db = mysql.connector.connect(
+    #     host="oceanus",
+    #     user="tingjiez",
+    #     passwd="50380202",
+    #     database="tingjiez_db"
+    # )
 
     mycursor = db.cursor()
     create_Submission_table()
@@ -605,7 +772,6 @@ Table1 users
 Table2  Quiz_Data
 Quiz -> {passcode,teachername,questions)
 Passcode,TeacherName,QuizName,Quiz, TimeLimit   -> Get the quiz base on the passcode
-
 
 
 
