@@ -7,88 +7,36 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <style>
-        /* Remove the navbar's default margin-bottom and rounded borders */
-        .navbar {
-            margin-bottom: 0;
-            border-radius: 0;
-            background-color: #321E0F;
-        }
-
-        /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-        .row.content {height: 450px}
-
-        /* Set gray background color and 100% height */
-        .sidenav {
-            padding-top: 20px;
-            background-color: #321E0F;
-            height: 100%;
-        }
-
-        /* Set black background color, white text and some padding */
-        footer {
-            position: fixed;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            background-color: #321E0F;
-            color: white;
-            text-align: center;
-        }
-
-        /* On small screens, set height to 'auto' for sidenav and grid */
-        @media screen and (max-width: 767px) {
-            .sidenav {
-                height: auto;
-                padding: 15px;
-            }
-            .row.content {height:auto;}
-        }
-        body{
-            background-color: #8C8757;
-        }
-        #logo {
-            text-align:center;
-            color: #FEFAD7;
-        }
-        #sign_in {
-
-            text-align:center;
-            color: #FEFAD7;
-        }
-        #option{
-            background-color: #8C8757;
-        }
-
-    </style>
+    <link rel="stylesheet" href="../static/cssFile.css">
 </head>
 <body>
 
+
+
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
-        <h1 id="logo">Quiz <span style="color:#ffbb22">Hub</span></h1>
+        <h1 id="logo">Quiz <span id="hub">Hub</span></h1>
     </div>
 </nav>
 
-
 <div class="container">
     <div class="row">
-        <div class="col-lg-12" id="sign_in">
+        <div class="col-lg-12" id="sign_in2">
             <h1>User Sign Up </h1>
             <form action="/Signup" method="post" enctype="multipart/form-data">
                 <form action="this username is exist" method="post">
-                <label for="fname">Username:</label>
-                <input style="color:#050505", type="text" id="fname" name="Name">
-                <label id="fname-error" style="display: none">username is existed, pick another one</label>
-                <br><br>
-                <label for="lname">Password:</label>
-                <input style="color:#050505", type="text" id="lname" name="Password"><br><br>
-                <select name="who" id="option">
-                <option value="Teacher">Teacher</option>
-                <option value="Student">Student</option>
-                </select>
-                <input type="submit" style="color:#8C8757" value="Submit">
-                <p><a href="/">Sign In</a></p>
+                    <label for="fname">Username:</label>
+                    <input style="color:#050505", type="text" id="fname" name="Name">
+                    <label id="fname-error" style="display: none">username is existed, pick another one</label>
+                    <br><br>
+                    <label for="lname">Password:</label>
+                    <input style="color:#050505", type="text" id="lname" name="Password"><br><br>
+                    <select name="who" id="option">
+                        <option value="Teacher">Teacher</option>
+                        <option value="Student">Student</option>
+                    </select>
+                    <input type="submit" style="color:#8C8757" value="Submit">
+                    <p><a href="/">Sign In</a></p>
                 </form>
             </form>
         </div>

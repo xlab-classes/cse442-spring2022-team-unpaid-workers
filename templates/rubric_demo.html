@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<style>
+    /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+    input.button, input.submit {
+        border: 1px outset blue;
+        background-color: lightBlue;
+    }
+
+    table tr tb{
+        display: inline-block;
+        padding: 5px;
+        text-align: center;
+        border: solid 1px;
+        margin: 1px;
+
+        height: 3em;
+        vertical-align: top;s
+    }
+</style>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div>
+    <input type="number" id="row_count">x
+    <input type="number" id="column_count">
+
+    <button onclick="buttonClicked()" id="update">update</button>
+</div>
+
+<form action="", method="post">
+    <table id="rubric"></table>
+    <input type="submit" value="Submit">
+</form>
+</body>
+
+<script>
+    let table = document.querySelector("#rubric")
+
+    function buttonClicked(){
+
+        table.innerHTML = ""
+        let row_count = parseInt(document.querySelector("input#row_count").value)
+        let column_count = parseInt(document.querySelector("input#column_count").value)
+
+        console.log(row_count, column_count)
+
+        /*let header = document.createElement("th")
+        for (let column = 0; column < column_count; column++){
+            let cell = document.createElement("tb")
+            cell.id = "cell-" + column + "-comment"
+            cell.innerHTML = "<input name='" + column + "-comment'/>"
+            header.appendChild(cell)
+        }
+        table.appendChild(header)
+        */
+
+
+        for(let row = 0; row < row_count; row++){
+            let row_element = document.createElement("tr")
+
+            for(let column = 0; column < column_count; column++){
+
+                let cell = document.createElement("tb")
+                cell.id = "cell-" + row + "-" + column
+
+                if (column !== 0) {
+                    cell.innerHTML = "<input id='check-" + row + "-" + column +  "' name='check-" + row + "-" + column +  "' type='checkbox'><br><input  id='input-" + row + "-" + column +  "' name='input-" + row + "-" + column +  "'/>"
+                } else {
+                    cell.innerHTML += "<textarea  id='input-" + row + "-" + column +  "' name='input-" + row + "-" + column +  "'/>"
+                }
+
+                row_element.append(cell)
+            }
+
+            table.append(row_element)
+        }
+    }
+</script>
+</html>

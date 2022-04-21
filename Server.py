@@ -154,6 +154,11 @@ def quiz_submit():
 
             idx += 1
         SubmissionID = ''.join(random.choices(string.ascii_lowercase, k=8))
+        print("data.get('studentName'): ", data.get('studentName'))
+        print("quizName: ", quizName)
+        print("student_score: ", student_score)
+        print("passcode: ", passcode)
+        print("SubmissionID: ", SubmissionID)
         DataBase.insertScoreRecord(data.get('studentName'),quizName,student_score,passcode,SubmissionID)
         DataBase.insertSubmission(data.get("studentName"),passcode,json.dumps(studentAnswer),SubmissionID)
 
@@ -239,7 +244,7 @@ def accessQuiz():
         studentName = dict.get("User Name")[0]
 
         DataBase.print_passcode()
-
+        print("find_quiz_data: ", DataBase.find_quiz_data(passcode))
         json_quiz,time_limit = DataBase.find_quiz_data(passcode)
         print("time:", time_limit)
 
@@ -331,18 +336,21 @@ def buidQuiz():
         key_list = list(dict)
         full_quiz = []
         quizname = dict.get("Quiz_name")[0]
-        hr = dict.get('Time_Limit_hr')[0]
+        print("CHECK: ", dict)
+        hr = dict.get('Time_Limit')[0]
 
-        min = dict.get('Time_Limit_min')[0]
+        min = dict.get('Time_Limit')[0]
 
         teacher_name = dict.get("name")[0]
         print(dict)
         print("teachername: ",teacher_name)
         i = 3
         print("keylist: ",key_list)
-        while i < (dic_length-2):
-
-            type = dict.get(key_list[i+1])[0]
+        while i < (dic_length-5):
+            print("while, i, dic_length - 2", i, dic_length - 2)
+            type = dict.get(key_list[i])[0]
+            print("dict: ", dict)
+            print("type: ", type)
 
             if type == "Multiple_Choice":
 
