@@ -324,6 +324,7 @@ def buidQuiz():
         data = ImmutableMultiDict(request.form)
 
         dict = data.to_dict(flat=False)
+        print("dictionary：",dict)
         hr = dict.get("hr")
         min = dict.get("min")
 
@@ -374,20 +375,24 @@ def buidQuiz():
                 i += 4
 
             elif type == "Short_Answer":
+
+
                 question = {"question": dict.get(key_list[i])}
                 question_type = {"type":type}
                 point = {"point": dict.get(key_list[i + 2])}
                 answer = {"answer": dict.get(key_list[i + 3])}
+
                 quiz = {}
                 for d in (question,question_type,answer, point):
                     quiz.update(d)
                 full_quiz.append(quiz)
+
                 i += 4
 
         name = dict.get('Quiz_name')[0]
 
 
-        print("quiz: ",quiz)
+
         if dict.get('build quiz') is None:
             print("add question: ",full_quiz)
             f = open("templates/teacher_quiz_generate.html", "r")
@@ -481,9 +486,9 @@ def buidQuiz():
                     quiz_template += '</p>' + '\n'
                     if q.get("answer") == "True":
                         quiz_template += '<label>True <input type = "radio" name = "T/F' + str(i) + '" size="120" value="True" checked/></label >' + '\n' + '<br>'
-                        quiz_template += '<label>False <input type = "radio" name = "T/F' + str(i) + '" size="120" value="False"/></label >' + '\n'
+                        quiz_template += '<label>False <input type = "radio" name = "T/F' + str(i) + '" size="120" value="False"></label >' + '\n'
                     else:
-                        quiz_template += '<label>True <input type = "radio" name = "T/F' + str(i) + '" size="120" value="True" /></label >' + '\n' + '<br>'
+                        quiz_template += '<label>True <input type = "radio" name = "T/F' + str(i) + '" size="120" value="True" ></label >' + '\n' + '<br>'
                         quiz_template += '<label>False <input type = "radio" name = "T/F' + str(i) + '" size="120" value="False" checked/></label >' + '\n'
                     quiz_template += '</p>' + '\n'
 
