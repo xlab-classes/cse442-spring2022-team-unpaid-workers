@@ -154,11 +154,6 @@ def quiz_submit():
 
             idx += 1
         SubmissionID = ''.join(random.choices(string.ascii_lowercase, k=8))
-        print("data.get('studentName'): ", data.get('studentName'))
-        print("quizName: ", quizName)
-        print("student_score: ", student_score)
-        print("passcode: ", passcode)
-        print("SubmissionID: ", SubmissionID)
         DataBase.insertScoreRecord(data.get('studentName'),quizName,student_score,passcode,SubmissionID)
         DataBase.insertSubmission(data.get("studentName"),passcode,json.dumps(studentAnswer),SubmissionID)
 
@@ -244,7 +239,7 @@ def accessQuiz():
         studentName = dict.get("User Name")[0]
 
         DataBase.print_passcode()
-        print("find_quiz_data: ", DataBase.find_quiz_data(passcode))
+
         json_quiz,time_limit = DataBase.find_quiz_data(passcode)
         print("time:", time_limit)
 
@@ -329,6 +324,7 @@ def buidQuiz():
         data = ImmutableMultiDict(request.form)
 
         dict = data.to_dict(flat=False)
+        print("dictionary：",dict)
         hr = dict.get("hr")
         min = dict.get("min")
 
@@ -336,65 +332,67 @@ def buidQuiz():
         key_list = list(dict)
         full_quiz = []
         quizname = dict.get("Quiz_name")[0]
-        print("CHECK: ", dict)
-        hr = dict.get('Time_Limit')[0]
+        hr = dict.get('Time_Limit_hr')[0]
 
-        min = dict.get('Time_Limit')[0]
+        min = dict.get('Time_Limit_min')[0]
 
         teacher_name = dict.get("name")[0]
         print(dict)
         print("teachername: ",teacher_name)
         i = 3
         print("keylist: ",key_list)
-        while i < (dic_length - 5):
-            print(dic_length)
-            print(dict)
-            print(i)
-            type = dict.get(key_list[i])[0]
+        while i < (dic_length-2):
+
+            type = dict.get(key_list[i+1])[0]
 
             if type == "Multiple_Choice":
 
                 question = {"question": dict.get(key_list[i])}
-                question_type = {"type": type}
+                question_type = {"type":type}
 
                 point = {"point": dict.get(key_list[i + 2])}
 
                 answer = {"answer": dict.get(key_list[i + 3])}
-                print(question, answer, point)
+                print(question,answer,point)
                 a = {"choice_A": dict.get(key_list[i + 4])}
                 b = {"choice_B": dict.get(key_list[i + 5])}
                 c = {"choice_C": dict.get(key_list[i + 6])}
                 d = {"choice_D": dict.get(key_list[i + 7])}
                 quiz = {}
-                for d in (question, question_type, answer, point, a, b, c, d):
+                for d in (question, question_type,answer, point, a, b, c, d):
                     quiz.update(d)
                 full_quiz.append(quiz)
                 i += 8
             elif type == "True_or_False":
                 question = {"question": dict.get(key_list[i])}
-                question_type = {"type": type}
+                question_type = {"type":type}
                 point = {"point": dict.get(key_list[i + 2])}
-                answer = {"answer": dict.get(key_list[i + 3])[0]}
+                answer = {"answer":dict.get(key_list[i + 3])[0]}
                 quiz = {}
-                for d in (question, question_type, point, answer):
+                for d in (question, question_type, point,answer):
                     quiz.update(d)
                 full_quiz.append(quiz)
                 i += 4
 
             elif type == "Short_Answer":
+
+
                 question = {"question": dict.get(key_list[i])}
-                question_type = {"type": type}
+                question_type = {"type":type}
                 point = {"point": dict.get(key_list[i + 2])}
                 answer = {"answer": dict.get(key_list[i + 3])}
+
                 quiz = {}
-                for d in (question, question_type, answer, point):
+                for d in (question,question_type,answer, point):
                     quiz.update(d)
                 full_quiz.append(quiz)
+
                 i += 4
 
         name = dict.get('Quiz_name')[0]
 
-        print("quiz: ",quiz)
+
+
         if dict.get('build quiz') is None:
             print("add question: ",full_quiz)
             f = open("templates/teacher_quiz_generate.html", "r")
@@ -488,9 +486,9 @@ def buidQuiz():
                     quiz_template += '</p>' + '\n'
                     if q.get("answer") == "True":
                         quiz_template += '<label>True <input type = "radio" name = "T/F' + str(i) + '" size="120" value="True" checked/></label >' + '\n' + '<br>'
-                        quiz_template += '<label>False <input type = "radio" name = "T/F' + str(i) + '" size="120" value="False"/></label >' + '\n'
+                        quiz_template += '<label>False <input type = "radio" name = "T/F' + str(i) + '" size="120" value="False"></label >' + '\n'
                     else:
-                        quiz_template += '<label>True <input type = "radio" name = "T/F' + str(i) + '" size="120" value="True" /></label >' + '\n' + '<br>'
+                        quiz_template += '<label>True <input type = "radio" name = "T/F' + str(i) + '" size="120" value="True" ></label >' + '\n' + '<br>'
                         quiz_template += '<label>False <input type = "radio" name = "T/F' + str(i) + '" size="120" value="False" checked/></label >' + '\n'
                     quiz_template += '</p>' + '\n'
 
