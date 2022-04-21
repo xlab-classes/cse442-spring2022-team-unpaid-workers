@@ -1,10 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+<style>
+    /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+    input.button, input.submit {
+        border: 1px outset blue;
+        background-color: lightBlue;
+    }
+
+    table tr tb{
+        display: inline-block;
+        padding: 5px;
+        text-align: center;
+        border: solid 1px;
+        margin: 1px;
+
+        height: 3em;
+        vertical-align: top;s
+    }
+</style>
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
+
 <div>
     <input type="number" id="row_count">x
     <input type="number" id="column_count">
@@ -12,8 +31,9 @@
     <button onclick="buttonClicked()" id="update">update</button>
 </div>
 
-<form action="">
+<form action="", method="post">
     <table id="rubric"></table>
+    <input type="submit" value="Submit">
 </form>
 </body>
 
@@ -48,7 +68,13 @@
 
                 let cell = document.createElement("tb")
                 cell.id = "cell-" + row + "-" + column
-                cell.innerHTML = "<input name='" + row + "-" + column +  "'/>"
+
+                if (column !== 0) {
+                    cell.innerHTML = "<input id='check-" + row + "-" + column +  "' name='check-" + row + "-" + column +  "' type='checkbox'><br><input  id='input-" + row + "-" + column +  "' name='input-" + row + "-" + column +  "'/>"
+                } else {
+                    cell.innerHTML += "<textarea  id='input-" + row + "-" + column +  "' name='input-" + row + "-" + column +  "'/>"
+                }
+
                 row_element.append(cell)
             }
 
