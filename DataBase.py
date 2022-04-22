@@ -4,7 +4,7 @@ import mysql.connector
 db = mysql.connector.connect(
     host="localhost",
     user="root",
-    passwd="ubcse442",
+    passwd="@Zhou1534260",
     database="QuizHub"
 )
 # db = mysql.connector.connect(
@@ -22,7 +22,7 @@ def print_user_table():
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="@Zhou1534260",
         database="QuizHub"
     )
     # db = mysql.connector.connect(
@@ -43,7 +43,7 @@ def creat_user_table():
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="@Zhou1534260",
         database="QuizHub"
     )
     # db = mysql.connector.connect(
@@ -65,7 +65,7 @@ def insert_user(tuple):
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="@Zhou1534260",
         database="QuizHub"
     )
     # db = mysql.connector.connect(
@@ -91,7 +91,7 @@ def get_role_baseon_name(name):
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="@Zhou1534260",
         database="QuizHub"
     )
     # db = mysql.connector.connect(
@@ -113,7 +113,7 @@ def username_is_not_exist(name):
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="@Zhou1534260",
         database="QuizHub"
     )
     # db = mysql.connector.connect(
@@ -135,7 +135,7 @@ def user_authentication(name, pw):
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="@Zhou1534260",
         database="QuizHub"
     )
     # db = mysql.connector.connect(
@@ -166,7 +166,7 @@ def create_quiz_table():
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="@Zhou1534260",
         database="QuizHub"
     )
     # db = mysql.connector.connect(
@@ -188,7 +188,7 @@ def print_Quiz_Data():
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="@Zhou1534260",
         database="QuizHub"
     )
     # db = mysql.connector.connect(
@@ -208,7 +208,7 @@ def insert_quiz(tuple):
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="@Zhou1534260",
         database="QuizHub"
     )
     # db = mysql.connector.connect(
@@ -232,7 +232,7 @@ def find_quiz_name(passcode):
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="@Zhou1534260",
         database="QuizHub"
     )
     # db = mysql.connector.connect(
@@ -257,7 +257,7 @@ def find_quiz_data(passcode):
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="@Zhou1534260",
         database="QuizHub"
     )
 
@@ -286,7 +286,7 @@ def print_passcode():
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="@Zhou1534260",
         database="QuizHub"
     )
     # db = mysql.connector.connect(
@@ -308,7 +308,7 @@ def delete_score_record_table():
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="@Zhou1534260",
         database="QuizHub"
     )
     # db = mysql.connector.connect(
@@ -324,7 +324,7 @@ def delete_quiz_data_table():
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="@Zhou1534260",
         database="QuizHub"
     )
     # db = mysql.connector.connect(
@@ -341,7 +341,7 @@ def delete_user_table():
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="@Zhou1534260",
         database="QuizHub"
     )
     # db = mysql.connector.connect(
@@ -357,7 +357,7 @@ def print_submission_table():
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="@Zhou1534260",
         database="QuizHub"
     )
     # db = mysql.connector.connect(
@@ -377,7 +377,7 @@ def delete_submission_table():
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="@Zhou1534260",
         database="QuizHub"
     )
     # db = mysql.connector.connect(
@@ -394,7 +394,7 @@ def makeScoreRecord():
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="@Zhou1534260",
         database="QuizHub"
     )
     # db = mysql.connector.connect(
@@ -406,17 +406,17 @@ def makeScoreRecord():
 
     mycursor = db.cursor()
     mycursor.execute("CREATE TABLE IF NOT EXISTS Score_Record (studentName VARCHAR(2048),"
-                 "QuizName VARCHAR(2048),"
-                 "score VARCHAR(2048),"
-                 "Passcode VARCHAR (10),"
-                 "SubmissionID VARCHAR (10),"    
-                 "_ID int PRIMARY key AUTO_INCREMENT)")
+                     "QuizName VARCHAR(2048),"
+                     "score VARCHAR(2048),"
+                     "Passcode VARCHAR (10),"
+                     "SubmissionID VARCHAR (10),"
+                     "_ID int PRIMARY key AUTO_INCREMENT)")
 
 def insertScoreRecord(studentName,QuizName,score,passcode,SubmissionID):
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="@Zhou1534260",
         database="QuizHub"
     )
     # db = mysql.connector.connect(
@@ -440,7 +440,7 @@ def find_passcode_baseon_teacher_name(teacher_name):
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="@Zhou1534260",
         database="QuizHub"
     )
     # db = mysql.connector.connect(
@@ -468,7 +468,7 @@ def find_gradebook_baseon_name(name):
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="@Zhou1534260",
         database="QuizHub"
     )
     # db = mysql.connector.connect(
@@ -490,7 +490,7 @@ def print_score_record_table():
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="@Zhou1534260",
         database="QuizHub"
     )
     # db = mysql.connector.connect(
@@ -510,7 +510,7 @@ def getInformation():
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="@Zhou1534260",
         database="QuizHub"
     )
     # db = mysql.connector.connect(
@@ -533,7 +533,7 @@ def obtainQuizName(passcode):
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="@Zhou1534260",
         database="QuizHub"
     )
     # db = mysql.connector.connect(
@@ -566,22 +566,22 @@ def create_Submission_table():
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="@Zhou1534260",
         database="QuizHub"
     )
     mycursor = db.cursor()
     mycursor.execute("CREATE TABLE IF NOT EXISTS Submission (studentName VARCHAR(32),"
-                 "passcode VARCHAR(10),"
-                 "studentAnswer VARCHAR(2048),"
-                 "submissionID VARCHAR (10),"
-                 "_ID int PRIMARY key AUTO_INCREMENT)")
+                     "passcode VARCHAR(10),"
+                     "studentAnswer VARCHAR(2048),"
+                     "submissionID VARCHAR (10),"
+                     "_ID int PRIMARY key AUTO_INCREMENT)")
 
 
 def insertSubmission(studentName,passcode,studentAnwer,submissionID):
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="@Zhou1534260",
         database="QuizHub"
     )
     # db = mysql.connector.connect(
@@ -605,7 +605,7 @@ def get_passcode_baseon_submissionID(id):
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="@Zhou1534260",
         database="QuizHub"
     )
     # db = mysql.connector.connect(
@@ -628,7 +628,7 @@ def update_student_quiz(new_quiz,submissionID):
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="@Zhou1534260",
         database="QuizHub"
     )
     # db = mysql.connector.connect(
@@ -656,7 +656,7 @@ def update_student_quizscore(name,passcode,newScore):
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="@Zhou1534260",
         database="QuizHub"
     )
     # db = mysql.connector.connect(
@@ -684,7 +684,7 @@ def get_teacherName_baseon_passcode(passcode):
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="@Zhou1534260",
         database="QuizHub"
     )
     # db = mysql.connector.connect(
@@ -713,7 +713,7 @@ def get_studentName_And_passcode_baseon_submissionID(id):
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="@Zhou1534260",
         database="QuizHub"
     )
     # db = mysql.connector.connect(
@@ -740,7 +740,7 @@ def get_studentAnswer_baseon_submissionID(id):
     db = mysql.connector.connect(
         host="localhost",
         user="root",
-        passwd="ubcse442",
+        passwd="@Zhou1534260",
         database="QuizHub"
     )
     # db = mysql.connector.connect(

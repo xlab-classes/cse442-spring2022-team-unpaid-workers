@@ -23,6 +23,14 @@ def index():
 def aboutUS():
     return render_template('aboutUS.html')
 
+@app.route('/submission/<role>/<submissionId>/rubric',methods=['POST','GET'])
+def rubric(role,submissionId):
+    if request.method == 'GET':
+
+        return render_template('rubric.html')
+    else:
+        print(request.form)
+        return render_template('rubric.html')
 
 @app.route('/updateQuiz', methods=['POST', 'GET'])
 def updateQuiz():
@@ -654,18 +662,14 @@ def user():
         t = ""
         with open("templates/teacher_homepage.html", "r") as f:
             t = f.read()
-
         t = t.replace("/teacher_grade_book", "/teacher_grade_book/" + name)
-
         t = t.replace("teacher_name", name)
         return t
 
 
 if __name__ == '__main__':
-
     DataBase.create_Submission_table()
-    DataBase.print_submission_table()
+    DataBase.create_quiz_table()
     DataBase.creat_user_table()
-    DataBase.print_score_record_table()
-
+    DataBase.makeScoreRecord()
     app.run(host='0.0.0.0', port=9377, debug=True)
