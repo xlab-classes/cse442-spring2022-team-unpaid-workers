@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -78,9 +79,27 @@
             text-align:center;
             font-size:30px
         }
+        <style>
+        /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+        input.button, input.submit {
+            border: 1px outset blue;
+            background-color: lightBlue;
+        }
+
+        table tr tb{
+            display: inline-block;
+            padding: 5px;
+            text-align: center;
+            border: solid 1px;
+            margin: 1px;
+
+            height: 3em;
+            vertical-align: top;s
+        }
+</style>
 
 
-    </style>
+
 </head>
 <body>
 
@@ -99,7 +118,7 @@
                 <li><a href="#" ><p> View Student Grades</p ></a > </li>   <!--replace # to another url -->
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">sign out</a ></li>
+                <li><a href="#">sign out</a></li>
             </ul>
         </div>
     </div>
@@ -111,14 +130,14 @@
         <div class="col-sm-2 sidenav"></div>
         <div class="col-sm-8 text-left">
 
-            <form action="/buildQuiz" method="POST">
+            <form action="http://localhost:9377/buildQuiz" method="POST">
                 <div style="text-align: center">
                     <h3>Quiz Name</h3>
-                    <input type = "text" name = "Quiz_name" size="120" style="display: inline-block;width: 30%; min-width: 100px;" required/>
+                    <input type = "text" name = "Quiz_name" size="120" style="display: inline-block;width: 30%; min-width: 100px;"/>
                     <h3>Time Limit</h3>
-                    <input type = "text" id="time_limit_hour" name = "Time_Limit_hr" size="100" style="display: inline-block;width: 1%; min-width: 50px;" required/>
+                    <input type = "text" id="time_limit_hour" name = "Time_Limit" size="100" style="display: inline-block;width: 1%; min-width: 50px;"/>
                     <label for="time_limit_hour">hours </label>
-                    <input type = "text" id="time_limit_min" name = "Time_Limit_min" size="100" style="display: inline-block;width: 1%; min-width: 50px;" required/>
+                    <input type = "text" id="time_limit_min" name = "Time_Limit" size="100" style="display: inline-block;width: 1%; min-width: 50px;"/>
                     <label for="time_limit_min">minutes </label>
                 </div >
 
@@ -126,27 +145,29 @@
 
 
                 <label>Question1 <input type = "text" name = "Question_1" size="120"/></label >
-                <label for="option1">Question Type :</label>
-                <select name="question_type_1" id="option1" >
+                <br>
+                <label for="option">Question Type :</label>
+                <select name="question_type" id="option">
                     <option  value="Multiple_Choice">Multiple Choice</option>
                     <option  value="Short_Answer">Short Answer</option>
-                    <option  value="True_or_False" >T/F Question </option>
+                    <option  value="True_or_False">T/F Question</option>
                 </select><br>
+                <label>Answer : <input type = "text" name = "Answer_1" size="12"/></label ><br>
                 <label>Point Worth : <input type = "text" name = "Point_1" size="12"/></label ><br>
                 <br>
 
                 <p id="question_content">
-                    <label>Answer : <input type = "text" name = "Answer_1" size="12"/></label ><br>
-                    <label>ChoiceA <input type = "text" name = "Choice_A_1" size="120" /></label >
-                    <label>ChoiceB <input type = "text" name = "Choice_B_1" size="120"/></label >
-                    <label>ChoiceC <input type = "text" name = "Choice_C_1" size="120"/></label >
-                    <label>ChoiceD <input type = "text" name = "Choice_D_1" size="120"/></label >
-                </p >
+
+                <label>ChoiceA <input type = "text" name = "Choice_A_1" size="120" /></label >
+                <label>ChoiceB <input type = "text" name = "Choice_B_1" size="120"/></label >
+                <label>ChoiceC <input type = "text" name = "Choice_C_1" size="120"/></label >
+                <label>ChoiceD <input type = "text" name = "Choice_D_1" size="120"/></label >
+                </p>
 
 
                 <p><input type = "submit" value = "Build Quiz" name="build quiz"/></p >
                 <p><input type="submit" value="add Question" name="add question"/></p >
-                <p><input value="teacher_name" name="name" hidden/></p >
+                <p><input value="teacher_name" name="name" hidden/></p>
 
             </form>
 
@@ -169,47 +190,68 @@
 
 
 <footer class="container-fluid text-center">
-    <p>About Us</p >
+    <p>About Us</p>
 </footer>
 
 </body>
 
-<p><input value="starting_pos" name="pos" hidden/></p >
 <script>
-    var x1 = document.getElementById("option1");
-    x1.addEventListener("change", myFunction1);
+    var x = document.getElementById("option");
+    x.addEventListener("change", myFunction1);
+
 
     function myFunction1() {
+     if (x.value == "Multiple_Choice"){
+     document.getElementById("question_content").innerHTML =
+                "<label>ChoiceA <input type = \"text\" name = \"Choice_A_1\" size=\"120\"/></label ><label>ChoiceB <input type = \"text\" name = \"Choice_B_1\" size=\"120\"/></label ><label>ChoiceC <input type = \"text\" name = \"Choice_C_1\" size=\"120\"/></label ><label>ChoiceD <input type = \"text\" name = \"Choice_D_1\" size=\"120\"/></label >" ;
 
-        if (x1.value == "Multiple_Choice"){
-            document.getElementById("question_content").innerHTML =
 
-                "<label>Answer : <input type = \"text\" name = \"Answer_1\" size=\"12\" required/></label >" +
-                "<br>" +
-                "<label>ChoiceA <input type = \"text\" name = \"Choice_A_1\" size=\"120\"/></label >" +
-                "<label>ChoiceB <input type = \"text\" name = \"Choice_B_1\" size=\"120\"/></label >" +
-                "<label>ChoiceC <input type = \"text\" name = \"Choice_C_1\" size=\"120\"/></label >" +
-                "<label>ChoiceD <input type = \"text\" name = \"Choice_D_1\" size=\"120\"/></label >" ;
-        }
-        else if (x1.value == "Short_Answer"){
-            document.getElementById("question_content").innerHTML =
-                "<div class=\"form-group\">" +
-                "<label for=\"comment\">Short Question_Answer:</label>" +
-                "<textarea class=\"form-control\" name=\"Answer_1\" rows=\"5\" id=\"comment\" required></textarea></div>";
-        }
-        else{
-            document.getElementById("question_content").innerHTML =
-                "<label> T/F answer:</label> " +
-                "<br>" +
-                "<input type=\"radio\" id=\"T\" name=\"T/F1\" value=\"True\">" +
-                "<label for=\"T\">True</label>" +
-                "<br>" +
-                "<input type=\"radio\" id=\"F\" name=\"T/F1\" value=\"False\">" +
-                "<label for=\"F\">False</label><br>";
+     }
+     else if (x.value == "Short_Answer"){
+     document.getElementById("question_content").innerHTML = "<div class=\"form-group\"><label for=\"comment\">Short Question_Answer:</label>" +
+                                                             "<div><input type=\"number\" id=\"row_count\">x<input type=\"number\" id=\"column_count\"> <button onclick=\"buttonClicked()\" id=\"update\" type =\"button\">update</button></div><table id=\"rubric\"></table>";
 
+     }
+     else{
+     document.getElementById("question_content").innerHTML = "<label> T/F answer:</label> <br><input type=\"radio\" id=\"T\" name=\"T\" value=\"True\"><label for=\"T\">True</label><br><input type=\"radio\" id=\"F\" name=\"F\" value=\"False\"><label for=\"F\">False</label><br>";
+
+     }
+    }
+
+
+    function buttonClicked(){
+        let table = document.querySelector("#rubric")
+        table.innerHTML = ""
+        let row_count = parseInt(document.querySelector("input#row_count").value)
+        let column_count = parseInt(document.querySelector("input#column_count").value)
+
+        console.log(row_count, column_count)
+
+
+        for(let row = 0; row < row_count; row++){
+            let row_element = document.createElement("tr")
+
+            for(let column = 0; column < column_count; column++){
+
+                let cell = document.createElement("tb")
+                cell.id = "cell-" + row + "-" + column
+
+                if (column !== 0) {
+                    cell.innerHTML = "<input id='check-" + row + "-" + column +  "' name='check-" + row + "-" + column +  "' type='checkbox'><br><input  id='input-" + row + "-" + column +  "' name='input-" + row + "-" + column +  "'/>"
+                } else {
+                    cell.innerHTML += "<textarea  id='input-" + row + "-" + column +  "' name='input-" + row + "-" + column +  "'/>"
+                }
+
+                row_element.append(cell)
+            }
+
+            table.append(row_element)
         }
     }
+
+
+
+
+
 </script>
-
 </html>
-
