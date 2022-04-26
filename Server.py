@@ -3,8 +3,8 @@ Coder: Zhou Zhou  && Shkaraot
 '''
 import time
 
-import DataBase3
-from flask import Flask, render_template, request, redirect, g
+import DataBase
+from flask import Flask, render_template, request, redirect
 from werkzeug.datastructures import ImmutableMultiDict
 import random
 import string
