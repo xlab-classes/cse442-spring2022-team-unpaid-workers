@@ -36,33 +36,36 @@ def rubric(role,submissionId):
 @app.route('/submission/<role>/<submissionId>/displayrubric',methods=['GET'])
 def displayRubric(role,submissionId):
     data = DataBase.get_rubric_table_information(submissionId)
-    dataDic = json.loads(data)
-    with open("templates/rubricTable.html",'r') as f:
-        template = f.read()
-    templateBegin_index = template.find('{{loop}}')
-    end_loop = template.find('{{end_loop}}')
-    front_data = template[:templateBegin_index]
-    end_data = template[end_loop + len('{{end_loop}}'):]
-    templates = template[templateBegin_index + len('{{loop}}'):end_loop]
-    newTemp = ''
-    dataDic.pop('question_type')
+    if data != None:
+        dataDic = json.loads(data)
+        with open("templates/rubricTable.html",'r') as f:
+            template = f.read()
+        templateBegin_index = template.find('{{loop}}')
+        end_loop = template.find('{{end_loop}}')
+        front_data = template[:templateBegin_index]
+        end_data = template[end_loop + len('{{end_loop}}'):]
+        templates = template[templateBegin_index + len('{{loop}}'):end_loop]
+        newTemp = ''
+        dataDic.pop('question_type')
 
-    for x in range(len(dataDic) // 4):
+        for x in range(len(dataDic) // 4):
 
-        for y in range(4):
-            myinputword = 'input-{}-{}'.format(x,y)
-            if y == 0:
-                templates = templates.replace('{{QuestionDescription}}',dataDic[myinputword])
-            elif y == 1:
-                templates = templates.replace('{{0%Description}}',dataDic[myinputword])
-            elif y == 2:
-                templates = templates.replace('{{50%Description}}',dataDic[myinputword])
-            else:
-                templates = templates.replace('{{100%Description}}',dataDic[myinputword])
-        newTemp += templates
-    front_data += newTemp
-    front_data += end_data
-    return front_data
+            for y in range(4):
+                myinputword = 'input-{}-{}'.format(x,y)
+                if y == 0:
+                    templates = templates.replace('{{QuestionDescription}}',dataDic[myinputword])
+                elif y == 1:
+                    templates = templates.replace('{{0%Description}}',dataDic[myinputword])
+                elif y == 2:
+                    templates = templates.replace('{{50%Description}}',dataDic[myinputword])
+                else:
+                    templates = templates.replace('{{100%Description}}',dataDic[myinputword])
+            newTemp += templates
+        front_data += newTemp
+        front_data += end_data
+        return front_data
+    else:
+        return render_template('404.html')
 
 
 @app.route('/updateQuiz', methods=['POST', 'GET'])
