@@ -68,6 +68,7 @@ def insert_user(tuple):
 
 def get_role_baseon_name(name):
 
+
     db = mysql.connector.connect(
         host="oceanus",
         user="tingjiez",
@@ -198,6 +199,7 @@ def find_quiz_name(passcode):
         print("check quiz name failed")
 
 def find_quiz_data(passcode):
+
 
     db = mysql.connector.connect(
         host="oceanus",
@@ -507,6 +509,7 @@ def update_student_quiz(new_quiz,submissionID):
 
 def update_student_quizscore(name,passcode,newScore):
 
+
     db = mysql.connector.connect(
         host="oceanus",
         user="tingjiez",
@@ -605,7 +608,6 @@ Table1 users
 Table2  Quiz_Data
 Quiz -> {passcode,teachername,questions)
 Passcode,TeacherName,QuizName,Quiz, TimeLimit   -> Get the quiz base on the passcode
-
 
 
 

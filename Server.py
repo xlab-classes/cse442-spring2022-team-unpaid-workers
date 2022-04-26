@@ -4,7 +4,7 @@ Coder: Zhou Zhou  && Shkaraot
 import time
 
 import DataBase
-from flask import Flask, render_template, request, redirect, g
+from flask import Flask, render_template, request, redirect
 from werkzeug.datastructures import ImmutableMultiDict
 import random
 import string
