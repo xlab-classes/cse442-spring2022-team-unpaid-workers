@@ -331,30 +331,28 @@ def buidQuiz():
         dic_length = len(dict)
         key_list = list(dict)
         full_quiz = []
-        print("dict: ", dict)
         quizname = dict.get("Quiz_name")[0]
-        hr = dict.get('Time_Limit')[0]
+        hr = dict.get('Time_Limit_hr')[0]
 
-        min = dict.get('Time_Limit')[1]
+        min = dict.get('Time_Limit_min')[0]
+
         teacher_name = dict.get("name")[0]
         print(dict)
         print("teachername: ",teacher_name)
-        i = 2
+        i = 3
         print("keylist: ",key_list)
         while i < (dic_length-2):
 
             type = dict.get(key_list[i+1])[0]
-            print("i: ", i)
-            print("dic_length: ", dic_length)
 
             if type == "Multiple_Choice":
 
                 question = {"question": dict.get(key_list[i])}
                 question_type = {"type":type}
 
-                point = {"point": dict.get(key_list[i + 3])}
+                point = {"point": dict.get(key_list[i + 2])}
 
-                answer = {"answer": dict.get(key_list[i + 2])}
+                answer = {"answer": dict.get(key_list[i + 3])}
                 print(question,answer,point)
                 a = {"choice_A": dict.get(key_list[i + 4])}
                 b = {"choice_B": dict.get(key_list[i + 5])}
@@ -366,9 +364,6 @@ def buidQuiz():
                 full_quiz.append(quiz)
                 i += 8
             elif type == "True_or_False":
-                print("dict: ", dict)
-                print("key_list: ", key_list)
-                print("t/f found")
                 question = {"question": dict.get(key_list[i])}
                 question_type = {"type":type}
                 point = {"point": dict.get(key_list[i + 2])}
@@ -384,8 +379,8 @@ def buidQuiz():
 
                 question = {"question": dict.get(key_list[i])}
                 question_type = {"type":type}
-                point = {"point": dict.get(key_list[i + 3])}
-                answer = {"answer": dict.get(key_list[i + 2])}
+                point = {"point": dict.get(key_list[i + 2])}
+                answer = {"answer": dict.get(key_list[i + 3])}
 
                 quiz = {}
                 for d in (question,question_type,answer, point):
@@ -455,7 +450,6 @@ def buidQuiz():
 
 
                 if q.get("type") == "Multiple_Choice":
-                    print("in build multiple choice, i: ", i)
                     quiz_template += '<label> Question' +str(i) + ' <input type = "text" name = "Question_' + str(i)+ '" size="120" value="' + dict.get("Question_" + str(i))[0] + '" required/></label >' + "<br>" +"\n"
                     quiz_template += '<label for="option'+str(i)+'">Question Type :</label>' + '\n'
                     quiz_template += '<select name="question_type'+str(i)+ '" id="option'+str(i)+'" value="Multiple_Choice" >' +'\n'
@@ -477,8 +471,6 @@ def buidQuiz():
                     quiz_template += '<label>ChoiceC <input type = "text" name = "Choice_C_' + str(i) + '" size="120" value="'+str(q.get("choice_C")[0]) +'"/></label >' + '\n'
                     quiz_template += '<label>ChoiceD <input type = "text" name = "Choice_D_' + str(i) + '" size="120" value="'+str(q.get("choice_D")[0]) +'"/></label >' + '\n'
                     quiz_template += '</p>' + '\n'
-
-                    print("quiz_template: ", quiz_template)
 
                 elif q.get("type") == "True_or_False":
                     quiz_template += '<label> Question' + str(i) + ' <input type = "text" name = "Question_' + str(i)+ '" size="120" value="' + dict.get("Question_" + str(i))[0] + '"/></label >' + "\n"
@@ -565,8 +557,8 @@ def buidQuiz():
             new_quiz_template += '<br>' + '\n'
             new_quiz_template += '<p id="question_content'+str(i)+'">' + '\n'
             new_quiz_template += '</p>' + '\n'
-            new_quiz_template += '<p><input type = "submit" value = "Build Quiz" name="build quiz"/></p >' + '\n'
-            new_quiz_template += '<p><input type="submit" value="add Question" name="add question"/></p >' + '\n'
+            # new_quiz_template += '<p><input type = "submit" value = "Build Quiz" name="build quiz"/></p >' + '\n'
+            # new_quiz_template += '<p><input type="submit" value="add Question" name="add question"/></p >' + '\n'
             # new_quiz_template += '<label>ChoiceA <input type = "text" name = "Choice_A_' + str(i) + '" size="120" /></label >' + '\n'
             # new_quiz_template += '<label>ChoiceB <input type = "text" name = "Choice_B_' + str(i) + '" size="120" /></label >' + '\n'
             # new_quiz_template += '<label>ChoiceC <input type = "text" name = "Choice_C_' + str(i) + '" size="120" /></label >' + '\n'
@@ -578,7 +570,6 @@ def buidQuiz():
             template = template.replace('<input type = "text" name = "Quiz_name" size="120" style="display: inline-block;width: 30%; min-width: 100px;" required/>',quizName_template)
             template = template.replace('<input type = "text" id="time_limit_hour" name = "Time_Limit_hr" size="100" style="display: inline-block;width: 1%; min-width: 50px;" required/>',time_hour_template)
             template = template.replace('<input type = "text" id="time_limit_min" name = "Time_Limit_min" size="100" style="display: inline-block;width: 1%; min-width: 50px;" required/>',time_min_template)
-            print("template: ", template)
             return template
 
         else:
