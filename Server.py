@@ -30,12 +30,14 @@ def rubric(role,submissionId):
     else:
         data = dict(request.form)
         currentData = json.dumps(data)
-        DataBase.insert_rubric_table(submissionId,currentData)
+        passcode = DataBase.get_passcode_baseon_submissionID(submissionId)
+        DataBase.insert_rubric_table(submissionId,currentData,passcode)
         return render_template('rubric.html')
 
 @app.route('/submission/<role>/<submissionId>/displayrubric',methods=['GET'])
 def displayRubric(role,submissionId):
-    data = DataBase.get_rubric_table_information(submissionId)
+    passcode = DataBase.get_passcode_baseon_submissionID(submissionId)
+    data = DataBase.get_rubric_table_information(passcode)
     if data != None:
         dataDic = json.loads(data)
         with open("templates/rubricTable.html",'r') as f:

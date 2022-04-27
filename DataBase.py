@@ -78,10 +78,11 @@ def create_rubric_table():
 
     mycursor.execute("CREATE TABLE IF NOT EXISTS rubric (submissionID VARCHAR(1024),"
                      "information VARCHAR(2048),"
+                     "passcode VARCHAR(2048),"
                      "_ID int PRIMARY key AUTO_INCREMENT)")
 
 
-def insert_rubric_table(submissionID,information):
+def insert_rubric_table(submissionID,information,passcode):
     db = mysql.connector.connect(
         host="localhost",
         user="root",
@@ -91,8 +92,8 @@ def insert_rubric_table(submissionID,information):
     mycursor = db.cursor()
     try:
         create_rubric_table()
-        myTuple = (submissionID,information)
-        mycursor.execute("INSERT INTO rubric (submissionID,information) VALUES (%s,%s)", myTuple)
+        myTuple = (submissionID,information,passcode)
+        mycursor.execute("INSERT INTO rubric (submissionID,information,passcode) VALUES (%s,%s,%s)", myTuple)
         db.commit()
         print("insert successfully")
     except:
@@ -108,7 +109,7 @@ def delete_rubric_table():
     mycursor = db.cursor()
     mycursor.execute("DROP TABLE rubric")
 
-def get_rubric_table_information(submissionID):
+def get_rubric_table_information(passcode):
     db = mysql.connector.connect(
         host="localhost",
         user="root",
@@ -118,7 +119,7 @@ def get_rubric_table_information(submissionID):
     mycursor = db.cursor()
     mycursor.execute('SELECT * FROM rubric')
     for row in mycursor:
-        if row[0] == submissionID:
+        if row[2] == passcode:
             return row[1]
     return None
 
