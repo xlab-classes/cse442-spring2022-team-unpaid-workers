@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Home Page</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../static/cssFile.css">
+    <style>
+        table, th, td {
+            border:1px solid white;
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"> </span>
+                <span class="icon-bar"> </span>
+                <span class="icon-bar"> </span>
+            </button>
+            <a href="/homePage" ><h1 id="logo" >Quiz <span id="hub">Hub</span></h1> </a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+
+                <li><a href="/"><span ></span> sign out</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+
+
+
+<div class="container-fluid text-center">
+    <div class="row content">
+        <div class="col-lg-8 sidenav "  style="color: white" >
+                <h1>All Grade For students</h1>
+            <table style="margin:auto">
+                                    <tr>
+                                        <th>
+                                            Quiz Name
+                                        </th>
+                                        <th>
+                                            Student Username:
+                                        </th>
+                                        <th>
+                                            Student Grade
+                                        </th>
+                                    </tr>
+                                    {{loop}}
+                                    <tr>
+                                        <td>{{QuizName}}</td>
+                                        <td>{{StudentName}}</td>
+                                        <td>{{StudentGrade}}</td>
+                                    </tr>
+                                    {{end_loop}}
+                                </table>
+
+        </div>
+        <div class="col-lg-4 sidenav "  style="color: white ;text-align: center">
+
+
+            <div  style="background-color: #f7971d; border-radius: 5%; height: 100%">
+                <h1>Make Quiz</h1>
+                <form action="/buildQuiz" method="GET">
+                    <input value="teacher_name" name="name" hidden >
+                    <input type="submit" value="Make Quiz" style="color: black" />
+                </form>
+                <p>Passcode: (Newest on the top)</p>
+            </div>
+
+
+
+        </div>
+
+    </div>
+</div>
+
+
+</body>
+
+</html>

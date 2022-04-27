@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Sign up</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../static/cssFile.css">
+
+
+</head>
+<body>
+
+
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"> </span>
+                <span class="icon-bar"> </span>
+                <span class="icon-bar"> </span>
+            </button>
+            <a href="#" ><h1 id="logo" >Quiz <span id="hub">Hub</span></h1> </a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+
+                <li><a href="/"><span ></span> sign out</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container-fluid text-center" style="color: white">
+    <div class="row content">
+        <div class="col-sm-2 "></div>
+        <div class="col-sm-8 sidenav">
+            <form action="http://localhost:9377/rubric" method="POST" id="rubrics">
+                <h1>This is Rubric</h1>
+                <hr>
+                <br>
+                <label for="option">Question Rubric:</label>
+                <select name="question_type" id="option">
+                    <option  value="Short_Answer">Short Answer</option>
+                </select><br>
+                <br>
+
+                <p id="question_content">
+                <div style="margin: auto; ">
+                <p>
+                    <input type="number" id="row_count" style="color: black">x
+                    <input type="number" id="column_count" style="color: black">
+                    <button onclick="buttonClicked()" id="update" type ="button" style="color: black;">update</button>
+                </p>
+                </div>
+
+
+                <table id="rubric"></table>
+
+                </p>
+                <p><input type = "submit" value = "Save Rubric" style="color: black"/></p >
+            </form>
+        </div>
+        <div class="col-sm-2 "></div>
+    </div>
+</div>
+
+
+
+<script>
+    let s = window.location.href;
+    document.getElementById('rubrics').action = s;
+</script>
+
+
+</body>
+
+<script>
+    var x = document.getElementById("option");
+    x.addEventListener("change", myFunction1);
+
+
+    function myFunction1() {
+        if (x.value == "Multiple_Choice"){
+            document.getElementById("question_content").innerHTML =
+                "<label>ChoiceA <input type = \"text\" name = \"Choice_A_1\" size=\"120\"/></label ><label>ChoiceB <input type = \"text\" name = \"Choice_B_1\" size=\"120\"/></label ><label>ChoiceC <input type = \"text\" name = \"Choice_C_1\" size=\"120\"/></label ><label>ChoiceD <input type = \"text\" name = \"Choice_D_1\" size=\"120\"/></label >" ;
+
+
+        }
+        else if (x.value == "Short_Answer"){
+            document.getElementById("question_content").innerHTML = "<div class=\"form-group\"><label for=\"comment\">Short Question_Answer:</label>" +
+                "<div><input type=\"number\" id=\"row_count\">x<input type=\"number\" id=\"column_count\"> <button onclick=\"buttonClicked()\" id=\"update\" type =\"button\">update</button></div><table id=\"rubric\"></table>";
+
+        }
+        else{
+            document.getElementById("question_content").innerHTML = "<label> T/F answer:</label> <br><input type=\"radio\" id=\"T\" name=\"T\" value=\"True\"><label for=\"T\">True</label><br><input type=\"radio\" id=\"F\" name=\"F\" value=\"False\"><label for=\"F\">False</label><br>";
+
+        }
+    }
+
+
+    function buttonClicked(){
+        let table = document.querySelector("#rubric")
+        table.innerHTML = ""
+        let row_count = parseInt(document.querySelector("input#row_count").value)
+        let column_count = parseInt(document.querySelector("input#column_count").value)
+
+        console.log(row_count, column_count)
+
+
+        for(let row = 0; row < row_count; row++){
+            let row_element = document.createElement("tr")
+
+            for(let column = 0; column < column_count; column++){
+
+                let cell = document.createElement("tb")
+                cell.id = "cell-" + row + "-" + column
+
+                if (column !== 0) {
+                    cell.innerHTML = "<input id='check-" + row + "-" + column +  "' name='check-" + row + "-" + column +  "' type='checkbox'><br><input  id='input-" + row + "-" + column +  "' name='input-" + row + "-" + column +  "'/>"
+                } else {
+                    cell.innerHTML += "<textarea  id='input-" + row + "-" + column +  "' name='input-" + row + "-" + column +  "'/>"
+                }
+
+                row_element.append(cell)
+            }
+
+            table.append(row_element)
+        }
+    }
+
+</script>
+</html>
