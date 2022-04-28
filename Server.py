@@ -4,7 +4,7 @@ Coder: Zhou Zhou  && Shkaraot
 import time
 
 import DataBase
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request
 from werkzeug.datastructures import ImmutableMultiDict
 import random
 import string
@@ -306,6 +306,7 @@ def accessQuiz():
             elif question_type == "Short_Answer":
                 template1 = "<p> " + str(quiz_number)+". "+question + " (" + point + "pts) </p>\n"
                 template2 = "<div class=\"form-group\">" + '\n' +"<label for=\"comment\">Short Question_Answer:</label>" + "<textarea class=\"form-control\" name=\"Answer_"+str(quiz_number)+"\" rows=\"5\" id=\"comment\" required></textarea></div>";
+
                 quiz_template += template1+template2 + '<br><br>'
 
         quiz_template += '<input value="' + passcode + '" name="passcode" hidden>'
@@ -431,6 +432,7 @@ def buidQuiz():
                 js_template += '"<div class=\\"form-group\\">" +\n'
                 js_template += '"<label for=\\"comment\\">Short Question_Answer:</label>" +\n'
                 js_template += '"<textarea class=\\"form-control\\" name=\\"Answer_'+str(i)+'\\" rows=\\"5\\" id=\\"comment\\" required></textarea></div>";\n'
+
                 js_template += '}'+'\n'
                 js_template += 'else{'+'\n'
                 js_template += 'document.getElementById("question_content'+str(i)+'").innerHTML = \n'
@@ -505,6 +507,8 @@ def buidQuiz():
                     quiz_template += '<p id="question_content'+str(i)+'">' + '\n'
                     quiz_template += '</p>'+ '\n'
                     quiz_template += '<div class="form-group"><label for="comment">Short Question_Answer:</label><textarea class="form-control" name="Answer_'+str(i)+'" rows="5" id="comment" >'+q.get('answer')[0]+'</textarea></div>'
+
+
                     quiz_template += '</p>'+'\n'
 
                 quiz_template += "<br><br>"+"\n\n"
@@ -526,6 +530,7 @@ def buidQuiz():
             js_template += 'document.getElementById("question_content'+str(i)+'").innerHTML = \n'
             js_template += '"<div class=\\"form-group\\">" +\n'
             js_template += '"<label for=\\"comment\\">Short Question_Answer:</label>" +\n'
+
             js_template += '"<textarea class=\\"form-control\\" name=\\"Answer_'+str(i)+'\\" rows=\\"5\\" id=\\"comment\\" required></textarea></div>";\n'
             js_template += '}'+'\n'
             js_template += 'else{'+'\n'
