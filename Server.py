@@ -4,7 +4,7 @@ Coder: Zhou Zhou  && Shkaraot
 import time
 
 import DataBase
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, g
 from werkzeug.datastructures import ImmutableMultiDict
 import random
 import string
@@ -22,6 +22,52 @@ def index():
 @app.route('/aboutUS', methods=['POST', 'GET'])
 def aboutUS():
     return render_template('aboutUS.html')
+
+@app.route('/submission/<role>/<submissionId>/rubric',methods=['POST','GET'])
+def rubric(role,submissionId):
+    if request.method == 'GET':
+        return render_template('rubric.html')
+    else:
+        data = dict(request.form)
+        currentData = json.dumps(data)
+        passcode = DataBase.get_passcode_baseon_submissionID(submissionId)
+        DataBase.insert_rubric_table(submissionId,currentData,passcode)
+        return render_template('rubric.html')
+
+@app.route('/submission/<role>/<submissionId>/displayrubric',methods=['GET'])
+def displayRubric(role,submissionId):
+    passcode = DataBase.get_passcode_baseon_submissionID(submissionId)
+    data = DataBase.get_rubric_table_information(passcode)
+    if data != None:
+        dataDic = json.loads(data)
+        with open("templates/rubricTable.html",'r') as f:
+            template = f.read()
+        templateBegin_index = template.find('{{loop}}')
+        end_loop = template.find('{{end_loop}}')
+        front_data = template[:templateBegin_index]
+        end_data = template[end_loop + len('{{end_loop}}'):]
+        templates = template[templateBegin_index + len('{{loop}}'):end_loop]
+        newTemp = ''
+        dataDic.pop('question_type')
+
+        for x in range(len(dataDic) // 4):
+
+            for y in range(4):
+                myinputword = 'input-{}-{}'.format(x,y)
+                if y == 0:
+                    templates = templates.replace('{{QuestionDescription}}',dataDic[myinputword])
+                elif y == 1:
+                    templates = templates.replace('{{0%Description}}',dataDic[myinputword])
+                elif y == 2:
+                    templates = templates.replace('{{50%Description}}',dataDic[myinputword])
+                else:
+                    templates = templates.replace('{{100%Description}}',dataDic[myinputword])
+            newTemp += templates
+        front_data += newTemp
+        front_data += end_data
+        return front_data
+    else:
+        return render_template('404.html')
 
 
 @app.route('/updateQuiz', methods=['POST', 'GET'])
@@ -306,7 +352,6 @@ def accessQuiz():
             elif question_type == "Short_Answer":
                 template1 = "<p> " + str(quiz_number)+". "+question + " (" + point + "pts) </p>\n"
                 template2 = "<div class=\"form-group\">" + '\n' +"<label for=\"comment\">Short Question_Answer:</label>" + "<textarea class=\"form-control\" name=\"Answer_"+str(quiz_number)+"\" rows=\"5\" id=\"comment\" required></textarea></div>";
-
                 quiz_template += template1+template2 + '<br><br>'
 
         quiz_template += '<input value="' + passcode + '" name="passcode" hidden>'
@@ -325,7 +370,6 @@ def buidQuiz():
         data = ImmutableMultiDict(request.form)
 
         dict = data.to_dict(flat=False)
-        print("dictionary：",dict)
         hr = dict.get("hr")
         min = dict.get("min")
 
@@ -376,24 +420,20 @@ def buidQuiz():
                 i += 4
 
             elif type == "Short_Answer":
-
-
                 question = {"question": dict.get(key_list[i])}
                 question_type = {"type":type}
                 point = {"point": dict.get(key_list[i + 2])}
                 answer = {"answer": dict.get(key_list[i + 3])}
-
                 quiz = {}
                 for d in (question,question_type,answer, point):
                     quiz.update(d)
                 full_quiz.append(quiz)
-
                 i += 4
 
         name = dict.get('Quiz_name')[0]
 
 
-
+        print("quiz: ",quiz)
         if dict.get('build quiz') is None:
             print("add question: ",full_quiz)
             f = open("templates/teacher_quiz_generate.html", "r")
@@ -432,7 +472,6 @@ def buidQuiz():
                 js_template += '"<div class=\\"form-group\\">" +\n'
                 js_template += '"<label for=\\"comment\\">Short Question_Answer:</label>" +\n'
                 js_template += '"<textarea class=\\"form-control\\" name=\\"Answer_'+str(i)+'\\" rows=\\"5\\" id=\\"comment\\" required></textarea></div>";\n'
-
                 js_template += '}'+'\n'
                 js_template += 'else{'+'\n'
                 js_template += 'document.getElementById("question_content'+str(i)+'").innerHTML = \n'
@@ -488,9 +527,9 @@ def buidQuiz():
                     quiz_template += '</p>' + '\n'
                     if q.get("answer") == "True":
                         quiz_template += '<label>True <input type = "radio" name = "T/F' + str(i) + '" size="120" value="True" checked/></label >' + '\n' + '<br>'
-                        quiz_template += '<label>False <input type = "radio" name = "T/F' + str(i) + '" size="120" value="False"></label >' + '\n'
+                        quiz_template += '<label>False <input type = "radio" name = "T/F' + str(i) + '" size="120" value="False"/></label >' + '\n'
                     else:
-                        quiz_template += '<label>True <input type = "radio" name = "T/F' + str(i) + '" size="120" value="True" ></label >' + '\n' + '<br>'
+                        quiz_template += '<label>True <input type = "radio" name = "T/F' + str(i) + '" size="120" value="True" /></label >' + '\n' + '<br>'
                         quiz_template += '<label>False <input type = "radio" name = "T/F' + str(i) + '" size="120" value="False" checked/></label >' + '\n'
                     quiz_template += '</p>' + '\n'
 
@@ -507,8 +546,6 @@ def buidQuiz():
                     quiz_template += '<p id="question_content'+str(i)+'">' + '\n'
                     quiz_template += '</p>'+ '\n'
                     quiz_template += '<div class="form-group"><label for="comment">Short Question_Answer:</label><textarea class="form-control" name="Answer_'+str(i)+'" rows="5" id="comment" >'+q.get('answer')[0]+'</textarea></div>'
-
-
                     quiz_template += '</p>'+'\n'
 
                 quiz_template += "<br><br>"+"\n\n"
@@ -530,7 +567,6 @@ def buidQuiz():
             js_template += 'document.getElementById("question_content'+str(i)+'").innerHTML = \n'
             js_template += '"<div class=\\"form-group\\">" +\n'
             js_template += '"<label for=\\"comment\\">Short Question_Answer:</label>" +\n'
-
             js_template += '"<textarea class=\\"form-control\\" name=\\"Answer_'+str(i)+'\\" rows=\\"5\\" id=\\"comment\\" required></textarea></div>";\n'
             js_template += '}'+'\n'
             js_template += 'else{'+'\n'
@@ -664,18 +700,14 @@ def user():
         t = ""
         with open("templates/teacher_homepage.html", "r") as f:
             t = f.read()
-
         t = t.replace("/teacher_grade_book", "/teacher_grade_book/" + name)
-
         t = t.replace("teacher_name", name)
         return t
 
 
 if __name__ == '__main__':
-
     DataBase.create_Submission_table()
-    DataBase.print_submission_table()
+    DataBase.create_quiz_table()
     DataBase.creat_user_table()
-    DataBase.print_score_record_table()
-
+    DataBase.makeScoreRecord()
     app.run(host='0.0.0.0', port=9377, debug=True)
