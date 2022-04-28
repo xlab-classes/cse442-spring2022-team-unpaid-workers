@@ -29,7 +29,9 @@ def rubric(role,submissionId):
         return render_template('rubric.html')
     else:
         data = dict(request.form)
+        print("data: ", data)
         currentData = json.dumps(data)
+        print("currentData: ", currentData)
         passcode = DataBase.get_passcode_baseon_submissionID(submissionId)
         DataBase.insert_rubric_table(submissionId,currentData,passcode)
         return render_template('rubric.html')
@@ -49,19 +51,24 @@ def displayRubric(role,submissionId):
         templates = template[templateBegin_index + len('{{loop}}'):end_loop]
         newTemp = ''
         dataDic.pop('question_type')
+        print("dataDic: ", dataDic)
 
-        for x in range(len(dataDic) // 4):
+        # for x in range(len(dataDic) // 4):
+        for x in range(len(dataDic)):
 
             for y in range(4):
                 myinputword = 'input-{}-{}'.format(x,y)
-                if y == 0:
+                print("myinputword: ", myinputword)
+                if y == 0 and myinputword in dataDic:
                     templates = templates.replace('{{QuestionDescription}}',dataDic[myinputword])
-                elif y == 1:
+                elif y == 1 and myinputword in dataDic:
                     templates = templates.replace('{{0%Description}}',dataDic[myinputword])
-                elif y == 2:
+                elif y == 2 and myinputword in dataDic:
                     templates = templates.replace('{{50%Description}}',dataDic[myinputword])
-                else:
-                    templates = templates.replace('{{100%Description}}',dataDic[myinputword])
+                elif y == 3 and myinputword in dataDic:
+                    templates = templates.replace('{{100%Description}}', dataDic[myinputword])
+                # else:
+                #     templates = templates.replace('{{100%Description}}',dataDic[myinputword])
             newTemp += templates
         front_data += newTemp
         front_data += end_data
