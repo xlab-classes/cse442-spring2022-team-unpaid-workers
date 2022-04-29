@@ -12,7 +12,6 @@ import json
 
 app = Flask(__name__)
 
-
 @app.route('/', methods=['POST', 'GET'])
 def index():
     print("print table")
@@ -23,20 +22,27 @@ def index():
 def aboutUS():
     return render_template('aboutUS.html')
 
-@app.route('/submission/<role>/<submissionId>/rubric',methods=['POST','GET'])
-def rubric(role,submissionId):
+@app.route('/buildQuiz/<passcode>/rubric',methods=['POST','GET'])
+def rubric(passcode):
     if request.method == 'GET':
+        print('here')
         return render_template('rubric.html')
     else:
         data = dict(request.form)
         currentData = json.dumps(data)
-        passcode = DataBase.get_passcode_baseon_submissionID(submissionId)
-        DataBase.insert_rubric_table(submissionId,currentData,passcode)
-        return render_template('rubric.html')
+        if DataBase.get_rubric_table_information(passcode) is not None:
+            DataBase.update_rubric_table_information(passcode,currentData)
+        else:
+            DataBase.insert_rubric_table(currentData,passcode)
+        with open('templates/rubric.html','r') as f:
+            tem = f.read()
+        tem = tem.replace('// alert("Save success");','alert("Save success");')
+        return tem
 
 @app.route('/submission/<role>/<submissionId>/displayrubric',methods=['GET'])
 def displayRubric(role,submissionId):
     passcode = DataBase.get_passcode_baseon_submissionID(submissionId)
+    print("mypasscode:",passcode)
     data = DataBase.get_rubric_table_information(passcode)
     if data != None:
         dataDic = json.loads(data)
@@ -97,8 +103,6 @@ def updateQuiz():
     DataBase.update_student_quizscore(name,passcode,newScore)
     username = data.get("username")
     role = DataBase.get_role_baseon_name(username)
-
-
 
     if role == "Student":
         return redirect("/student_gradebook/"+username, code=301)
@@ -616,6 +620,7 @@ def buidQuiz():
         else:
             # load full quiz into database
             passcode = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+
             f = open("templates/teacher_homepage.html", "r")
             t = ""
             for line in f:
@@ -633,6 +638,7 @@ def buidQuiz():
             print(teacher_name)
             template = template.replace('/teacher_grade_book','/teacher_grade_book/'+teacher_name)
             template = template.replace("teacher_name", teacher_name)
+            template = template.replace('<a href="/buildQuiz/{{submissionID}}/rubric" target="_blank" id="rubric" hidden>Add rubric</a>','<a href="/buildQuiz/'+ passcode + '/rubric" target="_blank" id="rubric">Add rubric</a>')
             return template
     else:
         data = ImmutableMultiDict(request.form)
@@ -710,4 +716,5 @@ if __name__ == '__main__':
     DataBase.create_quiz_table()
     DataBase.creat_user_table()
     DataBase.makeScoreRecord()
+    DataBase.create_rubric_table()
     app.run(host='0.0.0.0', port=9377, debug=True)

@@ -76,13 +76,12 @@ def create_rubric_table():
     # )
     mycursor = db.cursor()
 
-    mycursor.execute("CREATE TABLE IF NOT EXISTS rubric (submissionID VARCHAR(1024),"
-                     "information VARCHAR(2048),"
+    mycursor.execute("CREATE TABLE IF NOT EXISTS rubric (information VARCHAR(2048),"
                      "passcode VARCHAR(2048),"
                      "_ID int PRIMARY key AUTO_INCREMENT)")
 
 
-def insert_rubric_table(submissionID,information,passcode):
+def insert_rubric_table(information,passcode):
     db = mysql.connector.connect(
         host="localhost",
         user="root",
@@ -92,8 +91,8 @@ def insert_rubric_table(submissionID,information,passcode):
     mycursor = db.cursor()
     try:
         create_rubric_table()
-        myTuple = (submissionID,information,passcode)
-        mycursor.execute("INSERT INTO rubric (submissionID,information,passcode) VALUES (%s,%s,%s)", myTuple)
+        myTuple = (information,passcode)
+        mycursor.execute("INSERT INTO rubric (information,passcode) VALUES (%s,%s)", myTuple)
         db.commit()
         print("insert successfully")
     except:
@@ -119,11 +118,23 @@ def get_rubric_table_information(passcode):
     mycursor = db.cursor()
     mycursor.execute('SELECT * FROM rubric')
     for row in mycursor:
-        if row[2] == passcode:
-            return row[1]
+        if row[1] == passcode:
+            return row[0]
     return None
 
-
+def update_rubric_table_information(newpasscode,newinformation):
+    db = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        passwd="@Zhou1534260",
+        database="QuizHub"
+    )
+    mycursor = db.cursor()
+    sql = "UPDATE rubric SET information = %s WHERE passcode = %s"
+    val = (newinformation,newpasscode)
+    mycursor.execute(sql,val)
+    db.commit()
+    print(mycursor.rowcount, "record(s) affected")
 
 
 def insert_user(tuple):
