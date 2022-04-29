@@ -55,11 +55,11 @@ def displayRubric(role,submissionId):
         templates = template[templateBegin_index + len('{{loop}}'):end_loop]
         newTemp = ''
         dataDic.pop('question_type')
-
+        print(dataDic)
         for x in range(len(dataDic) // 4):
 
             for y in range(4):
-                myinputword = 'input-{}-{}'.format(x,y)
+                myinputword = '{}-{}'.format(x,y)
                 if y == 0:
                     templates = templates.replace('{{QuestionDescription}}',dataDic[myinputword])
                 elif y == 1:

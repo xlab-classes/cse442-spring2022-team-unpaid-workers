@@ -124,7 +124,7 @@
         <div class="col-sm-2 sidenav"></div>
         <div class="col-sm-8 text-left">
 
-            <form action="http://localhost:9377/rubric" method="POST" id="rubrics">
+            <form action="/rubric" method="POST" id="rubrics">
                 <h1>This is Rubric</h1>
                 <hr>
                 <br>
@@ -134,7 +134,10 @@
                 </select><br>
                 <br>
                 <p id="question_content">
-                <div><input type="number" id="row_count">x<input type="number" id="column_count"> <button onclick="buttonClicked()" id="update" type ="button">update</button></div><table id="rubric"></table>
+                <div><input type="number" id="row_count">x 4
+                <button onclick="buttonClicked()" id="update" type ="button">update</button>
+                </div>
+                <table id="rubric"></table>
 
                 </p>
                 <p><input type = "submit" value = "Save Rubric"/></p >
@@ -195,7 +198,8 @@
         let table = document.querySelector("#rubric")
         table.innerHTML = ""
         let row_count = parseInt(document.querySelector("input#row_count").value)
-        let column_count = parseInt(document.querySelector("input#column_count").value)
+        let column_count = 4
+            // parseInt(document.querySelector("input#column_count").value)
 
         console.log(row_count, column_count)
 
@@ -207,13 +211,7 @@
 
                 let cell = document.createElement("tb")
                 cell.id = "cell-" + row + "-" + column
-
-                if (column !== 0) {
-                    cell.innerHTML = "<input id='check-" + row + "-" + column +  "' name='check-" + row + "-" + column +  "' type='checkbox'><br><input  id='input-" + row + "-" + column +  "' name='input-" + row + "-" + column +  "'/>"
-                } else {
-                    cell.innerHTML += "<textarea  id='input-" + row + "-" + column +  "' name='input-" + row + "-" + column +  "'/>"
-                }
-
+                cell.innerHTML = "<input name='" + row + "-" + column +  "'/>"
                 row_element.append(cell)
             }
 
