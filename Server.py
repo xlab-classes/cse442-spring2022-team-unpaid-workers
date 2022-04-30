@@ -1,10 +1,9 @@
 '''
 Coder: Zhou Zhou  && Shkaraot
 '''
-import time
 
 import DataBase
-from flask import Flask, render_template, request, redirect, g
+from flask import Flask, render_template, request, redirect
 from werkzeug.datastructures import ImmutableMultiDict
 import random
 import string
@@ -663,14 +662,14 @@ def Signup():
         return render_template("Signup.html")
     else:
         imd = ImmutableMultiDict(request.form)
-        print("imd:", imd)
         dict = imd.to_dict(flat=False)
-        name = dict.get("Name")[0]
-        password = dict.get("Password")[0]
+        print("dict:",dict)
+        name = dict.get("uname")[0]
+        password = dict.get("psw")[0]
         role = dict.get("who")[0]
-
+        email = dict.get("email")[0]
         if DataBase.username_is_not_exist(name):
-            DataBase.insert_user((role, name, password))
+            DataBase.insert_user((role, name, password,email))
             print("success, back to index page")
             return render_template("index.html")
         else:

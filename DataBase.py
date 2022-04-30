@@ -58,6 +58,7 @@ def creat_user_table():
     mycursor.execute("CREATE TABLE IF NOT EXISTS user (role VARCHAR(10),"
                      "username VARCHAR(20),"
                      "password VARCHAR(20),"
+                     "email VARCHAR(100),"
                      "_ID int PRIMARY key AUTO_INCREMENT)")
 
 
@@ -154,7 +155,7 @@ def insert_user(tuple):
     mycursor = db.cursor()
     try:
         creat_user_table()
-        mycursor.execute("INSERT INTO user (role,username,password) VALUES (%s,%s,%s)", tuple)
+        mycursor.execute("INSERT INTO user (role,username,password,email) VALUES (%s,%s,%s,%s)", tuple)
         db.commit()
         print("insert successfully")
         mycursor.execute("SELECT * FROM user")

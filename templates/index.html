@@ -1,62 +1,381 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <title>Quiz Hub</title>
-    <meta charset="utf-8">
+    <title>QuizHUB Homepage</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="cssFile.css">
-</head>
-<body>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <link rel="stylesheet" href="../static/cssFile.css">
+    <style>
+        body {font-family: Arial, Helvetica, sans-serif;}
+
+        /* Full-width input fields */
+        input[type=text], input[type=password] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        /* Set a style for all buttons */
+        button {
+            background-color: #f7971d;
+            color: black;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        /* Extra styles for the cancel button */
+        .cancelbtn {
+            width: auto;
+            padding: 10px 18px;
+            background-color: black;
+            color: white;
+        }
+
+        /* Center the image and position the close button */
+        .imgcontainer {
+            text-align: center;
+            margin: 24px 0 12px 0;
+            position: relative;
+        }
+
+        img.avatar {
+            width: 40%;
+            border-radius: 50%;
+        }
+
+        .container {
+            padding: 16px;
+        }
+
+        span.psw {
+            float: right;
+            padding-top: 16px;
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            padding-top: 60px;
+        }
+
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+            border: 1px solid #888;
+            width: 90%; /* Could be more or less, depending on screen size */
+        }
+
+        /* The Close Button (x) */
+        .close {
+            position: absolute;
+            right: 25px;
+            top: 0;
+            color: #000;
+            font-size: 35px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: red;
+            cursor: pointer;
+        }
+
+        /* Add Zoom Animation */
+        .animate {
+            -webkit-animation: animatezoom 0.6s;
+            animation: animatezoom 0.6s
+        }
+
+        @-webkit-keyframes animatezoom {
+            from {-webkit-transform: scale(0)}
+            to {-webkit-transform: scale(1)}
+        }
+
+        @keyframes animatezoom {
+            from {transform: scale(0)}
+            to {transform: scale(1)}
+        }
+
+        /* Change styles for span and cancel button on extra small screens */
+        @media screen and (max-width: 300px) {
+            span.psw {
+                display: block;
+                float: none;
+            }
+            .cancelbtn {
+                width: 100%;
+            }
+        }
+    </style>
+
+
+</head>
+<body id="myPage">
+
+
+<!-- Navbar -->
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
-        <h1 id="logo">Quiz <span style="color:#ffbb22">Hub</span></h1>
+        <div class="navbar-header">
+
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"> </span>
+                <span class="icon-bar"> </span>
+                <span class="icon-bar"> </span>
+            </button>
+
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+
+            <ul class="nav navbar-nav">
+                <li ><a  id="logo" href="/homePage">Quiz <span id="hub">Hub</span></a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right" >
+                <li><a onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Login</a></li>
+                <li><a onclick="document.getElementById('id02').style.display='block'" style="width:auto;">SignUp</a></li>
+            </ul>
+        </div>
     </div>
 </nav>
 
-
-
-<div class="container">
-    <div class="row">
-        <div class="col-lg-12" id="sign_in">
-            <h1>User Sign In </h1>
-            <form action="/user" method="post" enctype="multipart/form-data">
-                <form action="?error=user Or password wrong" method="post">
-                    <label for="fname">Username:</label>
-                    <input style="color:#050505" type="text" id="fname" name="Name">
-                    <label id="fname-error" style="display: none">Username is not exist</label>
-                    <br><br>
-                    <label for="lname">Password:</label>
-                    <input style="color:#050505" type="text" id="lname" name="Password">
-                    <label id="password-error" style="display: none">wrong password</label>
-                    <br><br>
-                    <p><a href="/Signup">Sign up</a ></p >
-                    <input type="submit" style="color:#8C8757" value="Submit">
-                </form>
-            </form>
-
-        </div>
+<!-- Image Header -->
+<div class="w3-display-container w3-animate-opacity">
+    <img src="
+https://upload.wikimedia.org/wikipedia/commons/2/26/Math_class_in_Chu_Jen_Junior_High_School_2007-08-23.jpg
+" alt="boat" style="width:100%;min-height:350px;max-height:600px;">
+    <div class="w3-container w3-display-bottomleft w3-margin-bottom">
+        <button  class="w3-button w3-xlarge w3-theme w3-hover-teal" title="Go To login">Start Learning</button>
     </div>
 </div>
 
-<footer class="container-fluid text-center">
-    <li><a href="/aboutUS" ><p>About US</p></a> </li>
-</footer>
+<!-- Modal -->
+<div  class="w3-modal">
+    <div class="w3-modal-content w3-card-4 w3-animate-top">
+        <header class="w3-container w3-teal w3-display-container">
+            <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-teal w3-display-topright"><i class="fa fa-remove"></i></span>
+            <h4>Oh snap! We just showed you a modal..</h4>
+            <h5>Because we can <i class="fa fa-smile-o"></i></h5>
+        </header>
+        <div class="w3-container">
+            <p>Cool huh? Ok, enough teasing around..</p>
+            <p>Go to our <a class="w3-text-teal" href="/w3css/default.asp">W3.CSS Tutorial</a> to learn more!</p>
+        </div>
+        <footer class="w3-container w3-teal">
+            <p>Modal footer</p>
+        </footer>
+    </div>
+</div>
 
-</body>
+<!-- Team Container -->
+<div class="w3-container w3-padding-64 w3-center" id="team" style="color: black; background-color: #f7971d">
+    <h2>About Our Team</h2>
+    <p>Unpaid Workers</p>
+
+    <div class="w3-row"><br>
+
+        <div class="w3-third">
+            <img src="/w3images/avatar.jpg" alt="Boss" style="width:45%" class="w3-circle w3-hover-opacity">
+            <h3>Tingjie Zhao</h3>
+            <p>Backend</p>
+            <p>"Python_is_the_best_language.java"</p>
+            <p> kylin@example.com</p>
+        </div>
+
+        <div class="w3-third">
+            <img src="/w3images/avatar.jpg" alt="Boss" style="width:45%" class="w3-circle w3-hover-opacity">
+            <h3>Kevin Wang</h3>
+            <p>Frontend</p>
+            <p>"Don't Just Book It, Do It."</p>
+            <p> kevin@example.com</p>
+        </div>
+
+        <div class="w3-third">
+            <img src="/w3images/avatar.jpg" alt="Boss" style="width:45%" class="w3-circle w3-hover-opacity">
+            <h3>Zhou Zhou</h3>
+            <p>Backend</p>
+            <p>"Slogan is boring"</p>
+            <p> zhouzhou@example.com</p>
+        </div>
+
+
+    </div>
+    <div class="w3-row"><br>
+
+        <div class="w3-third">
+            <img src="/w3images/avatar.jpg" alt="Boss" style="width:45%" class="w3-circle w3-hover-opacity">
+            <h3>Shkar Bassam</h3>
+            <p>Database</p>
+            <p>"Pride of the Unpaid workers For Over 100 Years."</p>
+            <p> Shkar@example.com</p>
+        </div>
+
+        <div class="w3-third">
+            <img src="/w3images/avatar.jpg" alt="Boss" style="width:45%" class="w3-circle w3-hover-opacity">
+            <h3>Qingxiang Zeng</h3>
+            <p>Front End</p>
+            <p>"sleep, eat , play."</p>
+            <p> qzeng6@example.com</p>
+        </div>
+
+        <div class="w3-third">
+            <img src="/w3images/avatar.jpg" alt="Boss" style="width:45%" class="w3-circle w3-hover-opacity">
+            <h3>Rafi</h3>
+            <p>Product Manager</p>
+            <p>"404 is nice class"</p>
+            <p> rafi@example.com</p>
+        </div>
+
+
+    </div>
+</div>
+
+<!-- Image of location/map -->
+<img src="
+https://rocklinhsflash.net/wp-content/uploads/2018/12/tom_younger-kids.jpg
+" class="w3-image w3-greyscale-min" style="width:100%;">
+
+
+
+<div id="id01" class="modal">
+    <form action="/user" method="post" enctype="multipart/form-data" class="modal-content animate">
+        <form action="?error=user Or password wrong" method="post">
+
+            <div class="imgcontainer">
+                <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+
+            </div>
+
+            <div class="container">
+                <label for="fname"><b>Username</b></label>
+                <input style="color:#050505" type="text" id="fname" name="Name" placeholder="Username">
+                <label id="fname-error" style="display: none">Username is not exist</label>
+
+                <label for="lname"><b>Password</b></label>
+                <input style="color:#050505" type="text" id="lname" name="Password" placeholder="Password">
+                <label id="password-error" style="display: none">wrong password</label>
+
+
+                <button type="submit">Login</button>
+
+            </div>
+
+            <div class="container" style="background-color:#f1f1f1">
+                <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+            </div>
+        </form>
+    </form>
+
+</div>
+
+<div id="id02" class="modal">
+    <form action="/Signup" method="post" enctype="multipart/form-data" class="modal-content animate">
+        <form action="this username is exist" method="post">
+            <div class="imgcontainer">
+                <span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">&times;</span>
+
+            </div>
+
+
+            <div class="container">
+                <label for="fname">Username:</label>
+                <input type="text" placeholder="Enter Username" name="uname" required >
+                <label id="fname-error2" style="display: none">username is existed, pick another one</label>
+                <label for="lname">Password:</label>
+                <input type="password" placeholder="Enter Password" name="psw" required>
+                <label>Email:</label>
+                <input type="email" placeholder="Enter Email" name="email" required>
+                <select name="who" id="option">
+                    <option value="Teacher">Teacher</option>
+                    <option value="Student">Student</option>
+                </select>
+                <button type="submit">Sign Up</button>
+
+            </div>
+
+
+
+
+
+
+
+
+            <div class="container" style="background-color:#f1f1f1">
+                <button type="button" onclick="document.getElementById('id02').style.display='none'" class="cancelbtn">Cancel</button>
+
+            </div>
+        </form>
+    </form>
+
+</div>
 
 <script>
-  let query = new URLSearchParams(window.location.search)
-  if (query.has('error')) {
-    if (query.get('error') === "username") {
-      document.querySelector('#fname-error').style.display = 'block'
-    } else if (query.get('error') === "password") {
-      document.querySelector('#password-error').style.display = 'block'
+    // Script for side navigation
+    function w3_open() {
+        var x = document.getElementById("mySidebar");
+        x.style.width = "300px";
+        x.style.paddingTop = "10%";
+        x.style.display = "block";
     }
-  }
-</script>
 
+    // Close side navigation
+    function w3_close() {
+        document.getElementById("mySidebar").style.display = "none";
+    }
+
+    // Used to toggle the menu on smaller screens when clicking on the menu button
+    function openNav() {
+        var x = document.getElementById("navDemo");
+        if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+        } else {
+            x.className = x.className.replace(" w3-show", "");
+        }
+    }
+</script>
+<script>
+    let query = new URLSearchParams(window.location.search)
+    if (query.has('error')) {
+        if (query.get('error') === "username") {
+            document.querySelector('#fname-error').style.display = 'block'
+        }
+    }
+</script>
+<script>
+    let query = new URLSearchParams(window.location.search)
+    if (query.has('error')) {
+        if (query.get('error') === "username") {
+            document.querySelector('#fname-error2').style.display = 'block'
+        }
+    }
+</script>
+</body>
 </html>
