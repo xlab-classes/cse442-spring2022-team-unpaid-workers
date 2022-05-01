@@ -121,16 +121,15 @@ def insert_quiz(tuple):
     except mysql.connector.Error:
         print("insert question failed")
 
-def find_quiz_name(passcode):
+def get_quiz_name_by_passcode(passcode):
     db = connector()
     mycursor = db.cursor()
-
     try:
         mycursor.execute('SELECT * FROM Quiz_Data')
         print("user_authentication check")
         for row in mycursor:
             if row[0] == passcode:
-                return row[1]
+                return row[2]
         return None
     except mysql.connector.Error:
         print("check quiz name failed")
@@ -399,6 +398,40 @@ def get_studentAnswer_baseon_submissionID(id):
     except mysql.connector.Error:
         print("check submission table failed")
 
+def create_rubric_table():
+    db = connector()
+    mycursor = db.cursor()
+
+    mycursor.execute("CREATE TABLE IF NOT EXISTS rubric (submissionID VARCHAR(1024),"
+                     "information VARCHAR(2048),"
+                     "_ID int PRIMARY key AUTO_INCREMENT)")
+
+
+def insert_rubric_table(submissionID,information):
+    db = connector()
+    mycursor = db.cursor()
+    try:
+        create_rubric_table()
+        myTuple = (submissionID,information)
+        mycursor.execute("INSERT INTO rubric (submissionID,information) VALUES (%s,%s)", myTuple)
+        db.commit()
+        print("insert successfully")
+    except:
+        print("insert rubric table Fail")
+
+def delete_rubric_table():
+    db = connector()
+    mycursor = db.cursor()
+    mycursor.execute("DROP TABLE rubric")
+
+def get_rubric_table_information(submissionID):
+    db =connector()
+    mycursor = db.cursor()
+    mycursor.execute('SELECT * FROM rubric')
+    for row in mycursor:
+        if row[0] == submissionID:
+            return row[1]
+    return None
 
 '''
 Table1 users
