@@ -9,6 +9,7 @@ from werkzeug.datastructures import ImmutableMultiDict
 import random
 import string
 import json
+import smtplib
 
 app = Flask(__name__)
 
@@ -19,8 +20,27 @@ def index():
     DataBase.print_user_table()
     return render_template("index.html")
 
-
 @app.route('/updateQuiz', methods=['POST', 'GET'])
+def sendEmailNotification(studentName,studentEmail,examName,studentScore):
+    gmail_user = 'kylinzh7798@gmail.com'
+    gmail_password = "nzl980107"
+
+    sent_from = gmail_user
+    to = [studentEmail]
+    SUBJECT = examName +' score is out!'
+    TEXT = "Hi, "+studentName+"\nYour score is "+str(studentScore)
+
+    email_text = 'Subject: {}\n\n{}'.format(SUBJECT, TEXT)
+    try:
+        smtp_server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+        smtp_server.ehlo()
+        smtp_server.login(gmail_user, gmail_password)
+        smtp_server.sendmail(sent_from, to, email_text)
+        smtp_server.close()
+        print("Email sent successfully!")
+    except Exception as ex:
+        print("Something went wrong….", ex)
+
 def updateQuiz():
     data = dict(request.form)
 
@@ -46,13 +66,10 @@ def updateQuiz():
     DataBase.update_student_quizscore(name, passcode, newScore)
     username = data.get("username")
     role = DataBase.get_role_baseon_name(username)
-    # if role == "Student":
-    #     return redirect("/student_gradebook/" + username, code=301)
-    # else:
-    #     return redirect("/teacher_grade_book/" + username, code=301)
+    if role == "Teacher":
+         sendEmailNotification(name,DataBase.get_userEmail_baseon_name(name),DataBase.get_quiz_name_by_passcode(passcode),newScore)
+
     return redirect("/homePage/" + username, code=301)
-
-
 
 @app.route('/submission/<role>/<id>', methods=['POST', 'GET'])
 def studentSubmission(role, id):
@@ -119,7 +136,6 @@ def studentSubmission(role, id):
         final_temp = final_temp.replace("username123", name)
         return final_temp
 
-
 @app.route('/quiz_submit', methods=['POST', 'GET'])
 def quiz_submit():
     if request.method == "POST":
@@ -155,7 +171,6 @@ def quiz_submit():
         DataBase.insertSubmission(data.get("studentName"), passcode, json.dumps(studentAnswer), SubmissionID)
 
         return redirect("/homePage/"+studentName,code=301)
-
 
 @app.route('/accessQuiz', methods=['POST', 'GET'])
 def accessQuiz():
@@ -241,7 +256,6 @@ def accessQuiz():
         final_template = final_template[:start_pos] + quiz_template + final_template[end_pos:]
 
         return final_template
-
 
 @app.route('/buildQuiz', methods=['POST', 'GET'])
 def buidQuiz():
@@ -635,7 +649,6 @@ def buidQuiz():
 
         return t
 
-
 @app.route('/Signup', methods=['POST', 'GET'])
 def Signup():
     print("in signup")
@@ -648,14 +661,14 @@ def Signup():
         name = dict.get("Name")[0]
         password = dict.get("Password")[0]
         role = dict.get("who")[0]
-
+        user_email = dict.get("email")[0]
+        print(user_email)
         if DataBase.username_is_not_exist(name):
-            DataBase.insert_user((role, name, password))
+            DataBase.insert_user((role, name, password,user_email))
             print("success, back to index page")
             return render_template("index.html")
         else:
             return redirect("/?error=username", code=301)
-
 
 @app.route('/homePage/<name>', methods=['GET'])
 def homePage(name):
@@ -795,13 +808,15 @@ def user():
             finalTemplate += endData
             finalTemplate = finalTemplate.replace("teacher_name", name)
             passcode_template = "<p>Passcode List: </p>"
-            for code in list_of_passcode:
-                passcode_template += DataBase.get_quiz_name_by_passcode(code) + "----->" + code + '\n<br>\n'
+            if list_of_passcode is not None:
+                for code in list_of_passcode:
+                    passcode_template += DataBase.get_quiz_name_by_passcode(code) + "----->" + code + '\n<br>\n'
             finalTemplate = finalTemplate.replace('<p>Passcode List: </p>', passcode_template)
             return finalTemplate
 
 
 if __name__ == '__main__':
+
     DataBase.create_Submission_table()
     DataBase.print_submission_table()
     DataBase.creat_user_table()

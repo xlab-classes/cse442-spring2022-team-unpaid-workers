@@ -32,19 +32,35 @@ def print_user_table():
 def creat_user_table():
     db = connector()
     mycursor = db.cursor()
+    try:
+        mycursor.execute("CREATE TABLE IF NOT EXISTS user (role VARCHAR(10),"
+                         "username VARCHAR(20),"
+                         "password VARCHAR(20),"
+                         "email VARCHAR(48),"
+                         "_ID int PRIMARY key AUTO_INCREMENT)")
+    except mysql.connector.Error:
+        print("creating fail")
 
-    mycursor.execute("CREATE TABLE IF NOT EXISTS user (role VARCHAR(10),"
-                     "username VARCHAR(20),"
-                     "password VARCHAR(20),"
-                     "_ID int PRIMARY key AUTO_INCREMENT)")
 
+
+def get_userEmail_baseon_name(name):
+    db = connector()
+    mycursor = db.cursor()
+    mycursor.execute('SELECT * FROM user')
+    for row in mycursor:
+        if row[1] == name:
+            print("got email!")
+            return row[3]
+
+    return None
 
 def insert_user(tuple):
     db = connector()
     mycursor = db.cursor()
     try:
         creat_user_table()
-        mycursor.execute("INSERT INTO user (role,username,password) VALUES (%s,%s,%s)", tuple)
+        print("tuple: ",tuple)
+        mycursor.execute("INSERT INTO user (role,username,password,email) VALUES (%s,%s,%s,%s)", tuple)
         db.commit()
         print("insert successfully")
         mycursor.execute("SELECT * FROM user")
@@ -398,40 +414,9 @@ def get_studentAnswer_baseon_submissionID(id):
     except mysql.connector.Error:
         print("check submission table failed")
 
-def create_rubric_table():
-    db = connector()
-    mycursor = db.cursor()
-
-    mycursor.execute("CREATE TABLE IF NOT EXISTS rubric (submissionID VARCHAR(1024),"
-                     "information VARCHAR(2048),"
-                     "_ID int PRIMARY key AUTO_INCREMENT)")
 
 
-def insert_rubric_table(submissionID,information):
-    db = connector()
-    mycursor = db.cursor()
-    try:
-        create_rubric_table()
-        myTuple = (submissionID,information)
-        mycursor.execute("INSERT INTO rubric (submissionID,information) VALUES (%s,%s)", myTuple)
-        db.commit()
-        print("insert successfully")
-    except:
-        print("insert rubric table Fail")
 
-def delete_rubric_table():
-    db = connector()
-    mycursor = db.cursor()
-    mycursor.execute("DROP TABLE rubric")
-
-def get_rubric_table_information(submissionID):
-    db =connector()
-    mycursor = db.cursor()
-    mycursor.execute('SELECT * FROM rubric')
-    for row in mycursor:
-        if row[0] == submissionID:
-            return row[1]
-    return None
 
 '''
 Table1 users
