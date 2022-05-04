@@ -1,21 +1,113 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Quiz Generate</title>
+    <title>Sign up</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="../static/cssFile.css">
+    <script>
+        // Set the date we're counting down to
+        var countDownDate = new Date().getTime();
+        countDownDate += 999999 //note 1000 is 1 s Also need to replace 1000 with user count
+        // Update the count down every 1 second
+        var x = setInterval(function() {
+
+            // Get today's date and time
+            var now = new Date().getTime();
+
+            // Find the distance between now and the count down date
+            var distance = countDownDate - now;
+
+            // Time calculations for days, hours, minutes and seconds
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Output the result in an element with id="demo"
+            document.getElementById("timer").innerHTML = days + "d " + hours + "h "
+                + minutes + "m " + seconds + "s ";
+
+            // If the count down is over, write some text
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("timer").innerHTML = "EXPIRED";
+                let form = document.getElementById("submiteme");
+                form.submit();
+            }
+        }, 1000);
+    </script>
     <style>
+        /* Remove the navbar's default margin-bottom and rounded borders */
+        .navbar {
+            margin-bottom: 0;
+            border-radius: 0;
+            background-color: #321E0F;
+        }
+
         /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-        .row.content {height: 50px}
+        .row.content {height: 450px}
+
+        /* Set gray background color and 100% height */
+        .sidenav {
+            padding-top: 20px;
+            background-color: #8C8757;
+            height: 100%;
+        }
+
+        /* Set black background color, white text and some padding */
+        footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #321E0F;
+            color: white;
+            text-align: center;
+        }
+
+        /* On small screens, set height to 'auto' for sidenav and grid */
+        @media screen and (max-width: 767px) {
+            .sidenav {
+                height: auto;
+                padding: 15px;
+
+            }
+            .row.content {height:auto;}
+        }
+        body{
+            background-color: #8C8757;
+        }
+        .stylebox{
+            /*width: 320px;*/
+            padding: 0px;
+            border: 5px solid gray;
+            margin: 0;
+        }
+
+        .box {
+            float: left;
+            width: 100%;
+            padding: 50px;
+        }
+
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+        #logo {
+            text-align:center;
+            color: #FEFAD7;
+        }
+        #txt{
+            resize: none;
+        }
+
+
     </style>
-
-
-
 </head>
 <body>
 
@@ -23,389 +115,82 @@
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
+            <h1 id="logo">Quiz <span style="color:#ffbb22">Hub</span></h1>
 
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                <span class="icon-bar"> </span>
-                <span class="icon-bar"> </span>
-                <span class="icon-bar"> </span>
-            </button>
-            <a href="/homePage" ><h1 id="logo" >Quiz <span id="hub">Hub</span></h1> </a>
         </div>
-        <div class="collapse navbar-collapse" id="myNavbar">
+
+        <div id="myNavbar">
             <ul class="nav navbar-nav">
 
+                <li> <a href=" "><p> Home</p > </a >   </li>    <!--replace # to another url -->
+                <li><a href="#" ><p> Join new Class</p ></a > </li>   <!--replace # to another url -->
+                <li><a href="#" ><p> Grades</p ></a > </li>   <!--replace # to another url -->
+
+                <!--                <li><a href="#" ><p> {% print(s) %}</p ></a ></li> &lt;!&ndash;replace # to another url &ndash;&gt;-->
             </ul>
             <ul class="nav navbar-nav navbar-right">
-
-                <li><a href="/"><span ></span> sign out</a></li>
+                <li><a href="#">sign out</a ></li>
             </ul>
         </div>
     </div>
 </nav>
 
-
-
+<!--body of page-->
 <div class="container-fluid text-center">
-    <div class="row content" >
-        <div class="col-sm-2 "></div>
-        <div class="col-sm-8 text-left">
+    <div class="row content">
+        <div class="col-lg-6 text-left">
+            <div class="stylebox">
 
-            <form action="/buildQuiz" method="POST">
+                <h1>Quizing...</h1>
 
-                <div style="text-align: center">
-                    <h3 style="color: white">Quiz Name</h3>
-                    <input type = "text" name = "Quiz_name" size="120" value="Check Rubric" style="display: inline-block;width: 30%; min-width: 100px; color: black;" required/>
-                    <h3 style="color: white">Time Limit</h3>
-                    <input type = "text" id="time_limit_hour" name = "Time_Limit_hr" size="100" value="1" style="display: inline-block;width: 1%; min-width: 50px; color: black;" required/>
-                    <label for="time_limit_hour" style="color: white">hours </label>
-                    <input type = "text" id="time_limit_min" name = "Time_Limit_min" size="100" value="0" style="display: inline-block;width: 1%; min-width: 50px; color: black;" required/>
-                    <label for="time_limit_min" style="color: white">minutes </label>
-                </div >
+                <div class="clearfix">
+                    <div class="box" style="background-color:#bbb">
+                        <p id="timer"></p>
+                        <form action="/quiz_submit" method="POST"  id="submiteme">
+                            <p>Question1:</p>
+                            <input type="radio" id="A" name="A" value="A">
+                            <label for="A">A</label><br>
+                            <input type="radio" id="B" name="B" value="B">
+                            <label for="B">B</label><br>
+                            <input type="radio" id="C" name="C" value="C">
+                            <label for="C">C</label>
+                            <br>
 
-                <hr>
+                            <input value="passcode" name="passcode" hidden>
+                            <input type="submit" value="Submit" >
+                        </form>
 
 
-                <label style="color: white"> Question1 <input type = "text" name = "Question_1" size="120" style="color: black" value="2*2"/></label >
-                <label style="color: white" for="option1">Question Type :</label>
-                <select name="question_type1" id="option1" value="Essay_Question" >
-                    <option  value="Essay_Question" selected>Essay_Question</option>
-                </select><br>
-                <label style="color: white">Point Worth : <input type = "text" name = "Point_1" size="12" style="color: black" value="1"/></label ><br>
-                <p id="question_content1">
-                </p>
-                <input type="text" name="Essay_Question1_Row" value="2" hidden><br>
-                <input type="text" name="Essay_Question1_Col" value="2" hidden><br>
-                <input type="text" name="Essay_Question1_Cell0" value="a" hidden><br>
-                <input type="text" name="Essay_Question1_Cell1" value="b" hidden><br>
-                <input type="text" name="Essay_Question1_Cell2" value="c" hidden><br>
-                <input type="text" name="Essay_Question1_Cell3" value="d" hidden><br>
-                <table id='rubric1' style="width:100%;color: white"><tr><td>a</td><td>b</td></tr><tr><td>c</td><td>d</td></tr></table><br><br>
 
-                <label style="color: white"> Question2 <input type = "text" name = "Question_2" size="120" style="color: black" value="2*3"/></label >
-                <label style="color: white" for="option2">Question Type :</label>
-                <select name="question_type2" id="option2" value="Essay_Question" >
-                    <option  value="Essay_Question" selected>Essay_Question</option>
-                </select><br>
-                <label style="color: white">Point Worth : <input type = "text" name = "Point_2" size="12" style="color: black" value="15"/></label ><br>
-                <p id="question_content2">
-                </p>
-                <input type="text" name="Essay_Question2_Row" value="2" hidden><br>
-                <input type="text" name="Essay_Question2_Col" value="3" hidden><br>
-                <input type="text" name="Essay_Question2_Cell0" value="a" hidden><br>
-                <input type="text" name="Essay_Question2_Cell1" value="b" hidden><br>
-                <input type="text" name="Essay_Question2_Cell2" value="c" hidden><br>
-                <input type="text" name="Essay_Question2_Cell3" value="d" hidden><br>
-                <input type="text" name="Essay_Question2_Cell4" value="e" hidden><br>
-                <input type="text" name="Essay_Question2_Cell5" value="f" hidden><br>
-                <table id='rubric2' style="width:100%;color: white"><tr><td>a</td><td>b</td><td>c</td></tr><tr><td>d</td><td>e</td><td>f</td></tr></table><br><br>
+                        </p >
 
-                <label style="color: white"> Question3 <input type = "text" name = "Question_3" size="120" style="color: black" value="3*3"/></label >
-                <label style="color: white" for="option3">Question Type :</label>
-                <select name="question_type3" id="option3" value="Essay_Question" >
-                    <option  value="Essay_Question" selected>Essay_Question</option>
-                </select><br>
-                <label style="color: white">Point Worth : <input type = "text" name = "Point_3" size="12" style="color: black" value="3"/></label ><br>
-                <p id="question_content3">
-                </p>
-                <input type="text" name="Essay_Question3_Row" value="3" hidden><br>
-                <input type="text" name="Essay_Question3_Col" value="3" hidden><br>
-                <input type="text" name="Essay_Question3_Cell0" value="a" hidden><br>
-                <input type="text" name="Essay_Question3_Cell1" value="b" hidden><br>
-                <input type="text" name="Essay_Question3_Cell2" value="c" hidden><br>
-                <input type="text" name="Essay_Question3_Cell3" value="d" hidden><br>
-                <input type="text" name="Essay_Question3_Cell4" value="e" hidden><br>
-                <input type="text" name="Essay_Question3_Cell5" value="f" hidden><br>
-                <input type="text" name="Essay_Question3_Cell6" value="g" hidden><br>
-                <input type="text" name="Essay_Question3_Cell7" value="h" hidden><br>
-                <input type="text" name="Essay_Question3_Cell8" value="i" hidden><br>
-                <table id='rubric3' style="width:100%;color: white"><tr><td>a</td><td>b</td><td>c</td></tr><tr><td>d</td><td>e</td><td>f</td></tr><tr><td>g</td><td>h</td><td>i</td></tr></table><br><br>
 
-                <label style="color: white"> Question4 <input type = "text" name = "Question_4" size="120" style="color: black" value="3*2"/></label >
-                <label style="color: white" for="option4">Question Type :</label>
-                <select name="question_type4" id="option4" value="Essay_Question" >
-                    <option  value="Essay_Question" selected>Essay_Question</option>
-                </select><br>
-                <label style="color: white">Point Worth : <input type = "text" name = "Point_4" size="12" style="color: black" value="5"/></label ><br>
-                <p id="question_content4">
-                </p>
-                <input type="text" name="Essay_Question4_Row" value="3" hidden><br>
-                <input type="text" name="Essay_Question4_Col" value="2" hidden><br>
-                <input type="text" name="Essay_Question4_Cell0" value="a" hidden><br>
-                <input type="text" name="Essay_Question4_Cell1" value="b" hidden><br>
-                <input type="text" name="Essay_Question4_Cell2" value="c" hidden><br>
-                <input type="text" name="Essay_Question4_Cell3" value="d" hidden><br>
-                <input type="text" name="Essay_Question4_Cell4" value="e" hidden><br>
-                <input type="text" name="Essay_Question4_Cell5" value="f" hidden><br>
-                <table id='rubric4' style="width:100%;color: white"><tr><td>a</td><td>b</td></tr><tr><td>c</td><td>d</td></tr><tr><td>e</td><td>f</td></tr></table><br><br>
-
-                <label style="color: white"> Question5 <input type = "text" style="color: black" name = "Question_5" size="120"/></label >
-                <br>
-                <label style="color: white" for="option5">Question Type :</label>
-                <select name="question_type5" id="option5" >
-                    <option  value="Multiple_Choice" >Multiple Choice</option>
-                    <option  value="Short_Answer">Short Answer</option>
-                    <option  value="True_or_False" >T/F Question </option>
-                    <option  value="Essay_Question" >Essay Question </option>
-                </select><br>
-                <label style="color: white" >Point Worth : <input type = "text" style="color: black" name = "Point_5" size="12"/></label >
-                <br>
-                <p id="question_content5">
-                </p>
-                </p>
-                <p><input type = "submit" value = "Build Quiz" name="build quiz" style="color: black"/></p >
-                <p><input type="submit" value="add Question" name="add question" style="color: black"/></p >
-                <p><input value="Atri" name="name" hidden/></p >
-
-            </form>
+                    </div>
+                </div>
+            </div>
 
         </div>
-        <div class="col-sm-2 "></div>
+    </div>
+</div>
+</div>
 
+<div class="container-fluid text-center">
+    <div class="row content">
+        <div class="col-sm-2 sidenav">
+        </div>
+        <div class="col-sm-8 text-left">
+        </div>
+        <div class="col-sm-2 sidenav">
+
+        </div>
     </div>
 </div>
 
 
-
-
+<footer class="container-fluid text-center">
+    <p>About Us</p >
+</footer>
 
 </body>
-<script>
-    function displayTable() {
-        console.log("display");
-        let table = document.querySelector("#rubric")
-        table.innerHTML = ""
-        let row_count = parseInt(document.querySelector("input#row").value)
-        let column_count = parseInt(document.querySelector("input#col").value)
-
-        document.getElementById("row_text").value = row_count.toString()
-
-        document.getElementById("col_text").value = column_count.toString()
-
-
-        for (let row = 0; row < row_count; row++) {
-            let row_element = document.createElement("tr")
-
-            for (let column = 0; column < column_count; column++) {
-
-                let cell = document.createElement("tb")
-                cell.id = "cell-" + row + "-" + column
-                cell.innerHTML = "<input name='" + row + "-" + column + "' style='color: black'/>"
-                row_element.append(cell)
-            }
-            table.append(row_element)
-        }
-
-    }
-</script>
-<p><input value="starting_pos" name="pos" hidden/></p ><script>
-    var x1 = document.getElementById("option1");
-    x1.addEventListener("change", myFunction1);
-    function myFunction1() {
-        if (x1.value == "Multiple_Choice"){
-            document.getElementById("question_content1").innerHTML =
-                "<label style=\"color: white\" >Answer : <input type = \"text\" name = \"Answer_1\" size=\"12\" required/></label >" +
-                "<br>"+
-                "<label style=\"color: white\">ChoiceA <input type = \"text\" name = \"Choice_A_1\" size=\"120\" required/></label >" +
-                "<label style=\"color: white\">ChoiceB <input type = \"text\" name = \"Choice_B_1\" size=\"120\" required/></label >" +
-                "<label style=\"color: white\">ChoiceC <input type = \"text\" name = \"Choice_C_1\" size=\"120\" required/></label >" +
-                "<label style=\"color: white\">ChoiceD <input type = \"text\" name = \"Choice_D_1\" size=\"120\" required/></label >" ;
-        }
-        else if (x1.value == "Short_Answer"){
-            document.getElementById("question_content1").innerHTML =
-                "<div class=\"form-group\">" +
-                "<label style=\"color: white\" for=\"comment\">Short Question_Answer:</label>" +
-                "<textarea class=\"form-control\" name=\"Answer_1\" rows=\"5\" id=\"comment\" required></textarea></div>";
-        }
-        else if (x1.value == "Essay_Question"){
-            document.getElementById("question_content1").innerHTML =
-                "<div class=\"form-group\">" +
-                "<input type = \"text\" id=\"row_text\" name = \"row\" value=\"0\" hidden/>" +
-                "<input type = \"text\" id=\"col_text\" name = \"col\" value=\"0\" hidden/>" +
-                "<label style=\"color: white\">Row:</label><input type=\"number\" id=\"row\" min=\"1\" max=\"5\" style=\"color: #1b1b1b\" required> X "+
-                "<label style=\"color: white\">Column:</label><input type=\"number\" id=\"col\" min=\"1\" max=\"5\"  style=\"color: #1b1b1b\" required> " +
-                "<button onclick=\"displayTable()\" style=\"color: #1b1b1b\" id=\"update\" type=\"button\">Create Rubric</button>" +
-                "<table id=\"rubric\"></table>" +
-                "</div>";}else{
-            document.getElementById("question_content1").innerHTML =
-                "<br>" +
-                "<label style=\"color: white\"> T/F answer:</label>" +
-                "<br>" +
-                "<input type=\"radio\" id=\"T\" name=\"T/F_1\" value=\"True\" required>" +
-                "<label style=\"color: white\" for=\"T\">True</label>" +
-                "<br>" +
-                "<input type=\"radio\" id=\"F\" name=\"T/F_1\" value=\"False\">" +
-                "<label style=\"color: white\" for=\"F\">False</label><br>";
-        }
-    }
-</script>
-
-<script>
-    var x2 = document.getElementById("option2");
-    x2.addEventListener("change", myFunction2);
-    function myFunction2() {
-        if (x2.value == "Multiple_Choice"){
-            document.getElementById("question_content2").innerHTML =
-                "<label style=\"color: white\" >Answer : <input type = \"text\" name = \"Answer_2\" size=\"12\" required/></label >" +
-                "<br>"+
-                "<label style=\"color: white\">ChoiceA <input type = \"text\" name = \"Choice_A_2\" size=\"120\" required/></label >" +
-                "<label style=\"color: white\">ChoiceB <input type = \"text\" name = \"Choice_B_2\" size=\"120\" required/></label >" +
-                "<label style=\"color: white\">ChoiceC <input type = \"text\" name = \"Choice_C_2\" size=\"120\" required/></label >" +
-                "<label style=\"color: white\">ChoiceD <input type = \"text\" name = \"Choice_D_2\" size=\"120\" required/></label >" ;
-        }
-        else if (x2.value == "Short_Answer"){
-            document.getElementById("question_content2").innerHTML =
-                "<div class=\"form-group\">" +
-                "<label style=\"color: white\" for=\"comment\">Short Question_Answer:</label>" +
-                "<textarea class=\"form-control\" name=\"Answer_2\" rows=\"5\" id=\"comment\" required></textarea></div>";
-        }
-        else if (x2.value == "Essay_Question"){
-            document.getElementById("question_content2").innerHTML =
-                "<div class=\"form-group\">" +
-                "<input type = \"text\" id=\"row_text\" name = \"row\" value=\"0\" hidden/>" +
-                "<input type = \"text\" id=\"col_text\" name = \"col\" value=\"0\" hidden/>" +
-                "<label style=\"color: white\">Row:</label><input type=\"number\" id=\"row\" min=\"1\" max=\"5\" style=\"color: #1b1b1b\" required> X "+
-                "<label style=\"color: white\">Column:</label><input type=\"number\" id=\"col\" min=\"1\" max=\"5\"  style=\"color: #1b1b1b\" required> " +
-                "<button onclick=\"displayTable()\" style=\"color: #1b1b1b\" id=\"update\" type=\"button\">Create Rubric</button>" +
-                "<table id=\"rubric\"></table>" +
-                "</div>";}else{
-            document.getElementById("question_content2").innerHTML =
-                "<br>" +
-                "<label style=\"color: white\"> T/F answer:</label>" +
-                "<br>" +
-                "<input type=\"radio\" id=\"T\" name=\"T/F_2\" value=\"True\" required>" +
-                "<label style=\"color: white\" for=\"T\">True</label>" +
-                "<br>" +
-                "<input type=\"radio\" id=\"F\" name=\"T/F_2\" value=\"False\">" +
-                "<label style=\"color: white\" for=\"F\">False</label><br>";
-        }
-    }
-</script>
-
-<script>
-    var x3 = document.getElementById("option3");
-    x3.addEventListener("change", myFunction3);
-    function myFunction3() {
-        if (x3.value == "Multiple_Choice"){
-            document.getElementById("question_content3").innerHTML =
-                "<label style=\"color: white\" >Answer : <input type = \"text\" name = \"Answer_3\" size=\"12\" required/></label >" +
-                "<br>"+
-                "<label style=\"color: white\">ChoiceA <input type = \"text\" name = \"Choice_A_3\" size=\"120\" required/></label >" +
-                "<label style=\"color: white\">ChoiceB <input type = \"text\" name = \"Choice_B_3\" size=\"120\" required/></label >" +
-                "<label style=\"color: white\">ChoiceC <input type = \"text\" name = \"Choice_C_3\" size=\"120\" required/></label >" +
-                "<label style=\"color: white\">ChoiceD <input type = \"text\" name = \"Choice_D_3\" size=\"120\" required/></label >" ;
-        }
-        else if (x3.value == "Short_Answer"){
-            document.getElementById("question_content3").innerHTML =
-                "<div class=\"form-group\">" +
-                "<label style=\"color: white\" for=\"comment\">Short Question_Answer:</label>" +
-                "<textarea class=\"form-control\" name=\"Answer_3\" rows=\"5\" id=\"comment\" required></textarea></div>";
-        }
-        else if (x3.value == "Essay_Question"){
-            document.getElementById("question_content3").innerHTML =
-                "<div class=\"form-group\">" +
-                "<input type = \"text\" id=\"row_text\" name = \"row\" value=\"0\" hidden/>" +
-                "<input type = \"text\" id=\"col_text\" name = \"col\" value=\"0\" hidden/>" +
-                "<label style=\"color: white\">Row:</label><input type=\"number\" id=\"row\" min=\"1\" max=\"5\" style=\"color: #1b1b1b\" required> X "+
-                "<label style=\"color: white\">Column:</label><input type=\"number\" id=\"col\" min=\"1\" max=\"5\"  style=\"color: #1b1b1b\" required> " +
-                "<button onclick=\"displayTable()\" style=\"color: #1b1b1b\" id=\"update\" type=\"button\">Create Rubric</button>" +
-                "<table id=\"rubric\"></table>" +
-                "</div>";}else{
-            document.getElementById("question_content3").innerHTML =
-                "<br>" +
-                "<label style=\"color: white\"> T/F answer:</label>" +
-                "<br>" +
-                "<input type=\"radio\" id=\"T\" name=\"T/F_3\" value=\"True\" required>" +
-                "<label style=\"color: white\" for=\"T\">True</label>" +
-                "<br>" +
-                "<input type=\"radio\" id=\"F\" name=\"T/F_3\" value=\"False\">" +
-                "<label style=\"color: white\" for=\"F\">False</label><br>";
-        }
-    }
-</script>
-
-<script>
-    var x4 = document.getElementById("option4");
-    x4.addEventListener("change", myFunction4);
-    function myFunction4() {
-        if (x4.value == "Multiple_Choice"){
-            document.getElementById("question_content4").innerHTML =
-                "<label style=\"color: white\" >Answer : <input type = \"text\" name = \"Answer_4\" size=\"12\" required/></label >" +
-                "<br>"+
-                "<label style=\"color: white\">ChoiceA <input type = \"text\" name = \"Choice_A_4\" size=\"120\" required/></label >" +
-                "<label style=\"color: white\">ChoiceB <input type = \"text\" name = \"Choice_B_4\" size=\"120\" required/></label >" +
-                "<label style=\"color: white\">ChoiceC <input type = \"text\" name = \"Choice_C_4\" size=\"120\" required/></label >" +
-                "<label style=\"color: white\">ChoiceD <input type = \"text\" name = \"Choice_D_4\" size=\"120\" required/></label >" ;
-        }
-        else if (x4.value == "Short_Answer"){
-            document.getElementById("question_content4").innerHTML =
-                "<div class=\"form-group\">" +
-                "<label style=\"color: white\" for=\"comment\">Short Question_Answer:</label>" +
-                "<textarea class=\"form-control\" name=\"Answer_4\" rows=\"5\" id=\"comment\" required></textarea></div>";
-        }
-        else if (x4.value == "Essay_Question"){
-            document.getElementById("question_content4").innerHTML =
-                "<div class=\"form-group\">" +
-                "<input type = \"text\" id=\"row_text\" name = \"row\" value=\"0\" hidden/>" +
-                "<input type = \"text\" id=\"col_text\" name = \"col\" value=\"0\" hidden/>" +
-                "<label style=\"color: white\">Row:</label><input type=\"number\" id=\"row\" min=\"1\" max=\"5\" style=\"color: #1b1b1b\" required> X "+
-                "<label style=\"color: white\">Column:</label><input type=\"number\" id=\"col\" min=\"1\" max=\"5\"  style=\"color: #1b1b1b\" required> " +
-                "<button onclick=\"displayTable()\" style=\"color: #1b1b1b\" id=\"update\" type=\"button\">Create Rubric</button>" +
-                "<table id=\"rubric\"></table>" +
-                "</div>";}else{
-            document.getElementById("question_content4").innerHTML =
-                "<br>" +
-                "<label style=\"color: white\"> T/F answer:</label>" +
-                "<br>" +
-                "<input type=\"radio\" id=\"T\" name=\"T/F_4\" value=\"True\" required>" +
-                "<label style=\"color: white\" for=\"T\">True</label>" +
-                "<br>" +
-                "<input type=\"radio\" id=\"F\" name=\"T/F_4\" value=\"False\">" +
-                "<label style=\"color: white\" for=\"F\">False</label><br>";
-        }
-    }
-</script>
-
-<script>
-    var x5 = document.getElementById("option5");
-    x5.addEventListener("change", myFunction5);
-    function myFunction5() {
-        if (x5.value == "Multiple_Choice"){
-            document.getElementById("question_content5").innerHTML =
-                "<label style=\"color: white\" >Answer : <input type = \"text\" style=\"color: black\" name = \"Answer_5\" size=\"12\" required/></label >" +
-                "<br>"+
-                "<label style=\"color: white\">ChoiceA <input type = \"text\" style=\"color: black\" name = \"Choice_A_5\" size=\"120\" required/></label >" +
-                "<label style=\"color: white\">ChoiceB <input type = \"text\" style=\"color: black\" name = \"Choice_B_5\" size=\"120\" required/></label >" +
-                "<label style=\"color: white\">ChoiceC <input type = \"text\" style=\"color: black\" name = \"Choice_C_5\" size=\"120\" required/></label >" +
-                "<label style=\"color: white\">ChoiceD <input type = \"text\" style=\"color: black\" name = \"Choice_D_5\" size=\"120\" required/></label >" ;
-        }
-        else if (x5.value == "Short_Answer"){
-            document.getElementById("question_content5").innerHTML =
-                "<div class=\"form-group\">" +
-                "<label style=\"color: white\" for=\"comment\">Short Question_Answer:</label>" +
-                "<textarea class=\"form-control\" name=\"Answer_5\" rows=\"5\" id=\"comment\" required></textarea></div>";
-        }
-        else if (x5.value == "Essay_Question"){
-            document.getElementById("question_content5").innerHTML =
-                "<div class=\"form-group\">" +
-                "<input type = \"text\" id=\"row_text\" name = \"row\" value=\"0\" hidden/>" +
-                "<input type = \"text\" id=\"col_text\" name = \"col\" value=\"0\" hidden/>" +
-                "<label style=\"color: white\">Row:</label><input type=\"number\" id=\"row\" min=\"1\" max=\"5\" style=\"color: #1b1b1b\" required> X "+
-                "<label style=\"color: white\">Row:</label> <input type=\"number\" id=\"col\" min=\"1\" max=\"5\"  style=\"color: #1b1b1b\" required> " +
-                "<button onclick=\"displayTable()\" style=\"color: #1b1b1b\" id=\"update\" type=\"button\">Create Rubric</button>" +
-                "<table id=\"rubric\"></table>" +
-                "</div>"}
-        else{
-            document.getElementById("question_content5").innerHTML =
-                "<br>" +
-                "<label style=\"color: white\"> T/F answer:</label>" +
-                "<br>" +
-                "<input type=\"radio\" id=\"T\" name=\"T/F_5\" value=\"True\" required>" +
-                "<label style=\"color: white\" for=\"T\">True</label>" +
-                "<br>" +
-                "<input type=\"radio\" id=\"F\" name=\"T/F_5\" value=\"False\">" +
-                "<label style=\"color: white\" for=\"F\">False</label><br>";
-        }
-    }
-</script>
 
 </html>

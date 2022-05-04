@@ -2,48 +2,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Quiz Page</title>
+    <title>Student Quiz</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script>
-        // Set the date we're counting down to
-
-        var countDownDate = new Date().getTime();
-        countDownDate += input_time //note 1000 is 1 s Also need to replace 1000 with user count
-        // Update the count down every 1 second
-        var x = setInterval(function() {
-
-            // Get today's date and time
-            var now = new Date().getTime();
-
-            // Find the distance between now and the count down date
-            var distance = countDownDate - now;
-
-            // Time calculations for days, hours, minutes and seconds
-            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            // Output the result in an element with id="demo"
-            document.getElementById("demo").innerHTML = days + "d " + hours + "h "
-                + minutes + "m " + seconds + "s ";
-
-            // If the count down is over, write some text
-            if (distance < 0) {
-
-                clearInterval(x);
-                document.getElementById("timer").innerHTML = "EXPIRED";
-            }
-        }, 1000);
-    </script>
     <link rel="stylesheet" href="../static/cssFile.css">
 
 </head>
 <body>
+
 
 
 <nav class="navbar navbar-inverse">
@@ -61,7 +30,6 @@
             <ul class="nav navbar-nav">
             </ul>
             <ul class="nav navbar-nav navbar-right">
-
                 <li><a href="/"><span ></span> sign out</a></li>
             </ul>
         </div>
@@ -70,48 +38,81 @@
 
 
 
+
+<!--body of page-->
 <div class="container-fluid text-center">
-    <div class="row content">
-        <div class="col-lg-2  "  ></div>
-        <div class="col-lg-8 text-left">
-            <div class="stylebox" >
-                <h1>Editing Grade Here</h1>
-
-                <div class="clearfix">
-                    <div class="box" >
-
-                        <form action="/updateQuiz" method="POST">
-                            <p><input value="submissionID" name="ID" hidden/></p >
-
-                            <h3>{{Question_Name}}: </h3>
-                            <p>Correct Answer: {{Prof_answer}}</p >
-                            <p>Actual Answer: {{student_answer}}</p >
-                            <label>Point Worth : <input type = "text" name = "Choice_A_1" size="3" /> / {{point_worth}}</label >
-
-                            <br>
-                            <br>
-                            <input value="username123" name="username" hidden>
-                            <p><input type = "submit" value = "Update" name="Update Quiz"/></p >
-
-                        </form>
+    <div class="row content" >
+        <div class="col-sm-2 "></div>
+        <div class="col-sm-8 text-left" style="color: white">
 
 
+            <h1>Jesse is always Watching on you, DON'T CHEAT!</h1>
+            <img src="../static/watching_you2.gif"  alt="Computer man" style="width:148px;height:148px;">
 
-                        </p >
+            <div class="clearfix">
+                <div >
+                    <h1 id="timer" style="text-align: center"></h1>
+                    <form action="/quiz_submit" method="POST"  id="submiteme">
+                        <p>Question1:</p>
+                        <input type="radio" id="A" name="A" value="A">
+                        <label for="A">A</label><br>
+                        <input type="radio" id="B" name="B" value="B">
+                        <label for="B">B</label><br>
+                        <input type="radio" id="C" name="C" value="C">
+                        <label for="C">C</label>
+                        <br>
+
+                        <input value="passcode" name="passcode" hidden>
+                        <input type="submit" value="Submit"  style="color: black;">
+                    </form>
 
 
-                    </div>
+
+                    </p >
+
+
                 </div>
             </div>
-
         </div>
-        <div class="col-lg-2 " ></div>
+
+
+        <div class="col-sm-2 "></div>
+
     </div>
 </div>
 
 
-
-
 </body>
+<script>
+    // Set the date we're counting down to
+    var countDownDate = new Date().getTime();
+    countDownDate += 999999 //note 1000 is 1 s Also need to replace 1000 with user count
+    // Update the count down every 1 second
+    var x = setInterval(function() {
 
+        // Get today's date and time
+        var now = new Date().getTime();
+
+        // Find the distance between now and the count down date
+        var distance = countDownDate - now;
+
+        // Time calculations for days, hours, minutes and seconds
+
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        // Output the result in an element with id="demo"
+        document.getElementById("timer").innerHTML =  hours + ":"
+            + minutes + ":" + seconds;
+
+        // If the count down is over, write some text
+        if (distance < 0) {
+            clearInterval(x);
+            document.getElementById("timer").innerHTML = "EXPIRED";
+            let form = document.getElementById("submiteme");
+            form.submit();
+        }
+    }, 1000);
+</script>
 </html>

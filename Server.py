@@ -20,7 +20,6 @@ def index():
     DataBase.print_user_table()
     return render_template("index.html")
 
-@app.route('/updateQuiz', methods=['POST', 'GET'])
 def sendEmailNotification(studentName,studentEmail,examName,studentScore):
     gmail_user = 'kylinzh7798@gmail.com'
     gmail_password = "nzl980107"
@@ -40,7 +39,7 @@ def sendEmailNotification(studentName,studentEmail,examName,studentScore):
         print("Email sent successfully!")
     except Exception as ex:
         print("Something went wrong….", ex)
-
+@app.route('/updateQuiz', methods=['POST', 'GET'])
 def updateQuiz():
     data = dict(request.form)
 
@@ -75,7 +74,8 @@ def updateQuiz():
 def studentSubmission(role, id):
     # submission = {"question1":["actual answer","sudent answer","point receive","point worth"]}
     submission_str = DataBase.get_studentAnswer_baseon_submissionID(id)
-    print("id", id)
+    print("role, id", role,id)
+    print("url: ",request.url)
     if role == "student":
         submission = json.loads(submission_str)
         with open("templates/submission.html", "r") as f:
@@ -127,7 +127,7 @@ def studentSubmission(role, id):
             template += "<h3>" + str(i) + ". " + questionName + "</h3>" + "\n"
             template += "<p>Correct Answer: " + actual_answer + "</p >" + "\n"
             template += "<p>Student Answer: " + student_answer + "</p >" + "\n"
-            template += "<label>Point Worth : <input type = \"text\" name = \"Choice" + str(
+            template += "<label>Point Worth : <input type = \"text\" style=\"color: black\" name = \"Choice" + str(
                 i) + "\" size=\"3\" value=\"" + point_receive + "\" />/" + point_worth + "</label>" + "\n"
             template += "<br>" + "\n" + "<br>" + "\n"
         passcode = DataBase.get_passcode_baseon_submissionID(id)
@@ -178,6 +178,8 @@ def accessQuiz():
         data = ImmutableMultiDict(request.form)
 
         dict = data.to_dict(flat=False)
+        print("dict：",dict)
+        print("url:",request.url)
         passcode = dict.get("Access Code")[0]
         studentName = dict.get("User Name")[0]
 
@@ -197,7 +199,7 @@ def accessQuiz():
 
         final_template = final_template.replace("999999", time_limit)
         start_pos = final_template.find("<p>Question1:</p>")
-        end_pos = final_template.find('<input type="submit" value="Submit" >')
+        end_pos = final_template.find('<input type="submit" value="Submit"  style="color: black;">')
         print("end_pos ", end_pos)
         quiz_number = 0
 
@@ -700,8 +702,10 @@ def homePage(name):
                                                                                                        'student').replace(
                     'submissionID', submissionID)
                 newTemp += s
+
             front_data += newTemp
             front_data += end_data
+            front_data = front_data.replace("User Name123",name)
             return front_data
 
         elif role == "Teacher":
@@ -776,8 +780,10 @@ def user():
                                                                                                        'student').replace(
                     'submissionID', submissionID)
                 newTemp += s
+
             front_data += newTemp
             front_data += end_data
+            front_data = front_data.replace("User Name123",name)
             return front_data
 
         elif role == "Teacher":
@@ -817,9 +823,16 @@ def user():
 
 if __name__ == '__main__':
 
+    DataBase.delete_quiz_data_table()
+    DataBase.delete_score_record_table()
+    DataBase.delete_user_table()
+    DataBase.delete_submission_table()
+
+    DataBase.creat_user_table()
+    DataBase.create_quiz_table()
+    DataBase.makeScoreRecord()
     DataBase.create_Submission_table()
     DataBase.print_submission_table()
-    DataBase.creat_user_table()
     DataBase.print_score_record_table()
 
     app.run(host='0.0.0.0', port=9377, debug=True)

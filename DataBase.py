@@ -2,18 +2,18 @@ from mysql.connector import(connection)
 import mysql.connector
 
 def connector():
-    return mysql.connector.connect(
-        host="localhost",
-        user="root",
-        passwd="ubcse442",
-        database="QuizHub"
-    )
     # return mysql.connector.connect(
-    #     host="oceanus.cse.buffalo.edu",
-    #     user="tingjiez",
-    #     passwd="50380202",
-    #     database="tingjiez_db"
+    #     host="localhost",
+    #     user="root",
+    #     passwd="ubcse442",
+    #     database="QuizHub"
     # )
+    return mysql.connector.connect(
+        host="oceanus.cse.buffalo.edu",
+        user="tingjiez",
+        passwd="50380202",
+        database="tingjiez_db"
+    )
 
 db = connector()
 mycursor = db.cursor()
@@ -403,11 +403,11 @@ def get_studentAnswer_baseon_submissionID(id):
 
     mycursor = db.cursor()
     create_Submission_table()
-    print("checking studentAnswer")
+    print("checking studentAnswer: "+str(id))
     try:
         mycursor.execute('SELECT * FROM Submission')
         for row in mycursor:
-
+            print("row",row)
             if row[3] == id:
                 return row[2]
         return None

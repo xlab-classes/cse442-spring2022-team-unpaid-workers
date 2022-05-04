@@ -1,100 +1,122 @@
-<style>* {
-    margin: 0;
-    padding: 0;
-}
-body {
-    font: 71%/1.5 Verdana, Sans-Serif;
-    background: #eee;
-}
-
-#container {
-    margin: 100px auto;
-    width: 1360px;
-}
-#keyboard {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-#keyboard  {
-    float: left;
-    margin: 0 5px 5px 0;
-    width: 160px;
-    height: 60px;
-    font-size: 24px;
-    line-height: 60px;
-    text-align: center;
-    background: #ffffff;
-    border: 1px solid #f9f9f9;
-    border-radius: 5px;
-}
-.clearl {
-    clear: left;
-}
-
-.keyboard :hover {
-    position: relative;
-    top: 1px;
-    left: 1px;
-    border-color: #e5e5e5;
-    cursor: pointer;
-}</style>
-
-<style>*{
-    margin: 13px;
-    padding: 0;
-}
-body {
-    font: 71%/1.5 Verdana, Sans-Serif;
-    background: #eee;
-}
-
-#container {
-    margin: 100px auto;
-    width: 1360px;
-}
-#display{
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-#display  {
-    float: left;
-    margin: 0 5px 5px 0;
-    width: 500px;
-    height: 60px;
-    font-size: 24px;
-    line-height: 60px;
-    text-align: center;
-    background: #ffffff;
-    border: 1px solid #f9f9f9;
-    border-radius: 5px;
-}
-.clearl {
-    clear: left;
-}
-
-
-.keyboard :hover {
-    position: relative;
-    top: 1px;
-    left: 1px;
-    border-color: #e5e5e5;
-    cursor: pointer;
-}
-</style>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Sign up</title>
+    <title>Submission</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="../static/cssFile.css">
+<!--    <link rel="stylesheet" href="../static/cssFile.css">-->
+<style>
+    /* On small screens, set height to 'auto' for sidenav and grid */
+    @media screen and (max-width: 767px) {
+        .sidenav {
+            height: auto;
+            padding: 15px;
+        }
+        .row.content {height:auto;}
+    }
 
+    /*class*/
+
+    .stylebox{
+        /*width: 320px;*/
+        padding: 0px;
+        margin: 0;
+        background-color:#bbb
+    }
+
+    /* Remove the navbar's default margin-bottom and rounded borders */
+    .navbar {
+        margin-bottom: 0;
+        border-radius: 0;
+        background-color: #1b1b1b;
+    }
+
+    /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+    .row.content {height: 450px}
+
+    /* Set gray background color and 100% height */
+    .sidenav {
+        padding-top: 20px;
+        background-color: #1b1b1b;
+        height: 100%;
+    }
+
+
+    .sidenav {
+        background-color: #000000;
+    }
+    .box {
+        float: left;
+        width: 100%;
+        padding: 50px;
+    }
+
+    .clearfix::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+    .Full_width_input{
+        width: 100%;
+    }
+    /*whole name */
+
+    /* Set black background color, white text and some padding */
+    footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+
+        background-color: #1b1b1b;
+        color: #ffffff;
+        text-align: center;
+    }
+
+
+    body{
+        background-color: #000000;
+    }
+
+    /*this is id */
+    #logo {
+        text-align:center;
+        color: #ffffff;
+    }
+    #sign_in2{
+        margin: auto;
+        text-align:center;
+        color: #ffffff;
+    }
+
+    #hub{
+        color:#000000;
+        background-color: #f7971d;
+        border-radius: 5%;
+    }
+    #underline{
+        text-decoration: underline;
+        color: black;
+    }
+    .box {
+
+        width: 30%;
+
+    <!--            border: 5px dotted MediumSeaGreen;-->
+
+    }
+    #option{
+        color: black;
+    }
+    a:hover {
+        text-decoration: none;
+    }
+    html,body{height:100%;}
+
+</style>
 </head>
 <body>
 
@@ -120,42 +142,48 @@ body {
     </div>
 </nav>
 
+
+
 <!--body of page-->
 <div class="container-fluid text-center">
-    <div class="row content">
-        <div class="col-lg-6 text-left">
-            <div class="stylebox">
-                <h1>Editing Grade Here</h1>
-
-                <div class="clearfix">
-                    <div class="box" style="background-color:#bbb">
-
-                        <form action="/updateQuiz" method="POST">
-                            <p><input value="submissionID" name="ID" hidden/></p >
-
-                            <h3>{{Question_Name}}: </h3>
-                            <p>Correct Answer: {{Prof_answer}}</p >
-                            <p>Actual Answer: {{student_answer}}</p >
-                            <label>Point Worth : <input type = "text" name = "Choice_A_1" size="3" /> / {{point_worth}}</label >
-
-                            <br>
-                            <br>
-                            <input value="username123" name="username" hidden>
-                            <p><input type = "submit" value = "Update" name="Update Quiz"/></p >
-
-                        </form>
+    <div class="row content" >
+        <div class="col-sm-2 "></div>
+        <div class="col-sm-8 text-left" style="color: white">
 
 
+            <h1>Editing Grade Here</h1>
 
-                        </p >
+            <div class="clearfix">
+                <div class="box" >
+
+                    <form action="/updateQuiz" method="POST">
+                        <p><input value="submissionID" name="ID" hidden/></p >
+
+                        <h3>{{Question_Name}}: </h3>
+                        <p>Correct Answer: {{Prof_answer}}</p >
+                        <p>Actual Answer: {{student_answer}}</p >
+                        <label>Point Worth : <input type = "text" name = "Choice_A_1" size="3" style="color: black" /> / {{point_worth}}</label >
+
+                        <br>
+                        <br>
+                        <input value="username123" name="username" hidden>
+                        <p><input type = "submit" value = "Update" style="color: black" name="Update Quiz"/></p >
+
+                    </form>
 
 
-                    </div>
+
+                    </p >
+
+
                 </div>
             </div>
-
         </div>
+
+
+        <div class="col-sm-2 "></div>
+
     </div>
 </div>
-</div>
+
 </body>
