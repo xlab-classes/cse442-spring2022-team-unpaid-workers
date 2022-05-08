@@ -3,6 +3,8 @@ Coder: Zhou Zhou  && Shkaraot
 '''
 import time
 
+import requests
+
 import DataBase
 from flask import Flask, render_template, request, redirect
 from werkzeug.datastructures import ImmutableMultiDict
@@ -13,6 +15,8 @@ import smtplib
 
 app = Flask(__name__)
 
+def escape_HTML(text):
+    return text.encode().replace(b'&', b'&amp').replace(b'<', b'&lt;').replace(b'>', b'&gt;').decode('utf-8')
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
@@ -20,29 +24,19 @@ def index():
     DataBase.print_user_table()
     return render_template("index.html")
 
-def sendEmailNotification(studentName,studentEmail,examName,studentScore):
-    gmail_user = 'kylinzh7798@gmail.com'
-    gmail_password = "nzl980107"
+def send_simple_message(studentName,studentEmail,examName,studentScore):
+    return requests.post(
+        "https://api.mailgun.net/v3/sandbox50ce824e6d294b32afd8db494929548e.mailgun.org/messages",
+        auth=("api", "3d0b9108d8d7d534d1d64009bbf7fc05-fe066263-cd828d4e"),
+        data={"from": "Mailgun Sandbox <postmaster@sandbox50ce824e6d294b32afd8db494929548e.mailgun.org>",
+              "to": studentName+" <"+studentEmail+">",
+              "subject": "Hello "+studentName,
+              "text": "Hello, "+studentName +"\n"+examName+" result has been updated! Your final score is "+str(studentScore)})
 
-    sent_from = gmail_user
-    to = [studentEmail]
-    SUBJECT = examName +' score is out!'
-    TEXT = "Hi, "+studentName+"\nYour score is "+str(studentScore)
-
-    email_text = 'Subject: {}\n\n{}'.format(SUBJECT, TEXT)
-    try:
-        smtp_server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
-        smtp_server.ehlo()
-        smtp_server.login(gmail_user, gmail_password)
-        smtp_server.sendmail(sent_from, to, email_text)
-        smtp_server.close()
-        print("Email sent successfully!")
-    except Exception as ex:
-        print("Something went wrong….", ex)
 @app.route('/updateQuiz', methods=['POST', 'GET'])
 def updateQuiz():
     data = dict(request.form)
-
+    print("data: ",data)
     newScore = 0
     i = 0
     name, passcode = DataBase.get_studentName_And_passcode_baseon_submissionID(data['ID'])
@@ -53,10 +47,10 @@ def updateQuiz():
     for k, v in data.items():
         if k != 'ID' and k != 'Update Quiz' and k != 'username':
             newScore += int(v)
-            print(i)
-            print(type(student_answer))
-            print(type(student_answer[i][3]))
-            print(type(student_answer[i]))
+            # print(i)
+            # print(type(student_answer))
+            # print(type(student_answer[i][3]))
+            # print(type(student_answer[i]))
             student_answer[i][3] = v
             i += 1
 
@@ -66,7 +60,8 @@ def updateQuiz():
     username = data.get("username")
     role = DataBase.get_role_baseon_name(username)
     if role == "Teacher":
-         sendEmailNotification(name,DataBase.get_userEmail_baseon_name(name),DataBase.get_quiz_name_by_passcode(passcode),newScore)
+        send_simple_message(name,DataBase.get_userEmail_baseon_name(name),DataBase.get_quiz_name_by_passcode(passcode),newScore)
+
 
     return redirect("/homePage/" + username, code=301)
 
@@ -76,7 +71,137 @@ def studentSubmission(role, id):
     submission_str = DataBase.get_studentAnswer_baseon_submissionID(id)
     print("role, id", role,id)
     print("url: ",request.url)
-    if role == "student":
+    css_temp = ""
+    js_temp = "<script>"
+    row_score_temp = ""
+
+    if role != "student":
+        submission = json.loads(submission_str)
+        with open("templates/submission.html", "r") as f:
+            t = f.read()
+        t = t.replace("submissionID", id)
+        template = ""
+        i = 0
+        startPos = t.find("<h3>{{Question_Name}}: </h3>")
+        endPos = t.find('<input value="username123" name="username" hidden>')
+        print("subm:", submission)
+        print("type: ", type(submission))
+        for s in submission:
+            i += 1
+            questionName = s[0]
+            actual_answer = s[1]
+            student_answer = s[2]
+            point_receive = s[3]
+            point_worth = s[4]
+            template += "<h3 style=\"width: 500px\">" + str(i) + ". " + questionName + "</h3>" + "\n"
+            print(actual_answer)
+
+            if type(actual_answer)==type([]):
+                rubric_temp = '<div id="container'+str(i)+'">\n'
+                rubric_temp += '<ul id="keyboard'+str(i)+'">\n'
+
+                template += "<p>Question Rubric:  </p >" + "\n"
+                row = int(actual_answer[0])
+                col = int(actual_answer[1])
+                gap = 100.0/(col-1)
+                percent = 100
+                count = 0
+                for j in range(col):
+                    if count%col == 0:
+                        rubric_temp += '<li id="cell'+str(i)+"_"+str(j)+'" style="background: #100909;color: white" class="letter clearl">'+str(percent)+'%</li>\n'
+                    else:
+                        rubric_temp += '<li id="cell'+str(i)+"_"+str(j)+'" style="background: #100909;color: white" class="letter ">'+str(percent)+'%</li>\n'
+                    count += 1
+                    percent = round(percent - gap)
+
+                for n in range(row):
+
+                    row_score_temp += '<input type="text" value="0" id="question'+str(i)+'_row'+str(n+1)+'_score" hidden>\n'
+
+                for j in range(row*col):
+                    if count%col == 0:
+                        rubric_temp += '<li id="num'+str(i)+"_"+str(j)+'" onclick="displayNumber'+str(i)+"_"+str(j)+'()" style="background: #100909;" class="letter clearl">'+actual_answer[2+j]+'</li>\n'
+                    else:
+                        rubric_temp += '<li id="num'+str(i)+"_"+str(j)+'" onclick="displayNumber'+str(i)+"_"+str(j)+'()" style="background: #100909;" class="letter ">'+actual_answer[2+j]+'</li>\n'
+                    js_temp += 'function displayNumber'+str(i)+"_"+str(j)+'(){\n'
+                    js_temp += 'if (document.getElementById("num'+str(i)+"_"+str(j)+'").style.background === "rgb(11, 142, 248)") {\n'
+                    js_temp += 'document.getElementById("num'+str(i)+"_"+str(j)+'").style.background = "#100909"\n'
+                    js_temp += 'document.getElementById("question'+str(i)+'_row'+str(j//col+1)+'_score").value = "0"\n'
+                    if row == 1:
+                        js_temp += 'document.getElementById("Choice'+str(i)+'").value = parseInt(document.getElementById("question'+str(i)+'_row1_score").value).toString()\n'
+                    elif row ==2:
+                        js_temp += 'document.getElementById("Choice'+str(i)+'").value = (parseInt(document.getElementById("question'+str(i)+'_row1_score").value)+parseInt(document.getElementById("question'+str(i)+'_row2_score").value)).toString()\n'
+                    elif row ==3:
+                        js_temp += 'document.getElementById("Choice'+str(i)+'").value = (parseInt(document.getElementById("question'+str(i)+'_row1_score").value)+parseInt(document.getElementById("question'+str(i)+'_row2_score").value)+parseInt(document.getElementById("question'+str(i)+'_row3_score").value)).toString()\n'
+                    elif row ==4:
+                        js_temp += 'document.getElementById("Choice'+str(i)+'").value = (parseInt(document.getElementById("question'+str(i)+'_row1_score").value)+parseInt(document.getElementById("question'+str(i)+'_row2_score").value)+parseInt(document.getElementById("question'+str(i)+'_row3_score").value)+parseInt(document.getElementById("question'+str(i)+'_row4_score").value)).toString()\n'
+                    else:
+                        js_temp += 'document.getElementById("Choice'+str(i)+'").value = (parseInt(document.getElementById("question'+str(i)+'_row1_score").value)+parseInt(document.getElementById("question'+str(i)+'_row2_score").value)+parseInt(document.getElementById("question'+str(i)+'_row3_score").value)+parseInt(document.getElementById("question'+str(i)+'_row4_score").value)+parseInt(document.getElementById("question'+str(i)+'_row5_score").value)).toString()\n'
+                    js_temp += '}\n'
+                    js_temp += 'else{\n'
+                    # print(j,col,int(point_worth),int(point_worth)/row*(1/(col-1)),(col-(j+1)%col))
+
+                    print("calc: ",round(int(point_worth)/row*(1/(col-1))*((col-(j+1)%col)%col)))
+                    js_temp += 'document.getElementById("question'+str(i)+'_row'+str(j//col+1)+'_score").value = "'+str(round(int(point_worth)/row*(1/(col-1))*((col-(j+1)%col)%col)))+'"\n'
+                    if row == 1:
+                        js_temp += 'document.getElementById("Choice'+str(i)+'").value = parseInt(document.getElementById("question'+str(i)+'_row1_score").value).toString()\n'
+                    elif row ==2:
+                        js_temp += 'document.getElementById("Choice'+str(i)+'").value = (parseInt(document.getElementById("question'+str(i)+'_row1_score").value)+parseInt(document.getElementById("question'+str(i)+'_row2_score").value)).toString()\n'
+                    elif row ==3:
+                        js_temp += 'document.getElementById("Choice'+str(i)+'").value = (parseInt(document.getElementById("question'+str(i)+'_row1_score").value)+parseInt(document.getElementById("question'+str(i)+'_row2_score").value)+parseInt(document.getElementById("question'+str(i)+'_row3_score").value)).toString()\n'
+                    elif row ==4:
+                        js_temp += 'document.getElementById("Choice'+str(i)+'").value = (parseInt(document.getElementById("question'+str(i)+'_row1_score").value)+parseInt(document.getElementById("question'+str(i)+'_row2_score").value)+parseInt(document.getElementById("question'+str(i)+'_row3_score").value)+parseInt(document.getElementById("question'+str(i)+'_row4_score").value)).toString()\n'
+                    else:
+                        js_temp += 'document.getElementById("Choice'+str(i)+'").value = (parseInt(document.getElementById("question'+str(i)+'_row1_score").value)+parseInt(document.getElementById("question'+str(i)+'_row2_score").value)+parseInt(document.getElementById("question'+str(i)+'_row3_score").value)+parseInt(document.getElementById("question'+str(i)+'_row4_score").value)+parseInt(document.getElementById("question'+str(i)+'_row5_score").value)).toString()\n'
+
+
+                    for k in range(j//col*col,j//col*col+col):
+                        if k == j:
+                            js_temp += 'document.getElementById("num'+str(i)+"_"+str(k)+'").style.background = "#0B8EF8FF"\n'
+                        else:
+                            js_temp += 'document.getElementById("num'+str(i)+"_"+str(k)+'").style.background = "#100909"\n'
+
+                    js_temp += '}\n'
+                    js_temp += '}\n'
+
+
+                    count += 1
+                rubric_temp += "</ul></div><br><br><br>\n"
+                css_temp_start = t.find('<p hidden>css_temp_start</p>')+len('<p hidden>css_temp_start</p>')
+                css_temp_end = t.find('<p hidden>css_temp_end</p>')
+                css_temp += t[css_temp_start:css_temp_end].replace('container1','container'+str(i)).replace('keyboard1','keyboard'+str(i))
+
+                template += rubric_temp
+
+            else:
+                template += "<p>Correct Answer: " + actual_answer + "</p >" + "\n"
+            template += "<p>Student Answer: " + student_answer + "</p >" + "\n"
+            template += "<label style=\"color:white\">Point Worth : <input type = \"text\" name = \"Choice" + str(
+                i) + "\" size=\"3\" id = \"Choice" + str(i) +"\" style=\"color:black\" value=\"" + point_receive + "\" />/" + point_worth + "</label>" + "\n"
+            template += "<br>" + "\n" + "<br>" + "\n"
+
+        name = DataBase.get_teacherName_baseon_passcode(DataBase.get_passcode_baseon_submissionID(id))
+        css_temp_start = t.find('<p hidden>css_temp_start</p>')+len('<p hidden>css_temp_start</p>')
+        css_temp_end = t.find('<p hidden>css_temp_end</p>')
+
+        js_temp += '</script>'
+        js_temp_start = t.find('<p hidden>js_temp_start</p>')+len('<p hidden>js_temp_start</p>')
+        js_temp_end = t.find('<p hidden>js_temp_end</p>')
+
+        row_score_start = t.find('<p hidden>row_score_start</p>')+len('<p hidden>row_score_start</p>')
+        row_score_end = t.find('<p hidden>row_score_end</p>')
+
+        final_temp = t[:startPos] + template + t[endPos:]
+        final_temp = final_temp.replace("username123", name)
+        final_temp = final_temp.replace(t[css_temp_start:css_temp_end],css_temp)
+        final_temp = final_temp.replace(t[js_temp_start:js_temp_end],js_temp)
+
+        print(row_score_temp)
+        print(row_score_start,row_score_end)
+        final_temp = final_temp.replace(t[row_score_start:row_score_end],row_score_temp)
+        return final_temp
+
+    else:
         submission = json.loads(submission_str)
         with open("templates/submission.html", "r") as f:
             t = f.read()
@@ -95,45 +220,56 @@ def studentSubmission(role, id):
             point_receive = s[3]
             point_worth = s[4]
             template += "<h3>" + str(i) + ". " + questionName + "</h3>" + "\n"
-            template += "<p>Correct Answer: " + actual_answer + "</p >" + "\n"
+            print(actual_answer)
+
+            if type(actual_answer)==type([]):
+                rubric_temp = '<div id="container'+str(i)+'">\n'
+                rubric_temp += '<ul id="keyboard'+str(i)+'">\n'
+
+                template += "<p>Question Rubric:  </p >" + "\n"
+                row = int(actual_answer[0])
+                col = int(actual_answer[1])
+                gap = 100.0/(col-1)
+                percent = 100
+                count = 0
+                for j in range(col):
+                    if count%col == 0:
+                        rubric_temp += '<li id="cell'+str(i)+"_"+str(j)+'" style="background: #100909;color: white" class="letter clearl">'+str(percent)+'%</li>\n'
+                    else:
+                        rubric_temp += '<li id="cell'+str(i)+"_"+str(j)+'" style="background: #100909;color: white" class="letter ">'+str(percent)+'%</li>\n'
+                    count += 1
+                    percent = round(percent - gap)
+
+
+                for j in range(row*col):
+                    if count%col == 0:
+                        rubric_temp += '<li id="num'+str(i)+"_"+str(j)+'"  style="background: #100909;" class="letter clearl">'+actual_answer[2+j]+'</li>\n'
+                    else:
+                        rubric_temp += '<li id="num'+str(i)+"_"+str(j)+'"  style="background: #100909;" class="letter ">'+actual_answer[2+j]+'</li>\n'
+
+                    count += 1
+                rubric_temp += "</ul></div><br><br><br>\n"
+                css_temp_start = t.find('<p hidden>css_temp_start</p>')+len('<p hidden>css_temp_start</p>')
+                css_temp_end = t.find('<p hidden>css_temp_end</p>')
+                css_temp += t[css_temp_start:css_temp_end].replace('container1','container'+str(i)).replace('keyboard1','keyboard'+str(i))
+
+                template += rubric_temp
+
+            else:
+                template += "<p>Correct Answer: " + actual_answer + "</p >" + "\n"
             template += "<p>Student Answer: " + student_answer + "</p >" + "\n"
-            template += "<label>Point Worth : <input type = \"text\" name = \"Choice" + str(
-                i) + "\" size=\"3\" value=\"" + point_receive + "\" readonly/>/" + point_worth + "</label>" + "\n"
+            template += "<label style=\"color:white\">Point Worth : <input type = \"text\" name = \"Choice" + str(
+                i) + "\" size=\"3\" id = \"Choice" + str(i) +"\" style=\"color:black\" value=\"" + point_receive + "\" readonly/>/" + point_worth + "</label>" + "\n"
             template += "<br>" + "\n" + "<br>" + "\n"
 
         name = DataBase.get_studentName_And_passcode_baseon_submissionID(id)[0]
-        final_temp = t[:startPos] + template + t[endPos:]
-        final_temp = final_temp.replace("username123", name)
-        return final_temp
+        css_temp_start = t.find('<p hidden>css_temp_start</p>')+len('<p hidden>css_temp_start</p>')
+        css_temp_end = t.find('<p hidden>css_temp_end</p>')
 
-    else:
-        submission = json.loads(submission_str)
-        with open("templates/submission.html", "r") as f:
-            t = f.read()
-        t = t.replace("submissionID", id)
-        template = ""
-        i = 0
-        startPos = t.find("<h3>{{Question_Name}}: </h3>")
-        endPos = t.find('<input value="username123" name="username" hidden>')
-        print("type: ", type(submission))
-        for s in submission:
-            print("s: ", s)
-            i += 1
-            questionName = s[0]
-            actual_answer = s[1]
-            student_answer = s[2]
-            point_receive = s[3]
-            point_worth = s[4]
-            template += "<h3>" + str(i) + ". " + questionName + "</h3>" + "\n"
-            template += "<p>Correct Answer: " + actual_answer + "</p >" + "\n"
-            template += "<p>Student Answer: " + student_answer + "</p >" + "\n"
-            template += "<label>Point Worth : <input type = \"text\" style=\"color: black\" name = \"Choice" + str(
-                i) + "\" size=\"3\" value=\"" + point_receive + "\" />/" + point_worth + "</label>" + "\n"
-            template += "<br>" + "\n" + "<br>" + "\n"
-        passcode = DataBase.get_passcode_baseon_submissionID(id)
-        name = DataBase.get_teacherName_baseon_passcode(passcode)
         final_temp = t[:startPos] + template + t[endPos:]
         final_temp = final_temp.replace("username123", name)
+        final_temp = final_temp.replace(t[css_temp_start:css_temp_end],css_temp)
+
         return final_temp
 
 @app.route('/quiz_submit', methods=['POST', 'GET'])
@@ -157,18 +293,23 @@ def quiz_submit():
             if k == 'passcode':
                 break
 
-            # studentAnswer = [questionName,questionAnswer,studentAnswer, pointGain, pointTotal
-            if v == quiz[idx]["answer"][0]:
-                student_score += int(quiz[idx]['point'][0])
-                studentAnswer.append(
-                    [quiz[idx]["question"][0], quiz[idx]["answer"][0], v, quiz[idx]["point"][0], quiz[idx]["point"][0]])
+            if len(quiz[idx]["answer"]) >1:
+                studentAnswer.append([quiz[idx]["question"][0], quiz[idx]["answer"], v, "0", quiz[idx]["point"][0]])
             else:
-                studentAnswer.append([quiz[idx]["question"][0], quiz[idx]["answer"][0], v, "0", quiz[idx]["point"][0]])
+                # studentAnswer = [questionName,questionAnswer,studentAnswer, pointGain, pointTotal
+                if v == quiz[idx]["answer"][0]:
+                    student_score += int(quiz[idx]['point'][0])
+                    studentAnswer.append(
+                        [quiz[idx]["question"][0], quiz[idx]["answer"][0], v, quiz[idx]["point"][0], quiz[idx]["point"][0]])
+                else:
+                    studentAnswer.append([quiz[idx]["question"][0], quiz[idx]["answer"][0], v, "0", quiz[idx]["point"][0]])
 
             idx += 1
         SubmissionID = ''.join(random.choices(string.ascii_lowercase, k=8))
+        quizName = escape_HTML(quizName)
+        studentAnswerStr = escape_HTML(json.dumps(studentAnswer))
         DataBase.insertScoreRecord(data.get('studentName'), quizName, student_score, passcode, SubmissionID)
-        DataBase.insertSubmission(data.get("studentName"), passcode, json.dumps(studentAnswer), SubmissionID)
+        DataBase.insertSubmission(data.get("studentName"), passcode, studentAnswerStr, SubmissionID)
 
         return redirect("/homePage/"+studentName,code=301)
 
@@ -248,6 +389,11 @@ def accessQuiz():
                 quiz_template += template1 + template2 + template3 + template4 + template5 + '<br><br>'
 
             elif question_type == "Short_Answer":
+                template1 = "<p> " + str(quiz_number) + ". " + question + " (" + point + "pts) </p>\n"
+                template2 = "<div class=\"form-group\">" + '\n' + "<label for=\"comment\">Short Question_Answer:</label>" + "<textarea class=\"form-control\" name=\"Answer_" + str(
+                    quiz_number) + "\" rows=\"5\" id=\"comment\" required></textarea></div>";
+                quiz_template += template1 + template2 + '<br><br>'
+            else:
                 template1 = "<p> " + str(quiz_number) + ". " + question + " (" + point + "pts) </p>\n"
                 template2 = "<div class=\"form-group\">" + '\n' + "<label for=\"comment\">Short Question_Answer:</label>" + "<textarea class=\"form-control\" name=\"Answer_" + str(
                     quiz_number) + "\" rows=\"5\" id=\"comment\" required></textarea></div>";
@@ -373,23 +519,23 @@ def buidQuiz():
                 js_template += 'if (x' + str(i) + '.value == "Multiple_Choice"){' + '\n'
                 js_template += 'document.getElementById("question_content' + str(i) + '").innerHTML =' + '\n'
                 js_template += '"<label style=\\"color: white\\" >Answer : <input type = \\"text\\" name = \\"Answer_' + str(
-                    i) + '\\" size=\\"12\\" required/></label >" +\n'
+                    i) + '\\" size=\\"12\\" style=\\"color: black\\" required/></label >" +\n'
                 js_template += '"<br>"+\n'
                 js_template += '"<label style=\\"color: white\\">ChoiceA <input type = \\"text\\" name = \\"Choice_A_' + str(
-                    i) + '\\" size=\\"120\\" required/></label >" +\n'
+                    i) + '\\" size=\\"120\\" style=\\"color: black\\" required/></label >" +\n'
                 js_template += '"<label style=\\"color: white\\">ChoiceB <input type = \\"text\\" name = \\"Choice_B_' + str(
-                    i) + '\\" size=\\"120\\" required/></label >" +\n'
+                    i) + '\\" size=\\"120\\" style=\\"color: black\\" required/></label >" +\n'
                 js_template += '"<label style=\\"color: white\\">ChoiceC <input type = \\"text\\" name = \\"Choice_C_' + str(
-                    i) + '\\" size=\\"120\\" required/></label >" +\n'
+                    i) + '\\" size=\\"120\\" style=\\"color: black\\" required/></label >" +\n'
                 js_template += '"<label style=\\"color: white\\">ChoiceD <input type = \\"text\\" name = \\"Choice_D_' + str(
-                    i) + '\\" size=\\"120\\" required/></label >" ;\n'
+                    i) + '\\" size=\\"120\\" style=\\"color: black\\" required/></label >" ;\n'
                 js_template += '}' + '\n'
                 js_template += 'else if (x' + str(i) + '.value == "Short_Answer"){' + '\n'
                 js_template += 'document.getElementById("question_content' + str(i) + '").innerHTML = \n'
                 js_template += '"<div class=\\"form-group\\">" +\n'
                 js_template += '"<label style=\\"color: white\\" for=\\"comment\\">Short Question_Answer:</label>" +\n'
                 js_template += '"<textarea class=\\"form-control\\" name=\\"Answer_' + str(
-                    i) + '\\" rows=\\"5\\" id=\\"comment\\" required></textarea></div>";\n'
+                    i) + '\\" rows=\\"5\\" id=\\"comment\\" style=\\"color: black\\" required></textarea></div>";\n'
                 js_template += '}' + '\n'
                 js_template += 'else if (x' + str(i) + '.value == "Essay_Question"){' + '\n'
                 js_template += 'document.getElementById("question_content'+str(i)+'").innerHTML = \n'
@@ -628,9 +774,13 @@ def buidQuiz():
         else:
             # load full quiz into database
             passcode = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+
             json_quiz = json.dumps(full_quiz)
 
             time_limit = (int(hr) * 3600 + int(min) * 60) * 1000
+            teacher_name = escape_HTML(teacher_name)
+            quizname = escape_HTML(quizname)
+            json_quiz = escape_HTML(json_quiz)
 
             DataBase.insert_quiz((passcode, teacher_name, quizname, json_quiz, str(time_limit)))
             DataBase.print_Quiz_Data()
@@ -666,6 +816,7 @@ def Signup():
         user_email = dict.get("email")[0]
         print(user_email)
         if DataBase.username_is_not_exist(name):
+            name = escape_HTML(name)
             DataBase.insert_user((role, name, password,user_email))
             print("success, back to index page")
             return render_template("index.html")
@@ -823,15 +974,17 @@ def user():
 
 if __name__ == '__main__':
 
-    DataBase.delete_quiz_data_table()
-    DataBase.delete_score_record_table()
-    DataBase.delete_user_table()
-    DataBase.delete_submission_table()
+
+    # DataBase.delete_quiz_data_table()
+    # DataBase.delete_score_record_table()
+    # DataBase.delete_submission_table()
+    # DataBase.delete_user_table()
 
     DataBase.creat_user_table()
     DataBase.create_quiz_table()
     DataBase.makeScoreRecord()
     DataBase.create_Submission_table()
+
     DataBase.print_submission_table()
     DataBase.print_score_record_table()
 
