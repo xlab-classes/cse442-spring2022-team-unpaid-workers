@@ -1,0 +1,361 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Submission</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <!--    <link rel="stylesheet" href="../static/cssFile.css">-->
+    <style>
+        /* On small screens, set height to 'auto' for sidenav and grid */
+        @media screen and (max-width: 767px) {
+            .sidenav {
+                height: auto;
+                padding: 15px;
+            }
+            .row.content {height:auto;}
+        }
+
+        /*class*/
+
+        .stylebox{
+            /*width: 320px;*/
+            padding: 0px;
+            margin: 0;
+            background-color:#bbb
+        }
+
+        /* Remove the navbar's default margin-bottom and rounded borders */
+        .navbar {
+            margin-bottom: 0;
+            border-radius: 0;
+            background-color: #1b1b1b;
+        }
+
+        /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+        .row.content {height: 450px}
+
+        /* Set gray background color and 100% height */
+        .sidenav {
+            padding-top: 20px;
+            background-color: #1b1b1b;
+            height: 100%;
+        }
+
+
+        .sidenav {
+            background-color: #000000;
+        }
+        .box {
+            float: left;
+            width: 100%;
+            padding: 50px;
+        }
+
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+        .Full_width_input{
+            width: 100%;
+        }
+        /*whole name */
+
+        /* Set black background color, white text and some padding */
+        footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+
+            background-color: #1b1b1b;
+            color: #ffffff;
+            text-align: center;
+        }
+
+
+        body{
+            background-color: #000000;
+        }
+
+        /*this is id */
+        #logo {
+            text-align:center;
+            color: #ffffff;
+        }
+        #sign_in2{
+            margin: auto;
+            text-align:center;
+            color: #ffffff;
+        }
+
+        #hub{
+            color:#000000;
+            background-color: #f7971d;
+            border-radius: 5%;
+        }
+        #underline{
+            text-decoration: underline;
+            color: black;
+        }
+        .box {
+
+            width: 30%;
+
+        <!--            border: 5px dotted MediumSeaGreen;-->
+
+        }
+        #option{
+            color: black;
+        }
+        a:hover {
+            text-decoration: none;
+        }
+        html,body{height:100%;}
+
+    </style>
+    <p hidden>css_temp_start</p>
+    <style>* #container1{
+        margin: 0;
+        padding: 0;
+    }
+    #container1 body {
+
+        background: #eee;
+    }
+
+    #container1 {
+        margin: 100px auto;
+        width: 1360px;
+    }
+    #keyboard1 {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    #keyboard1 li {
+        float: left;
+        margin: 0 5px 5px 0;
+        width: 160px;
+        height: 60px;
+        font-size: 24px;
+        line-height: 60px;
+        text-align: center;
+        background: #ffffff;
+        border: 1px solid #f9f9f9;
+        border-radius: 5px;
+    }
+    #container1 .clearl {
+        clear: left;
+    }
+
+
+    #keyboard1 li:hover {
+        position: relative;
+        top: 1px;
+        left: 1px;
+        border-color: #e5e5e5;
+        cursor: pointer;
+    }</style>
+
+    <style>* #container1{
+        margin: 13px;
+        padding: 0;
+    }
+
+
+    #container1 {
+        margin: 100px auto;
+        width: 1360px;
+    }
+
+    #keyboard1 li:hover {
+        position: relative;
+        top: 1px;
+        left: 1px;
+        border-color: #e5e5e5;
+        cursor: pointer;
+    }
+    </style>
+
+    <style>* #container2{
+        margin: 0;
+        padding: 0;
+    }
+    #container2 body {
+
+        background: #eee;
+    }
+
+    #container2 {
+        margin: 100px auto;
+        width: 1360px;
+    }
+    #keyboard2 {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    #keyboard2 li {
+        float: left;
+        margin: 0 5px 5px 0;
+        width: 160px;
+        height: 60px;
+        font-size: 24px;
+        line-height: 60px;
+        text-align: center;
+        background: #ffffff;
+        border: 1px solid #f9f9f9;
+        border-radius: 5px;
+    }
+    #container2 .clearl {
+        clear: left;
+    }
+
+
+    #keyboard2 li:hover {
+        position: relative;
+        top: 1px;
+        left: 1px;
+        border-color: #e5e5e5;
+        cursor: pointer;
+    }</style>
+
+    <style>* #container2{
+        margin: 13px;
+        padding: 0;
+    }
+
+
+    #container2 {
+        margin: 100px auto;
+        width: 1360px;
+    }
+
+    #keyboard2 li:hover {
+        position: relative;
+        top: 1px;
+        left: 1px;
+        border-color: #e5e5e5;
+        cursor: pointer;
+    }
+    </style>
+    <p hidden>css_temp_end</p>
+
+</head>
+<body>
+
+
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"> </span>
+                <span class="icon-bar"> </span>
+                <span class="icon-bar"> </span>
+            </button>
+            <a href=" homePage" ><h1 id="logo" >Quiz <span id="hub">Hub</span></h1> </a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/"><span ></span> sign out</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+
+<!--body of page-->
+<div class="container-fluid text-center">
+    <div class="row content" >
+        <div class="col-sm-2 "></div>
+        <div class="col-sm-8 text-left" style="color: white">
+
+
+            <h1>Editing Grade Here</h1>
+
+            <div class="clearfix">
+                <div class="box" >
+                    <p hidden>row_score_start</p><input type="text" value="0" id="question1_row1_score" hidden>
+                    <input type="text" value="0" id="question1_row2_score" hidden>
+                    <input type="text" value="0" id="question2_row1_score" hidden>
+                    <input type="text" value="0" id="question2_row2_score" hidden>
+                    <input type="text" value="0" id="question2_row3_score" hidden>
+                    <p hidden>row_score_end</p>
+
+                    <form action="/updateQuiz" method="POST">
+                        <p><input value="pkbhnbnc" name="ID" hidden/></p >
+
+                        <h3>1. Different between bfs and dfs</h3>
+                        <p>Question Rubric:  </p >
+                        <div id="container1">
+                            <ul id="keyboard1">
+                                <li id="cell1_0" style="background: #100909;color: white" class="letter clearl">100%</li>
+                                <li id="cell1_1" style="background: #100909;color: white" class="letter ">50%</li>
+                                <li id="cell1_2" style="background: #100909;color: white" class="letter ">0%</li>
+                                <li id="num1_0" onclick="displayNumber1_0()" style="background: #100909;" class="letter clearl">aa</li>
+                                <li id="num1_1" onclick="displayNumber1_1()" style="background: #100909;" class="letter ">bb</li>
+                                <li id="num1_2" onclick="displayNumber1_2()" style="background: #100909;" class="letter ">cc</li>
+                                <li id="num1_3" onclick="displayNumber1_3()" style="background: #100909;" class="letter clearl">dd</li>
+                                <li id="num1_4" onclick="displayNumber1_4()" style="background: #100909;" class="letter ">ee</li>
+                                <li id="num1_5" onclick="displayNumber1_5()" style="background: #100909;" class="letter ">ff</li>
+                            </ul></div><br><br><br>
+                        <p>Student Answer: idk3</p >
+                        <label>Point Worth : <input type = "text" name = "Choice1" size="3" id = "Choice1" style="color:black" value="0" readonly/>/10</label>
+                        <br>
+                        <br>
+                        <h3>2. Define 3 hand shake</h3>
+                        <p>Question Rubric:  </p >
+                        <div id="container2">
+                            <ul id="keyboard2">
+                                <li id="cell2_0" style="background: #100909;color: white" class="letter clearl">100%</li>
+                                <li id="cell2_1" style="background: #100909;color: white" class="letter ">67%</li>
+                                <li id="cell2_2" style="background: #100909;color: white" class="letter ">34%</li>
+                                <li id="cell2_3" style="background: #100909;color: white" class="letter ">1%</li>
+                                <li id="num2_0"  style="background: #100909;" class="letter clearl">aa</li>
+                                <li id="num2_1"  style="background: #100909;" class="letter ">bb</li>
+                                <li id="num2_2"  style="background: #100909;" class="letter ">cc</li>
+                                <li id="num2_3" style="background: #100909;" class="letter ">dd</li>
+                                <li id="num2_4"  style="background: #100909;" class="letter clearl">ee</li>
+                                <li id="num2_5"  style="background: #100909;" class="letter ">ff</li>
+                                <li id="num2_6" style="background: #100909;" class="letter ">gg</li>
+                                <li id="num2_7"  style="background: #100909;" class="letter ">hh</li>
+                                <li id="num2_8"  style="background: #100909;" class="letter clearl">ii</li>
+                                <li id="num2_9"  style="background: #100909;" class="letter ">jj</li>
+                                <li id="num2_10" style="background: #100909;" class="letter ">kk</li>
+                                <li id="num2_11"  style="background: #100909;" class="letter ">ll</li>
+                            </ul></div><br><br><br>
+                        <p>Student Answer: idk3</p >
+                        <label>Point Worth : <input type = "text" name = "Choice2" size="3" id = "Choice2" style="color:black" value="0" readonly/>/20</label>
+                        <br>
+                        <br>
+                        <input value="tingjie" name="username" hidden>
+                        <p><input type = "submit" value = "Update" style="color: black" name="Update Quiz"/></p >
+
+                    </form>
+
+
+
+                    </p >
+
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-sm-2 "></div>
+
+    </div>
+</div>
+
+</body>
+

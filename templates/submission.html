@@ -1,113 +1,187 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Sign up</title>
+    <title>Submission</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script>
-        // Set the date we're counting down to
-
-        var countDownDate = new Date().getTime();
-        countDownDate += input_time //note 1000 is 1 s Also need to replace 1000 with user count
-        // Update the count down every 1 second
-        var x = setInterval(function() {
-
-            // Get today's date and time
-            var now = new Date().getTime();
-
-            // Find the distance between now and the count down date
-            var distance = countDownDate - now;
-
-            // Time calculations for days, hours, minutes and seconds
-            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            // Output the result in an element with id="demo"
-            document.getElementById("demo").innerHTML = days + "d " + hours + "h "
-                + minutes + "m " + seconds + "s ";
-
-            // If the count down is over, write some text
-            if (distance < 0) {
-
-                clearInterval(x);
-                document.getElementById("timer").innerHTML = "EXPIRED";
-            }
-        }, 1000);
-    </script>
-    <style>
-        /* Remove the navbar's default margin-bottom and rounded borders */
-        .navbar {
-            margin-bottom: 0;
-            border-radius: 0;
-            background-color: #321E0F;
-        }
-
-        /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-        .row.content {height: 450px}
-
-        /* Set gray background color and 100% height */
+<!--    <link rel="stylesheet" href="../static/cssFile.css">-->
+<style>
+    /* On small screens, set height to 'auto' for sidenav and grid */
+    @media screen and (max-width: 767px) {
         .sidenav {
-            padding-top: 20px;
-            background-color: #8C8757;
-            height: 100%;
+            height: auto;
+            padding: 15px;
         }
+        .row.content {height:auto;}
+    }
 
-        /* Set black background color, white text and some padding */
-        footer {
-            position: fixed;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            background-color: #321E0F;
-            color: white;
-            text-align: center;
-        }
+    /*class*/
 
-        /* On small screens, set height to 'auto' for sidenav and grid */
-        @media screen and (max-width: 767px) {
-            .sidenav {
-                height: auto;
-                padding: 15px;
+    .stylebox{
+        /*width: 320px;*/
+        padding: 0px;
+        margin: 0;
+        background-color:#bbb
+    }
 
-            }
-            .row.content {height:auto;}
-        }
-        body{
-            background-color: #8C8757;
-        }
-        .stylebox{
-            /*width: 320px;*/
-            padding: 0px;
-            border: 5px solid gray;
-            margin: 0;
-        }
+    /* Remove the navbar's default margin-bottom and rounded borders */
+    .navbar {
+        margin-bottom: 0;
+        border-radius: 0;
+        background-color: #1b1b1b;
+    }
 
-        .box {
-            float: left;
-            width: 100%;
-            padding: 50px;
-        }
+    /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+    .row.content {height: 450px}
 
-        .clearfix::after {
-            content: "";
-            clear: both;
-            display: table;
-        }
-        #logo {
-            text-align:center;
-            color: #FEFAD7;
-        }
-        #txt{
-            resize: none;
-        }
+    /* Set gray background color and 100% height */
+    .sidenav {
+        padding-top: 20px;
+        background-color: #1b1b1b;
+        height: 100%;
+    }
 
 
+    .sidenav {
+        background-color: #000000;
+    }
+    .box {
+        float: left;
+        width: 100%;
+        padding: 50px;
+    }
+
+    .clearfix::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+    .Full_width_input{
+        width: 100%;
+    }
+    /*whole name */
+
+    /* Set black background color, white text and some padding */
+    footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+
+        background-color: #1b1b1b;
+        color: #ffffff;
+        text-align: center;
+    }
+
+
+    body{
+        background-color: #000000;
+    }
+
+    /*this is id */
+    #logo {
+        text-align:center;
+        color: #ffffff;
+    }
+    #sign_in2{
+        margin: auto;
+        text-align:center;
+        color: #ffffff;
+    }
+
+    #hub{
+        color:#000000;
+        background-color: #f7971d;
+        border-radius: 5%;
+    }
+    #underline{
+        text-decoration: underline;
+        color: black;
+    }
+    .box {
+
+        width: 30%;
+
+    <!--            border: 5px dotted MediumSeaGreen;-->
+
+    }
+    #option{
+        color: black;
+    }
+    a:hover {
+        text-decoration: none;
+    }
+    html,body{height:100%;}
+
+</style>
+    <p hidden>css_temp_start</p>
+    <style>* #container1{
+        margin: 0;
+        padding: 0;
+    }
+    #container1 body {
+
+        background: #eee;
+    }
+
+    #container1 {
+        margin: 100px auto;
+        width: 1360px;
+    }
+    #keyboard1 {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    #keyboard1 li {
+        float: left;
+        margin: 0 5px 5px 0;
+        width: 160px;
+        height: 60px;
+        font-size: 24px;
+        line-height: 60px;
+        text-align: center;
+        background: #ffffff;
+        border: 1px solid #f9f9f9;
+        border-radius: 5px;
+    }
+    #container1 .clearl {
+        clear: left;
+    }
+
+
+    #keyboard1 li:hover {
+        position: relative;
+        top: 1px;
+        left: 1px;
+        border-color: #e5e5e5;
+        cursor: pointer;
+    }</style>
+
+    <style>* #container1{
+        margin: 13px;
+        padding: 0;
+    }
+
+
+    #container1 {
+        margin: 100px auto;
+        width: 1360px;
+    }
+
+    #keyboard1 li:hover {
+        position: relative;
+        top: 1px;
+        left: 1px;
+        border-color: #e5e5e5;
+        cursor: pointer;
+    }
     </style>
+    <p hidden>css_temp_end</p>
+
 </head>
 <body>
 
@@ -115,82 +189,171 @@
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
-            <h1 id="logo">Quiz <span style="color:#ffbb22">Hub</span></h1>
-            <p id="timer"></p >
+
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"> </span>
+                <span class="icon-bar"> </span>
+                <span class="icon-bar"> </span>
+            </button>
+            <a href=" homePage" ><h1 id="logo" >Quiz <span id="hub">Hub</span></h1> </a>
         </div>
-
-        <div id="myNavbar">
+        <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
-
-                <li> <a href="# "><p> Home</p > </a > </li>    <!--replace # to another url -->
-                <li><a href="#" ><p> Join new Class</p ></a > </li>   <!--replace # to another url -->
-                <li><a href="#" ><p> Grades</p ></a > </li>   <!--replace # to another url -->
-
-                <!--                <li><a href="#" ><p> {% print(s) %}</p ></a ></li> &lt;!&ndash;replace # to another url &ndash;&gt;-->
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">sign out</a ></li>
+                <li><a href="/"><span ></span> sign out</a></li>
             </ul>
         </div>
     </div>
 </nav>
 
+
+
 <!--body of page-->
 <div class="container-fluid text-center">
-    <div class="row content">
-        <div class="col-lg-6 text-left">
-            <div class="stylebox">
-                <h1>Editing Grade Here</h1>
-
-                <div class="clearfix">
-                    <div class="box" style="background-color:#bbb">
-
-                        <form action="/updateQuiz" method="POST">
-                            <p><input value="submissionID" name="ID" hidden/></p >
-
-                            <h3>{{Question_Name}}: </h3>
-                            <p>Correct Answer: {{Prof_answer}}</p >
-                            <p>Actual Answer: {{student_answer}}</p >
-                            <label>Point Worth : <input type = "text" name = "Choice_A_1" size="3" /> / {{point_worth}}</label >
-
-                            <br>
-                            <br>
-                            <input value="username123" name="username" hidden>
-                            <p><input type = "submit" value = "Update" name="Update Quiz"/></p >
-
-                        </form>
+    <div class="row content" >
+        <div class="col-sm-2 "></div>
+        <div class="col-sm-8 text-left" style="color: white">
 
 
+            <h1>Editing Grade Here</h1>
 
-                        </p >
+            <div class="clearfix">
+                <div class="box" >
+                    <p hidden>row_score_start</p>
+                    <input type="text" id="question1_row1_score" hidden>
+                    <p hidden>row_score_end</p>
+
+                    <form action="/updateQuiz" method="POST">
+                        <p><input value="submissionID" name="ID" hidden/></p >
+
+                        <h3>{{Question_Name}}: </h3>
+                        <p>Correct Answer: {{Prof_answer}}</p >
+                        <p>Actual Answer: {{student_answer}}</p >
+                        <label>Point Worth : <input type = "text" name = "Choice_A_1" size="3" style="color: black" /> / {{point_worth}}</label >
+
+                        <br>
+                        <br>
+                        <input value="username123" name="username" hidden>
+                        <p><input type = "submit" value = "Update" style="color: black" name="Update Quiz"/></p >
+
+                    </form>
 
 
-                    </div>
+
+                    </p >
+
+
                 </div>
             </div>
-
         </div>
+
+
+        <div class="col-sm-2 "></div>
+
     </div>
 </div>
-</div>
-
-<div class="container-fluid text-center">
-    <div class="row content">
-        <div class="col-sm-2 sidenav">
-        </div>
-        <div class="col-sm-8 text-left">
-        </div>
-        <div class="col-sm-2 sidenav">
-
-        </div>
-    </div>
-</div>
-
-
-<footer class="container-fluid text-center">
-    <p>About Us</p >
-</footer>
 
 </body>
 
-</html>
+<p hidden>js_temp_start</p>
+<script>
+    function displayNumber1_1(){
+        if (document.getElementById("num1_1").style.background === "rgb(11, 142, 248)") {
+            document.getElementById("num1_1").style.background = "#100909"
+        }
+        else{
+            document.getElementById("num1_1").style.background = "#0B8EF8FF"
+            document.getElementById("num1_2").style.background = "#100909"
+            document.getElementById("num1_3").style.background = "#100909"
+        }
+    }
+    function displayNumber1_2(){
+        if (document.getElementById("num1_2").style.background === "rgb(11, 142, 248)") {
+            document.getElementById("num1_2").style.background = "#100909"
+        }
+        else{
+            document.getElementById("num1_2").style.background = "#0B8EF8FF"
+            document.getElementById("num1_1").style.background = "#100909"
+            document.getElementById("num1_3").style.background = "#100909"
+        }
+    }
+    function displayNumber1_3(){
+        if (document.getElementById("num1_3").style.background === "rgb(11, 142, 248)") {
+            document.getElementById("num1_3").style.background = "#100909"
+        }
+        else{
+            document.getElementById("num1_3").style.background = "#0B8EF8FF"
+            document.getElementById("num1_1").style.background = "#100909"
+            document.getElementById("num1_2").style.background = "#100909"
+        }
+    }
+    function displayNumber1_4(){
+
+        if (document.getElementById("num1_4").style.background === "rgb(11, 142, 248)") {
+            document.getElementById("num1_4").style.background = "#100909"
+        }
+        else{
+            document.getElementById("num1_4").style.background = "#0B8EF8FF"
+            document.getElementById("num1_5").style.background = "#100909"
+            document.getElementById("num1_6").style.background = "#100909"
+        }
+    }
+    function displayNumber1_5(){
+
+        if (document.getElementById("num1_5").style.background === "rgb(11, 142, 248)") {
+            document.getElementById("num1_5").style.background = "#100909"
+        }
+        else{
+            document.getElementById("num5").style.background = "#0B8EF8FF"
+            document.getElementById("num4").style.background = "#100909"
+            document.getElementById("num6").style.background = "#100909"
+        }
+    }
+    function displayNumber1_6(){
+
+        if (document.getElementById("num6").style.background === "rgb(11, 142, 248)") {
+            document.getElementById("num6").style.background = "#100909"
+        }
+        else{
+            document.getElementById("num6").style.background = "#0B8EF8FF"
+            document.getElementById("num4").style.background = "#100909"
+            document.getElementById("num5").style.background = "#100909"
+        }
+    }
+    function displayNumber1_7(){
+
+        if (document.getElementById("num7").style.background === "rgb(11, 142, 248)") {
+            document.getElementById("num7").style.background = "#100909"
+        }
+        else{
+            document.getElementById("num7").style.background = "#0B8EF8FF"
+            document.getElementById("num8").style.background = "#100909"
+            document.getElementById("num9").style.background = "#100909"
+        }
+    }
+    function displayNumber1_8(){
+
+        if (document.getElementById("num8").style.background === "rgb(11, 142, 248)") {
+            document.getElementById("num8").style.background = "#100909"
+        }
+        else{
+            document.getElementById("num8").style.background = "#0B8EF8FF"
+            document.getElementById("num7").style.background = "#100909"
+            document.getElementById("num9").style.background = "#100909"
+        }
+    }
+    function displayNumber1_9(){
+
+        if (document.getElementById("num9").style.background === "rgb(11, 142, 248)") {
+            document.getElementById("num9").style.background = "#100909"
+        }
+        else{
+            document.getElementById("num9").style.background = "#0B8EF8FF"
+            document.getElementById("num7").style.background = "#100909"
+            document.getElementById("num8").style.background = "#100909"
+        }
+    }
+
+</script>
+<p hidden>end</p>
