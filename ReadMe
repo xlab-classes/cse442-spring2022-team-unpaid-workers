@@ -1,9 +1,9 @@
 This project for CSE 442 Team members in UB
 This is our project for cse 442 
 Work hard！
-## If you can go to http://cheshire.cse.buffalo.edu:9377/ success. You can just read zzhou38 folder file, otherwise, you need to install lib 
+**If you can go to http://cheshire.cse.buffalo.edu:9377/ success. You can just read zzhou38 folder file, otherwise, you need to install lib**
 
-## Tech
+**Tech**
 import time
 import requests
 from flask import Flask, render_template, request, redirect
@@ -15,36 +15,23 @@ import smtplib
 from mysql.connector import(connection)
 import mysql.connector
 
-## Installation
+**Installation**
 First, ssh to <your_ubid>@cheshire.cse.buffalo.edu. Please confirm your permission
-```sh
-cheshire% cd /web/CSE442-542/2022-Spring/cse-442o/zzhou38/cse442-spring2022-team-unpaid-workers
-```
+>cheshire% cd /web/CSE442-542/2022-Spring/cse-442o/zzhou38/cse442-spring2022-team-unpaid-workers
 Then go to bash
-```sh
-cheshire% bash
-```
+>cheshire% bash
 Then go to venev, install numpy
-```sh
-(venv) bash-4.2$ python3.8 -m pip install numpy
-```
+>(venv) bash-4.2$ python3.8 -m pip install numpy
 install requests
-```sh
-(venv) bash-4.2$ python3.8 -m pip install requests 
-```
+>(venv) bash-4.2$ python3.8 -m pip install requests 
 install mysql-connector
-```sh
-(venv) bash-4.2$ python3.8 -m pip install mysql-connector-python
-```
+>(venv) bash-4.2$ python3.8 -m pip install mysql-connector-python
 install Flask
-```sh
-(venv) bash-4.2$ python3.8 -m pip install Flask
-```
+>(venv) bash-4.2$ python3.8 -m pip install Flask
 Then run Server.py 
-```sh
-(venv) bash-4.2$ python3.8 Server.py
-```
-## Final
+>(venv) bash-4.2$ python3.8 Server.py
+
+**Final**
 go to http://cheshire.cse.buffalo.edu:9377/ 
 
 
